@@ -23,6 +23,8 @@ set.seed(113877)
 
 ## Motivation
 
+We've seen in past homeworks how it can be helpful to check some of our theoretical work empirically (by generating data from the situation of interest and summarizing it). The goal of this lab is to get you more comfortable with planning your own empirical checks. This lab will go through some R code building blocks that you will use later on in the course to check your work. 
+
 ## Getting started - Loops
 
 A simple for loop has the following structure:
@@ -430,6 +432,10 @@ legend("topleft", legend = c("Analytical MGF", "Empirical MGF"),
        lty=c(1,1), lwd=c(2.5,2.5),
        col=c("red", "black"))
 ```
+
+## RMarkdown refresher
+
+If you are unfamiliar with RMarkdown documents, watch the intro video [here](https://rmarkdown.rstudio.com/lesson-1.html) and browse the associated [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf). We will be working in RMarkdown documents in future labs.
 
 ## Submit checkpoint
 
