@@ -1,0 +1,452 @@
+---
+title: "Lab 1: Using Simulations to Check Theory"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(openintro)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+```
+
+## Motivation
+
+## Getting started - Loops
+
+A simple for loop has the following structure:
+
+```{r loopEx, eval = F, echo = T}
+n <- 5
+
+for(i in 1:n){
+  print(1)
+}
+```
+
+This is read "for index $i$ in the sequence 1 to $n$, do the following" (whatever is in the curly braces). 
+
+```{r loop1}
+question("What would the for loop above do",
+    answer("Print 5 one time."),
+    answer("Print 5 five times"),
+    answer("Print 1 five times", correct = T),
+    answer("Print 1 one time."),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+## Getting started - Loops cont.
+
+In this class, we will often want to work with probability distributions. 
+
+```{r loopEx2, eval = F, echo = T}
+n <- 5
+sample_size <- 3
+
+for(i in 1:n){
+  x <- rnorm(n = sample_size, mean = 0, sd = 1)
+}
+```
+
+```{r loop2}
+question("What is in x at the end of the above for loop",
+    answer("3 numbers drawn from the specified normal distribution.", correct = T),
+    answer("15 numbers drawn from the specified normal distribution."),
+    answer("Nothing, x is empty."),
+    answer("1 number drawn from the specified normal distribution"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+## Getting started - Saving output in loops
+
+Let's say we actually wanted to store all of the values we generated in the loop. We need to create an object to store them in that is the right size.
+
+Here `stored_values` is a two-dimensional matrix full of NAs but ready for `n` rows and `sample_size` columns. You can think of this as stacking each `x` on top of one another.
+
+```{r, storedLoop, exercise = T}
+n <- 5
+sample_size <- 3
+
+stored_values <- matrix(NA, nrow = n, ncol = sample_size)
+
+for(i in 1:n){
+  x <- rnorm(n = n, mu = 0, sd = 1)
+  stored_values[i,] <- x
+}
+
+stored_values
+```
+
+`stored_values[i,]` says we want to assign the `i`th row and all of the columns to whatever is in $x$.
+
+## Getting started - Saving output in loops cont.
+
+But what if we didn't want to store the actual values but rather some summary of them? Now we don't need to make room for a two-dimensional object. Instead `stored_means` is a one-dimensional vector of NAs ready for `n` values (we `rep`eated NA, $n$` times).
+
+```{r, storedLoop2, exercise = T}
+n <- 5
+sample_size <- 3
+
+stored_means <- rep(NA, length = n)
+
+for(i in 1:n){
+  x <- rnorm(n = n, mu = 0, sd = 1)
+  stored_means[i] <- mean(x)
+}
+
+stored_means
+```
+
+`stored_means[i]` says we want to assign the `i`th value to whatever is in $mean(x)$.
+
+
+## Checking our work on Probability Review Queston 6b (part of HW1) 
+
+Now we're ready to create our own simulation.
+
+Recall that we were interested in finding the expected value of the maximum of $n$ $iid$ uniform random variables defined on the range 0 to $\theta$. Let's calculate the maximum from a bunch of these simulations and see what we find. 
+
+```{r getMax, exercise = TRUE}
+theta <- 2 ## pick a value greater than zero
+n <- 10 ## pick an n greater than 1
+
+num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
+store_max <- ___(NA, ___)
+for (i in 1:___) {
+  test <- runif(n = ___, min = 0, max = theta)
+  store_max[___] <- max(test)
+}
+```
+
+```{r getMax-solution}
+theta <- 2 ## pick a value greater than zero
+n <- 10 ## pick an n greater than 1
+
+num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
+store_max <- rep(NA, num_rep)
+for (i in 1:num_rep) {
+  test <- runif(n = n, min = 0, max = theta)
+  store_max[i] <- max(test)
+}
+```
+
+```{r getMax-check}
+# check code
+gradethis::grade_code()
+```
+
+Now that we have a bunch of maximums from the situation we are interested in, how do we know what is typical (i.e. what do we "expect")?
+
+
+```{r getMax2-setup}
+theta <- 2 ## pick a value greater than zero
+n <- 10 ## pick an n greater than 1
+
+num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
+store_max <- rep(NA, num_rep)
+for (i in 1:num_rep) {
+  test <- runif(n = n, min = 0, max = theta)
+  store_max[i] <- max(test)
+}
+```
+
+
+```{r getMax2, exercise = TRUE}
+mean(___)
+```
+
+```{r getMax2-solution}
+mean(store_max)
+```
+
+```{r getMax2-check}
+# check code
+gradethis::grade_code()
+```
+
+
+Now write your derived expectation as a function of $n$ and $\theta$ (as a formula) and check if the value is close to the one we observed empirically.
+
+```{r eqnSolution-setup}
+theta <- 2 ## pick a value greater than zero
+n <- 10 ## pick an n greater than 1
+```
+
+```{r eqnSolution, exercise = TRUE}
+true_expectation <- ___
+
+true_expectation ## print out answer
+```
+
+
+## Checking our work on HW 5, Question 1 
+
+Recall that we were interested in finding the expected value and variance of two moments:
+
+$$m_1' = \bar{X}$$
+$$m_2' = \frac{1}{n}\sum_{i=1}^n X_i^2$$
+
+for a random sample of size $n$ from $Uniform(-\theta, 2\theta)$.
+
+```{r getMoment, exercise = TRUE}
+theta <- 2 ## pick any value of theta
+n <- 10 ## pick an n greater than 1
+
+num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
+
+moment_store1 <- rep(NA, ___)
+moment_store2 <- rep(NA, ___)
+
+for(i in 1:___){
+  
+ test = runif(n = ___, min = ___, max = ___) ## generate the random sample
+ moment_store1[___] <- mean(___) ## calculate the first moment
+ moment_store2[___] <- sum(___^2)/n ## calculate the second moment
+  
+}
+```
+
+```{r getMoment-solution}
+theta <- 2 ## pick any value of theta
+n <- 10 ## pick an n greater than 1
+
+num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
+
+moment_store1 <- rep(NA, num_rep)
+moment_store2 <- rep(NA, num_rep)
+
+for(i in 1:num_rep){
+  
+ test = runif(n = n, min = -1*theta, max = 2*theta) ## generate the random sample
+ moment_store1[i] <- mean(test) ## calculate the first moment
+ moment_store2[i] <- sum(test^2)/n ## calculate the second moment
+  
+}
+
+```
+
+```{r getMoment-check}
+# check code
+gradethis::grade_code()
+```
+
+## Comparing the Empirical to the Theoretical
+
+Now that we have a bunch of moments from the situations we are interested in (stored in `moment_store` and `moment_store2`), how do we know what is typical (i.e. what do we "expect") and quantify the variation?
+
+
+```{r getMoment2-setup}
+theta <- 2 ## pick any value of theta
+n <- 10 ## pick an n greater than 1
+
+num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
+
+moment_store1 <- rep(NA, num_rep)
+moment_store2 <- rep(NA, num_rep)
+
+for(i in 1:num_rep){
+  
+ test = runif(n, -1*theta, 2*theta)
+ moment_store1[i] <- mean(test)
+ moment_store2[i] <- sum(test^2)/n
+  
+}
+```
+
+
+```{r getMoment2, exercise = TRUE}
+## first moment's properties
+mean(___)
+var(___)
+
+## second moment's properties
+mean(___)
+var(___)
+```
+
+```{r getMoment2-solution}
+## first moment's properties
+mean(moment_store1)
+var(moment_store1)
+
+## second moment's properties
+mean(moment_store2)
+var(moment_store2)
+```
+
+```{r getMoment2-check}
+# check code
+gradethis::grade_code()
+```
+
+
+Now write your derived expectations and variances as functions of $n$ and $\theta$ (as formulas) and check if the values are close to the one we observed empirically.
+
+```{r eqnSolution2-setup}
+theta <- 2 ## pick a value greater than zero
+n <- 10 ## pick an n greater than 1
+```
+
+```{r eqnSolution2, exercise = TRUE}
+## first moment's properties
+true_expectation1 <- ___
+true_variance1 <- ___
+
+true_expectation1 ## print out answer
+true_variance1 ## print out answer
+
+## second moment's properties
+true_expectation2 <- ___
+true_variance2 <- ___
+
+true_expectation2 ## print out answer
+true_variance2 ## print out answer
+```
+
+## Moment Generating Functions - Setup
+
+Suppose we are interested in the moment generating function for an Poisson distribution defined by parameter $\lambda$.
+
+If we derive it we get $E[e^(tX)] = exp(\lambda(e^t -1))$. What if we wanted to double check our calculation to make sure we didn't make a mistake? We can generate data from a Poisson.
+
+```{r poisGenerate, exercise = T}
+lambda <- 2 ## pick any value greater than zero
+sample_size <- 1000 ## pick something relatively large
+
+X <- rpois(n = sample_size, lambda = lambda)
+```
+
+Now we want to know what the MGF looks like for many different $t$ to understand its shape. This code will give us 10 values between 0 and 2.
+
+```{r seqT, exercise = T}
+# define t (in an interval near 0)
+t <- seq(from = 0, to = 2, length.out = 10)
+
+t
+```
+
+## Moment Generating Functions - Two Ways
+
+We can write our theoretical MGF as a formula. 
+
+```{r mgfT-setup}
+lambda <- 2 ## pick any value greater than zero
+t <- seq(from = 0, to = 2, length.out = 10)
+```
+
+```{r mgfT, exercise = T}
+MGF_theoretical <- exp(lambda * (exp(t)- 1)) ## what we calculate
+```
+
+To calculate the empirical MGF we need to approximate the required expectation for each of the values in $t$. It sounds like we need a loop!
+
+```{r squuhgtztakteehy-setup}
+lambda <- 2 ## pick any value greater than zero
+sample_size <- 1000 ## pick something relatively large
+
+X <- rpois(n = sample_size, lambda = lambda)
+t <- seq(from = 0, to = 2, length.out = 10)
+```
+
+```{r squuhgtztakteehy, exercise = TRUE}
+MGF_empirical <- rep(NA, length(___)) ## how many calculations are we doing?
+
+for(i in 1:length(___)){
+  
+ MGF_empirical[___] <- mean(exp(t[___]*___))
+  
+}
+
+MGF_empirical
+```
+
+
+```{r squuhgtztakteehy-solution}
+MGF_empirical <- rep(NA, length(t))
+
+for(i in 1:length(t)){
+  
+ MGF_empirical[i] <- mean(exp(t[i]*X))
+  
+}
+
+MGF_empirical
+
+```
+
+```{r squuhgtztakteehy-check}
+# check code
+gradethis::grade_code()
+```
+
+
+
+
+## Moment Generating Functions - Comparisons (the big reveal!)
+
+Now let's see if the two two MGFs match.
+
+```{r plot-setup}
+lambda <- 2 ## pick any value greater than zero
+sample_size <- 1000 ## pick something relatively large
+
+X <- rpois(n = sample_size, lambda = lambda)
+t <- seq(from = 0, to = 2, length.out = 10)
+
+MGF_empirical <- rep(NA, length(t))
+
+for(i in 1:length(t)){
+  
+ MGF_empirical[i] <- mean(exp(t[i]*X))
+  
+}
+
+MGF_theoretical <- exp(lambda * (exp(t)- 1)) ## what we calculate
+
+```
+
+
+```{r plot, exercise = T}
+plot(t, MGF_empirical, main = "Poisson MGF", xlab = "t",
+     ylab = "", type = "l", col = "black", lwd = 3)
+points(t, MGF_theoretical, pch = 16,
+      lwd = 3, col = "red")
+legend("topleft", legend = c("Analytical MGF", "Empirical MGF"),
+       lty=c(1,1), lwd=c(2.5,2.5),
+       col=c("red", "black"))
+```
+
+## Submit checkpoint
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+Click "Generate" and copy and paste that "hash" into the last question on the Google Form below (fill out your name and lab number as well before submitting.)
+
+If the Google Form doesn't appear below, submit [here](https://docs.google.com/forms/d/e/1FAIpQLSdCDDcfFHZAkl4ubLNb2O8fr1a_BC2on93iy6mm9WHWwZf2Rw/viewform?usp=sf_link).
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLSdCDDcfFHZAkl4ubLNb2O8fr1a_BC2on93iy6mm9WHWwZf2Rw/viewform", ## change link, include name
+    width="900px", height= "1000px"
+  )
+)
+```
