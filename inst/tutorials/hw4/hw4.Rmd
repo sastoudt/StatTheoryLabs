@@ -1,0 +1,120 @@
+---
+title: "Homework 4 Checker"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(openintro)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+```
+
+
+## Getting started
+
+To answer questions 1a and 1b, you can use Table 4. However, you can also use R to check your work. The functions `pnorm` and `qnorm` will come in handy. How do we learn more about these functions?
+
+```{r getHelp, exercise = TRUE}
+___(qnorm)
+```
+
+```{r getHelp-solution}
+help(qnorm)
+```
+
+```{r getHelp-check}
+# check code
+gradethis::grade_code()
+```
+
+```{r getHelp2, exercise = TRUE}
+___(pnorm)
+```
+
+```{r getHelp2-solution}
+help(pnorm)
+```
+
+```{r getHelp2-check}
+# check code
+gradethis::grade_code()
+```
+
+
+```{r whichprob}
+question("Which would you use to answer Question 1a?",
+    answer("pnorm", correct = T),
+    answer("qnorm"),
+    answer("doesn't matter"),
+    answer("neither"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+```{r whichquantile}
+question("Which would you use to answer Question 1b?",
+    answer("pnorm"),
+    answer("qnorm", correct = T),
+    answer("doesn't matter"),
+    answer("neither"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+
+## Checking HW 4, Question 2 
+
+```{r checkSol, exercise = TRUE}
+n <- 100000 ## number of draws from the distribution, just pick something large
+
+mu <- ___ ## mean parameter
+sigma_sq <- ___ ## variance parameter
+
+test <- rnorm(n = ___, mean = ___, sd = sqrt(___)) 
+
+mean(exp(test/4) + exp(-test^2/2)) 
+```
+
+```{r checkSol-solution}
+n <- 100000 ## number of draws from the distribution, just pick something large
+
+mu <- 0 ## mean parameter
+sigma_sq <- 1 ## variance parameter
+
+test <- rnorm(n = n, mean = mu, sd = sqrt(sigma_sq)) 
+
+mean(exp(test/4) + exp(-test^2/2)) 
+```
+
+```{r checkSol-check}
+# check code
+gradethis::grade_code()
+```
+
+Now write your derived expectation (as a formula) and check if the value is close to the one we observed empirically.
+
+```{r eqnSolution-setup}
+mu <- 0 ## mean parameter
+sigma_sq <- 1 ## variance parameter
+```
+
+```{r eqnSolution, exercise = TRUE}
+true_expectation <- ___
+
+true_expectation ## print out answer
+```
+
+
+
+
+
