@@ -1,0 +1,95 @@
+---
+title: "Homework 3 Checker"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(openintro)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+```
+
+
+## Getting started
+
+To check Question 1c from the MGF examples (part of HW 3) we will need to generate random numbers from a specific normal distribution. How can we find out what parameters the `rnorm` function expects us to specify?
+
+```{r getHelp, exercise = TRUE}
+___(rnorm)
+```
+
+```{r getHelp-solution}
+help(rnorm)
+```
+
+```{r getHelp-check}
+# check code
+gradethis::grade_code()
+```
+
+
+```{r whichspread}
+question("Which measure of spread does the function rnorm expect?",
+    answer("variance"),
+    answer("standard deviation", correct = T),
+    answer("doesn't matter"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+## Checking Question 1c from the MGF examples (part of HW 3) 
+
+```{r checkSol, exercise = TRUE}
+n <- 100000 ## number of draws from the distribution, just pick something large
+
+mu <- ___ ## mean parameter
+sigma_sq <- ___ ## variance parameter
+
+test <- rnorm(n = ___, mean = ___, sd = sqrt(___)) 
+
+mean(test^2 + exp(0.5*test))
+```
+
+```{r checkSol-solution}
+n <- 100000 ## number of draws from the distribution, just pick something large
+
+mu <- 5 ## mean parameter
+sigma_sq <- 4 ## variance parameter
+
+test <- rnorm(n = n, mean = mu, sd = sqrt(sigma_sq)) 
+
+mean(test^2 + exp(0.5*test))
+```
+
+```{r checkSol-check}
+# check code
+gradethis::grade_code()
+```
+
+Now write your derived expectation (as a formula) and check if the value is close to the one we observed empirically.
+
+```{r eqnSolution-setup}
+mu <- 5 ## mean parameter
+sigma_sq <- 4 ## variance parameter
+```
+
+```{r eqnSolution, exercise = TRUE}
+true_expectation <- ___
+
+true_expectation ## print out answer
+```
+
+
+
+
+
