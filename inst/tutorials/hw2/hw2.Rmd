@@ -1,0 +1,100 @@
+---
+title: "Your First Homework Helper"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(openintro)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+```
+
+## Getting started
+
+This is a `learnr` tutorial. It allows you to edit and run R code with some automatic feedback about whether you are on the right track. You can edit the code and click "Run Code" to see what happens.
+
+```{r test-run, exercise = TRUE}
+(2+5)*3-11
+
+5^3
+```
+
+For *assignment purposes* in R, `=` and `<-` can be used interchangeably.  The arrow is the preferred notation.
+
+```{r test-run2, exercise = TRUE}
+y <- 3
+x <- 5 - 9*y
+
+x
+```
+
+To learn what a function does and what paramters it expects, you can consult the help pages.
+
+```{r get-help, exercise = TRUE}
+help(exp)
+```
+
+## Checking H2 2, Question 2
+
+
+```{r simSolution, exercise = TRUE}
+sample_size <- 10000 ## number of draws from the distribution, just pick something large
+n <- ___ ## number of trials
+p <- ___ ## probability of success, write as a fraction
+lambda <- ___ ## Poisson parameter
+
+X1 <- rbinom(n = sample_size, size = n, p = p) ## draw from the Binomial distribution
+X2 <- rpois(n = sample_size, lambda = lambda) ## draw from the Poisson distriubtion
+
+Y <- 3*X1 + 2*X2
+
+mean(Y) ## empirical mean
+var(Y) ## empirical variance
+```
+
+```{r simSolution-solution}
+sample_size <- 10000 ## number of draws from the distribution
+n <- 20 ## number of trials
+p <- 1/5 ## probability of success, write as a fraction
+lambda <- 3 ## Poisson parameter
+
+X1 <- rbinom(n = sample_size, size = n, p = p) ## draw from the binomial distribution
+X2 <- rpois(n = sample_size, lambda = lambda) ## draw from the Poisson distriubtion
+
+Y <- 3*X1 + 2*X2
+
+mean(Y) ## empirical mean
+var(Y) ## empirical variance
+```
+
+```{r simSolution-check}
+# check code
+gradethis::grade_code()
+```
+
+
+Now write your mean and variance in terms of the parameters $n$, $p$, and $\lambda$ (as a formula) and check if the theoretical mean and variance are close to the ones we observed empirically.
+
+```{r eqnSolution-setup}
+n <- 20 ## number of trials
+p <- 1/5 ## probability of success
+lambda <- 3 ## Poisson parameter
+
+```
+
+```{r eqnSolution, exercise = TRUE}
+true_mean <- ___
+true_var <- ___
+
+true_mean ## print out answer
+true_var ## print out answer
+```
