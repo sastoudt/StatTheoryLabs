@@ -56,7 +56,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "hw2": check a homework problem empirically
 - "hw3": check a homework problem empirically
 - "hw4": check a homework problem empirically
-- "lab1": Using Simulations to Check Theory
+- "lab0": Using Simulations to Check Theory
 
 More coming soon... (in development Summer 2021)
 
