@@ -52,49 +52,14 @@ We know from the CLT that theoretically, the sampling distribution of $\bar{X}$ 
 $$\bar{X} \approx N(\mu = 15, se = \frac{\sigma}{\sqrt{n}} = 15/10)$$
 How did we do?
 
-## Lab Question #1
+## Exponential Distribution Parameterization
 
-**a.)** Let $X_1, X_2, ... X_10 \sim^{iid} N(20, 8^2)$ and $Y_1, Y_2, ... Y_15 \sim^{iid} N(16, 7^2)$. Let $W = \bar{X}+\bar{Y}$. 
-
-Note: There are 10 values for $X$ and 15 for $Y$.
-
-**(i)** Give the exact sampling distribution of $W$ (this is not a coding question).
-
-**(ii)** Simulate the sampling distribution and plot your results. Check that the simulated mean and standard error are close to the theoretical mean and standard error from (i). Your code should be of the form:
-
-```{r, sumN, echo = T, eval = F}
-
-for(i in 1:numRep){
-  
-  ## simulate random samples for X
-  ## simulate random samples for Y
-  ## calculate and store W
-}
-
-hist(W)
-
-```
-
-
-**b.)** Consider the exponential distribution with $\beta$  = 20.
-
-**(i)** Calculate the median of this distribution using the `qexp` function.
-
-Pay attention to the parameterization of the Exponential distribution in R.
+How is the Exponential distribution parameterized in R? How have we/the book parameterized it?
 
 ```{r, expP, exercise = T}
 help(qexp)
 ```
 
-**(ii)** Using R, draw a random sample of size 15 from the population and graph it with a histogram. Describe the distribution of your sample. What are the mean and the standard deviation of your sample?
-
-
-**(iii)** Run a simulation to find the approximate sampling distribution for the median of samples of size 15 from an exponential population. Describe the sampling distribution and report the mean and the standard error of this distribution.
-
-**(iv)** Repeat step (iii) but use a sample size of $n = 100$. How does the sample size affect the sampling distribution?
-
-
-**c.)** Let $X_1, X_2, ..., X_n \sim^{iid} Exponential(\beta)$. Recall that (be able to show that) $X_{(1)} \sim Exp(\frac{\beta}{n})$. Simulate the sampling distribution of $X_{(1)}$ for samples of size $n=25$ from an exponential distribution with $\beta = 7$. Compare the theoretical expected value of $X_{(1)}$ to the simulated expected value.
 
 ## Illustrating the CLT
 
@@ -123,9 +88,75 @@ n <- 5 ## suppose we are interested in samples of size n = 5
 sd(finpop) / sqrt(n)  # theoretical standard error of sampling dist. of the mean(x)
 ```
 
+## Scatterplots and Correlation
+
+So far we have made histograms to examine a single distribution. We use a scatterplot to investigate the relationship between two quantitative variables. We may also want to quantify the correlation between the two variables using the `cor` function.
+
+```{r, scatter, exercise = T}
+x <- rnorm(25, 0, 1)
+y <- rnorm(25, 1, 2)
+
+plot(x, y, main = "informative title here", xlab = "informative x axis label here", ylab = "informative y axis label here")
+
+cor(x,y)
+```
+
+
+
+
+
+## Lab Question #1
+
+**a.)** Let $X_1, X_2, ... X_10 \sim^{iid} N(20, 8^2)$ and $Y_1, Y_2, ... Y_15 \sim^{iid} N(16, 7^2)$. Let $W = \bar{X}+\bar{Y}$. 
+
+Note: There are 10 values for $X$ and 15 for $Y$.
+
+**(i)** Give the exact sampling distribution of $W$ (this is not a coding question).
+
+**(ii)** Simulate the sampling distribution and plot your results. Check that the simulated mean and standard error are close to the theoretical mean and standard error from (i). Your code should be of the form:
+
+```{r, sumN, echo = T, eval = F}
+
+for(i in 1:numRep){
+  
+  ## simulate random samples for X
+  ## simulate random samples for Y
+  ## calculate and store W
+}
+
+hist(W)
+
+```
+
+
+**b.)** Consider the exponential distribution with $\beta$  = 20.
+
+**(i)** Calculate the median of this distribution using the `qexp` function. Pay attention to the parameterization of the Exponential distribution in R.
+
+
+**(ii)** Using R, draw a random sample of size 15 from the population and graph it with a histogram. Describe the distribution of your sample. What are the mean and the standard deviation of your sample?
+
+
+**(iii)** Run a simulation to find the approximate sampling distribution for the median of samples of size 15 from an exponential population. Describe the sampling distribution and report the mean and the standard error of this distribution.
+
+**(iv)** Repeat step (iii) but use a sample size of $n = 100$. How does the sample size affect the sampling distribution?
+
+
+**c.)** Let $X_1, X_2, ..., X_n \sim^{iid} Exponential(\beta)$. Recall that (be able to show that) $X_{(1)} \sim Exp(\frac{\beta}{n})$. Simulate the sampling distribution of $X_{(1)}$ for samples of size $n=25$ from an exponential distribution with $\beta = 7$. Compare the theoretical expected value of $X_{(1)}$ to the simulated expected value.
+
+
+
 ## Lab Question #2
 
 **a.)** Simulate the sampling distribution of the sample mean for samples of size $n=5$. Make sure you are sampling from othe finite "population" as we defined above (you'll need to copy that code over to your own Rmd).
+
+
+```{r clt2, echo = T, eval = F}
+set.seed(17) # ensures we all generate the same population
+N <- 400
+finpop <- rexp(N, 1 / 10)
+n <- 5 ## suppose we are interested in samples of size n = 5
+```
 
 **b.)** Plot your results. Does the sampling distribution of the sample mean appear approximately normal?
 
@@ -133,28 +164,17 @@ sd(finpop) / sqrt(n)  # theoretical standard error of sampling dist. of the mean
 
 **d.)** Repeate parts (a)-(c) for $n=25$ and $n=100$. What do you observe?
 
-## Independence of $\bar{X}$ and $s^2$
-
-We claimed in class that the sample mean and the sample variance are independent if an only if the sample is drawn from a Normal distribution. The proof of this result is relatively complicated, but we will try to verify it with simulations.
 
 ## Lab Question #3
+
+We claimed in class that the sample mean and the sample variance are independent if an only if the sample is drawn from a Normal distribution. The proof of this result is relatively complicated, but we will try to verify it with simulations.
 
 **a.)** Create a `for` loop of 1000 replications that first samples 200 observations from a $N(1, 1)$, and then calculates and stores the sample mean and sample variance of each set of simulated data. This should leave you with 1000 means and 1000 variances.
 
 **b.)** Create a scatterplot of these values treating the means as the x-values and the variances as the y-values. Give informative axis labels and include a copy of your plot.
 
-```{r, scatter, exercise = T}
-x <- rnorm(25, 0, 1)
-y <- rnorm(25, 1, 2)
-
-plot(x, y, main = "informative title here", xlab = "informative x axis label here", ylab = "informative y axis label here")
-```
 
 **c.)**  Calculate the correlation between the means and variances.
-
-```{r, cor, exercise = T}
-help(cor)
-```
 
 **d.)** Using the scatterplot produced and the correlation calculated, comment on the independence between the sample mean and the sample variance.
 
