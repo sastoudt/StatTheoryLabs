@@ -1,0 +1,172 @@
+---
+title: "Distributions Based on Gaussian"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(openintro)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+
+```
+
+## Sampling Distributions
+
+Recall that the sampling distribution of an estimator is the distribution of values of that estimator taken from all possible samples of the same size from the population.
+
+For example, we can simulate the (approximate) sampling distribution for the mean of an exponential distribution with parameter $\beta$ = 15.
+
+We will complete 1000 iterations, where we draw samples of size `n = 100` from an Exp($\beta$ = 15) population.
+
+```{r, exp, exercise = T}
+
+my.means <- NULL
+for (i in 1:1000) {
+  dat <- rexp(100, 1 / 15)
+  my.means[i] <- mean(dat)
+}
+
+par(mfrow = c(1, 2))
+hist(my.means)
+
+# Can check normality by how close the points fall to the line.
+qqnorm(my.means)
+qqline(my.means)
+
+```
+
+We know from the CLT that theoretically, the sampling distribution of $\bar{X}$ should be approximately Normal, centered around 15 with a standard error of 15/$\sqrt{100}$.
+
+$$\bar{X} \approx N(\mu = 15, se = \frac{\sigma}{\sqrt{n}} = 15/10)$$
+How did we do?
+
+## Lab Question #1
+
+**a.)** Let $X_1, X_2, ... X_10 \sim^{iid} N(20, 8^2)$ and $Y_1, Y_2, ... Y_15 \sim^{iid} N(16, 7^2)$. Let $W = \bar{X}+\bar{Y}$. 
+
+Note: There are 10 values for $X$ and 15 for $Y$.
+
+**(i)** Give the exact sampling distribution of $W$ (this is not a coding question).
+
+**(ii)** Simulate the sampling distribution and plot your results. Check that the simulated mean and standard error are close to the theoretical mean and standard error from (i). Your code should be of the form:
+
+```{r, sumN, echo = T, eval = F}
+
+for(i in 1:numRep){
+  
+  ## simulate random samples for X
+  ## simulate random samples for Y
+  ## calculate and store W
+}
+
+hist(W)
+
+```
+
+
+**b.)** Consider the exponential distribution with $\beta$  = 20.
+
+**(i)** Calculate the median of this distribution using the `qexp` function.
+
+Pay attention to the parameterization of the Exponential distribution in R.
+
+```{r, expP, exercise = T}
+help(qexp)
+```
+
+**(ii)** Using R, draw a random sample of size 15 from the population and graph it with a histogram. Describe the distribution of your sample. What are the mean and the standard deviation of your sample?
+
+
+**(iii)** Run a simulation to find the approximate sampling distribution for the median of samples of size 15 from an exponential population. Describe the sampling distribution and report the mean and the standard error of this distribution.
+
+**(iv)** Repeat step (iii) but use a sample size of $n = 100$. How does the sample size affect the sampling distribution?
+
+
+**c.)** Let $X_1, X_2, ..., X_n \sim^{iid} Exponential(\beta)$. Recall that (be able to show that) $X_{(1)} \sim Exp(\frac{\beta}{n})$. Simulate the sampling distribution of $X_{(1)}$ for samples of size $n=25$ from an exponential distribution with $\beta = 7$. Compare the theoretical expected value of $X_{(1)}$ to the simulated expected value.
+
+## Illustrating the CLT
+
+The CLT states that if $X_1, X_2, ..., X_n \sim^{iid} f_X$, where $f_X$ has mean $\mu$ and variance $\sigma^2 < \inf$, then
+
+$$ \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \rightarrow^{dist} N(0,1)$$
+
+where \rightarrow^{dist} means "converges in distribution as $n\rightarrow \inf$.
+
+We are going to illustrate the CLT for a finite population. 
+
+First, we must create our "population." We will assume that our population consists of 400 observations from an Exponential with $\beta = 10$.
+
+```{r clt, exercise = T}
+set.seed(17) # ensures we all generate the same population
+N <- 400
+finpop <- rexp(N, 1 / 10)
+
+hist(finpop) # distribution of our finite pop.
+
+mean(finpop) # mean (mu) of our pop.
+
+sd(finpop) # stdev (sigma) or our pop.
+
+n <- 5 ## suppose we are interested in samples of size n = 5
+sd(finpop) / sqrt(n)  # theoretical standard error of sampling dist. of the mean(x)
+```
+
+## Lab Question #2
+
+**a.)** Simulate the sampling distribution of the sample mean for samples of size $n=5$. Make sure you are sampling from othe finite "population" as we defined above (you'll need to copy that code over to your own Rmd).
+
+**b.)** Plot your results. Does the sampling distribution of the sample mean appear approximately normal?
+
+**c.)** Compare the mean and standard error of your simulated sampling distribution to the theoretical ones.
+
+**d.)** Repeate parts (a)-(c) for $n=25$ and $n=100$. What do you observe?
+
+## Independence of $\bar{X}$ and $s^2$
+
+We claimed in class that the sample mean and the sample variance are independent if an only if the sample is drawn from a Normal distribution. The proof of this result is relatively complicated, but we will try to verify it with simulations.
+
+## Lab Question #3
+
+**a.)** Create a `for` loop of 1000 replications that first samples 200 observations from a $N(1, 1)$, and then calculates and stores the sample mean and sample variance of each set of simulated data. This should leave you with 1000 means and 1000 variances.
+
+**b.)** Create a scatterplot of these values treating the means as the x-values and the variances as the y-values. Give informative axis labels and include a copy of your plot.
+
+```{r, scatter, exercise = T}
+x <- rnorm(25, 0, 1)
+y <- rnorm(25, 1, 2)
+
+plot(x, y, main = "informative title here", xlab = "informative x axis label here", ylab = "informative y axis label here")
+```
+
+**c.)**  Calculate the correlation between the means and variances.
+
+```{r, cor, exercise = T}
+help(cor)
+```
+
+**d.)** Using the scatterplot produced and the correlation calculated, comment on the independence between the sample mean and the sample variance.
+
+Note: although a correlation of zero does not always imply independence, we will interpret it as such here. Recall that correlation is a real number between -1 and 1, where -1 is a perfect negative linear relationship and 1 is a perfect positive linear relationship.
+
+**e.)** Repeat (a) - (d), this time generating data from an Exponential(1). Note: the mean and variance of this distribution are both 1, just like for the data simulated in (a).
+
+**f.)** Do your simulations agree with the Theorem?
+
+Note: If you are not yet convinced, I encourage you to try with samples from other distributions and/or different sample sizes and/or more replications.
+
+
+* * *
+
+This lab was created by A. Flynt and was adapted and learnr-ified by S. Stoudt.

@@ -57,6 +57,10 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "hw3": check a homework problem empirically
 - "hw4": check a homework problem empirically
 - "lab0": Using Simulations to Check Theory
+- "lab1": Estimation
+- "lab2": Distributions Based on Gaussian
+
+
 
 More coming soon... (in development Summer 2021)
 
