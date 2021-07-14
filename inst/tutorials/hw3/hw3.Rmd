@@ -19,9 +19,73 @@ set.seed(113877)
 ```
 
 
-## Getting started
+## Checking Question 1a and 1b from the MGF examples (part of HW 3) 
 
-To check Question 1c from the MGF examples (part of HW 3) we will need to generate random numbers from a specific normal distribution. How can we find out what parameters the `rnorm` function expects us to specify?
+
+Let $X \sim N(\mu = 5, \sigma^2 =4)$.
+
+**a.)** Find $P(5.8 \leq X \leq 7.5)$.
+
+**b.)** Find $k$, such that $P(X < k ) = 2/3$.
+
+To answer questions 1a and 1b, you can use Table 4. However, you can also use R to check your work. The functions `pnorm` and `qnorm` will come in handy. How do we learn more about these functions?
+
+```{r getHelp, exercise = TRUE}
+___(qnorm)
+```
+
+```{r getHelp-solution}
+help(qnorm)
+```
+
+```{r getHelp-check}
+# check code
+gradethis::grade_code()
+```
+
+```{r getHelp2, exercise = TRUE}
+___(pnorm)
+```
+
+```{r getHelp2-solution}
+help(pnorm)
+```
+
+```{r getHelp2-check}
+# check code
+gradethis::grade_code()
+```
+
+
+```{r whichprob}
+question("Which would you use to answer Question 1a?",
+    answer("pnorm", correct = T),
+    answer("qnorm"),
+    answer("doesn't matter"),
+    answer("neither"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+```{r whichquantile}
+question("Which would you use to answer Question 1b?",
+    answer("pnorm"),
+    answer("qnorm", correct = T),
+    answer("doesn't matter"),
+    answer("neither"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+## Checking Question 1c from the MGF examples (part of HW 3) 
+
+**c.)** Find $E[X^2+e^\{0.5X\}]$.
+
+To check Question 1c from the MGF examples (part of HW 3) we will need to generate random numbers from a specific normal distribution. 
+
+How can we find out what parameters the `rnorm` function expects us to specify?
 
 ```{r getHelp, exercise = TRUE}
 ___(rnorm)
@@ -46,8 +110,6 @@ question("Which measure of spread does the function rnorm expect?",
     random_answer_order = F
   )
 ```
-
-## Checking Question 1c from the MGF examples (part of HW 3) 
 
 ```{r checkSol, exercise = TRUE}
 n <- 100000 ## number of draws from the distribution, just pick something large

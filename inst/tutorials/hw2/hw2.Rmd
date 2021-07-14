@@ -45,6 +45,10 @@ help(exp)
 
 ## Checking H2 2, Question 2
 
+Suppose that $X_1 \sim Binomial(n=20, p = 1/5)$ and $X_2 \sim Poisson(\lambda = 3)$. Further assume that $X_1$ and $X_2$ are independent. Let $Y = 3X_1 + 2X_2$.
+
+a.) Find $E[Y]$.
+b.) Find $V(Y)$.
 
 ```{r simSolution, exercise = TRUE}
 sample_size <- 10000 ## number of draws from the distribution, just pick something large

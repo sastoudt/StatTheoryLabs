@@ -18,60 +18,6 @@ set.seed(113877)
 ```
 
 
-## Getting started
-
-To answer questions 1a and 1b, you can use Table 4. However, you can also use R to check your work. The functions `pnorm` and `qnorm` will come in handy. How do we learn more about these functions?
-
-```{r getHelp, exercise = TRUE}
-___(qnorm)
-```
-
-```{r getHelp-solution}
-help(qnorm)
-```
-
-```{r getHelp-check}
-# check code
-gradethis::grade_code()
-```
-
-```{r getHelp2, exercise = TRUE}
-___(pnorm)
-```
-
-```{r getHelp2-solution}
-help(pnorm)
-```
-
-```{r getHelp2-check}
-# check code
-gradethis::grade_code()
-```
-
-
-```{r whichprob}
-question("Which would you use to answer Question 1a?",
-    answer("pnorm", correct = T),
-    answer("qnorm"),
-    answer("doesn't matter"),
-    answer("neither"),
-    allow_retry = TRUE,
-    random_answer_order = F
-  )
-```
-
-```{r whichquantile}
-question("Which would you use to answer Question 1b?",
-    answer("pnorm"),
-    answer("qnorm", correct = T),
-    answer("doesn't matter"),
-    answer("neither"),
-    allow_retry = TRUE,
-    random_answer_order = F
-  )
-```
-
-
 ## Checking HW 4, Question 2 
 
 ```{r checkSol, exercise = TRUE}
