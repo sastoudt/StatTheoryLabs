@@ -478,3 +478,7 @@ head(data)
 
 1. Make sure you have submitted the Google Form above.
 2. Submit the Rmd and html files to Moodle.
+
+* * *
+
+This lab was adaped from an R exercise originally by A. Flynt and learnr-ified by S. Stoudt.
