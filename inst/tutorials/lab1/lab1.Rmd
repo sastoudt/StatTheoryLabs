@@ -1,5 +1,5 @@
 ---
-title: "Lab 1: Using Simulations to Check Theory"
+title: "Estimation"
 output: 
   learnr::tutorial:
     progressive: true
@@ -19,440 +19,336 @@ tutorial_options(
   )
 knitr::opts_chunk$set(echo = FALSE)
 set.seed(113877)
+
+
+makeTarget <- function(){
+  t = seq(0, 2*pi, length = 1000)
+
+# Circle centered at (0,0) with radius 2
+coords = t(rbind(sin(t)*2, cos(t)*2))   	
+
+  plot(coords, type = 'l', xlab = "", ylab = "", xaxt = 'n', yaxt = 'n', xlim = c(-3, 3), ylim = c(-3, 3))
+
+# Circle centered at (0,0) with radius 1.75
+coords.out = t(rbind(sin(t)*1.75, cos(t)*1.75))	  
+lines(coords.out, type = 'l')                   
+
+# Circle centered at (0,0) with radius 1
+c.1 = t(rbind(sin(t)*1, cos(t)*1))	              
+lines(c.1, type = 'l')
+
+# Circle centered at (0,0) with radius .75
+c.2 = t(rbind(sin(t)*.75, cos(t)*.75))	          
+lines(c.2, type = 'l')
+
+# Circle centered at (0,0) with radius .25
+coords.in = t(rbind(sin(t)*.25, cos(t)*.25))	  
+lines(coords.in, type = 'l')
+
+# Circle centered at (0,0) with radius .1
+coords.in.in = t(rbind(sin(t)*.1, cos(t)*.1))	  
+
+# Color in center circle green
+polygon(coords.in.in, col = 'green')	
+}
+
 ```
 
-## Motivation
+## Bias & Variance
 
-We've seen in past homeworks how it can be helpful to check some of our theoretical work empirically (by generating data from the situation of interest and summarizing it). The goal of this lab is to get you more comfortable with planning your own empirical checks. This lab will go through some R code building blocks that you will use later on in the course to check your work. 
+**Part I**
 
-## Getting started - Loops
+Recall from lecture:
 
-A simple for loop has the following structure:
+- $\hat{\theta}$ is a random variable.
 
-```{r loopEx, eval = F, echo = T}
-n <- 5
+It is a function of $X_1, ..., X_n$ and will therefore produce a different estimate from each different sample.
 
-for(i in 1:n){
-  print(1)
+- As a RV, $\hat{\theta}$ has a sampling distribution.
+
+This is the distribution of values of $\hat{\theta}$ produced from all possible samples of the same size from the population.
+
+- We would like $\hat{\theta}$ to be unbiased.
+
+i.e. The sampling distribution of $\hat{\theta}$ is centered at $\theta$
+
+- We would like $\hat{\theta}$ to have small variance.
+
+i.e. The sampling distribution of $\hat{\theta}$ is concentrated as much as possible around \theta
+
+We are going to simulate data to provide estimates of $\theta$ that have varying properties (low bias/low variance, high bias/high variance, low bias/high variance, high bias/low variance).
+
+To begin, we must first create the target. Let's make a function to do this for us. Note in your lab report you will need to include this function in your Rmd before calling it.
+
+
+```{r, makeTarget, exercise = T}
+## no arguments are necessary
+makeTarget <- function() {
+  t <- seq(0, 2 * pi, length = 1000)
+
+  # Circle centered at (0,0) with radius 2
+  coords <- t(rbind(sin(t) * 2, cos(t) * 2))
+
+  plot(coords, type = "l", xlab = "", ylab = "", xaxt = "n", yaxt = "n", xlim = c(-3, 3), ylim = c(-3, 3))
+
+  # Circle centered at (0,0) with radius 1.75
+  coords.out <- t(rbind(sin(t) * 1.75, cos(t) * 1.75))
+  lines(coords.out, type = "l")
+
+  # Circle centered at (0,0) with radius 1
+  c.1 <- t(rbind(sin(t) * 1, cos(t) * 1))
+  lines(c.1, type = "l")
+
+  # Circle centered at (0,0) with radius .75
+  c.2 <- t(rbind(sin(t) * .75, cos(t) * .75))
+  lines(c.2, type = "l")
+
+  # Circle centered at (0,0) with radius .25
+  coords.in <- t(rbind(sin(t) * .25, cos(t) * .25))
+  lines(coords.in, type = "l")
+
+  # Circle centered at (0,0) with radius .1
+  coords.in.in <- t(rbind(sin(t) * .1, cos(t) * .1))
+
+  # Color in center circle green
+  polygon(coords.in.in, col = "green")
+}
+
+makeTarget()
+```
+
+Notice that the outer circle of the target has a radius of 2. When simulating data, we are going to make draws from two separate Uniform distributions. One that represents our x-coordinate and one that represents our y-coordinate. If we want to produce estimates centered on the bullseye (low bias) that could occur at the far edges of the target (high variance), then one way to achieve this is to simulate data from two Uniform distributions with parameters near -2 and 2. 
+
+## Simulating high variance & low bias
+
+```{r, hvlb, exercise = T}
+# Initiate vectors for (x, y) coordinates
+x.ran_HVLB <- y.ran_HVLB <- NULL
+
+## start with a blank target
+makeTarget()
+
+for (i in 1:10) {
+  # Randomly draw a dart from a Uniform(-2, 2).
+  # Here, left of the bullseye is negative and right of the bullseye is positive.
+  x.ran_HVLB[i] <- runif(1, -2, 2)
+
+  # Randomly draw a dart from a Uniform(-2, 2).
+  # Here, above the bullseye is positive and below the bullseye is negative.
+  y.ran_HVLB[i] <- runif(1, -2, 2)
+
+  # Draw the dart at the (x,y) coordinates from the previous draw
+  points(x.ran_HVLB, y.ran_HVLB, pch = "X", cex = 2, col = "black")
+
 }
 ```
 
-This is read "for index $i$ in the sequence 1 to $n$, do the following" (whatever is in the curly braces). 
+You now have 10 black X’s on your target that represent observations with low bias and high variance. We can calculate the bias and variance as follows:
 
-```{r loop1}
-question("What would the for loop above do",
-    answer("Print 5 one time."),
-    answer("Print 5 five times"),
-    answer("Print 1 five times", correct = T),
-    answer("Print 1 one time."),
-    allow_retry = TRUE,
-    random_answer_order = F
-  )
+```{r, calcBV, exercise = T}
+# Proxy for the bias of throws.
+Bias.black <- mean(x.ran_HVLB) + mean(y.ran_HVLB)
+# Proxy for the variance of throws.
+Variance.black <- var(x.ran_HVLB) + var(y.ran_HVLB)
+
+Bias.black
+Variance.black
+
 ```
 
-## Getting started - Loops cont.
+## Lab Question #1
 
-In this class, we will often want to work with probability distributions. 
-
-```{r loopEx2, eval = F, echo = T}
-n <- 5
-sample_size <- 3
-
-for(i in 1:n){
-  x <- rnorm(n = sample_size, mean = 0, sd = 1)
-}
-```
-
-```{r loop2}
-question("What is in x at the end of the above for loop",
-    answer("3 numbers drawn from the specified normal distribution.", correct = T),
-    answer("15 numbers drawn from the specified normal distribution."),
-    answer("Nothing, x is empty."),
-    answer("1 number drawn from the specified normal distribution"),
-    allow_retry = TRUE,
-    random_answer_order = F
-  )
-```
-
-## Getting started - Saving output in loops
-
-Let's say we actually wanted to store all of the values we generated in the loop. We need to create an object to store them in that is the right size.
-
-Here `stored_values` is a two-dimensional matrix full of NAs but ready for `n` rows and `sample_size` columns. You can think of this as stacking each `x` on top of one another.
-
-```{r, storedLoop, exercise = T}
-n <- 5
-sample_size <- 3
-
-stored_values <- matrix(NA, nrow = n, ncol = sample_size)
-
-for(i in 1:n){
-  x <- rnorm(n = n, mu = 0, sd = 1)
-  stored_values[i,] <- x
-}
-
-stored_values
-```
-
-`stored_values[i,]` says we want to assign the `i`th row and all of the columns to whatever is in $x$.
-
-## Getting started - Saving output in loops cont.
-
-But what if we didn't want to store the actual values but rather some summary of them? Now we don't need to make room for a two-dimensional object. Instead `stored_means` is a one-dimensional vector of NAs ready for `n` values (we `rep`eated NA, $n$` times).
-
-```{r, storedLoop2, exercise = T}
-n <- 5
-sample_size <- 3
-
-stored_means <- rep(NA, length = n)
-
-for(i in 1:n){
-  x <- rnorm(n = n, mu = 0, sd = 1)
-  stored_means[i] <- mean(x)
-}
-
-stored_means
-```
-
-`stored_means[i]` says we want to assign the `i`th value to whatever is in $mean(x)$.
+You will now generate darts for the scenarios of low variance/low bias (color red), low variance/high bias (color blue), high variance/high bias (color orange). For each set of darts, you will calculate bias and variance using similar names. **Your answer in your Rmd document should be of the following form**:
 
 
-## Checking our work on Probability Review Queston 6b (part of HW1) 
+```{r, lvlb, exercise = T}
+# Initiate vectors for (x, y) coordinates
+x.ran_HVLB <- y.ran_HVLB <- NULL
+x.ran_LVLB <- y.ran_LVLB <- NULL
+x.ran_LVHB <- y.ran_LVHB <- NULL
+x.ran_HVHB <- y.ran_HVHB <- NULL
 
-Now we're ready to create our own simulation.
+## start with a blank target
+makeTarget()
 
-Recall that we were interested in finding the expected value of the maximum of $n$ $iid$ uniform random variables defined on the range 0 to $\theta$. Let's calculate the maximum from a bunch of these simulations and see what we find. 
-
-```{r getMax, exercise = TRUE}
-theta <- 2 ## pick a value greater than zero
-n <- 10 ## pick an n greater than 1
-
-num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
-store_max <- ___(NA, ___)
-for (i in 1:___) {
-  test <- runif(n = ___, min = 0, max = theta)
-  store_max[___] <- max(test)
-}
-```
-
-```{r getMax-solution}
-theta <- 2 ## pick a value greater than zero
-n <- 10 ## pick an n greater than 1
-
-num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
-store_max <- rep(NA, num_rep)
-for (i in 1:num_rep) {
-  test <- runif(n = n, min = 0, max = theta)
-  store_max[i] <- max(test)
-}
-```
-
-```{r getMax-check}
-# check code
-gradethis::grade_code()
-```
-
-Now that we have a bunch of maximums from the situation we are interested in, how do we know what is typical (i.e. what do we "expect")?
-
-
-```{r getMax2-setup}
-theta <- 2 ## pick a value greater than zero
-n <- 10 ## pick an n greater than 1
-
-num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
-store_max <- rep(NA, num_rep)
-for (i in 1:num_rep) {
-  test <- runif(n = n, min = 0, max = theta)
-  store_max[i] <- max(test)
-}
-```
-
-
-```{r getMax2, exercise = TRUE}
-mean(___)
-```
-
-```{r getMax2-solution}
-mean(store_max)
-```
-
-```{r getMax2-check}
-# check code
-gradethis::grade_code()
-```
-
-
-Now write your derived expectation as a function of $n$ and $\theta$ (as a formula) and check if the value is close to the one we observed empirically.
-
-```{r eqnSolution-setup}
-theta <- 2 ## pick a value greater than zero
-n <- 10 ## pick an n greater than 1
-```
-
-```{r eqnSolution, exercise = TRUE}
-true_expectation <- ___
-
-true_expectation ## print out answer
-```
-
-
-## Checking our work on HW 5, Question 1 
-
-Recall that we were interested in finding the expected value and variance of two moments:
-
-$$m_1' = \bar{X}$$
-$$m_2' = \frac{1}{n}\sum_{i=1}^n X_i^2$$
-
-for a random sample of size $n$ from $Uniform(-\theta, 2\theta)$.
-
-```{r getMoment, exercise = TRUE}
-theta <- 2 ## pick any value of theta
-n <- 10 ## pick an n greater than 1
-
-num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
-
-moment_store1 <- rep(NA, ___)
-moment_store2 <- rep(NA, ___)
-
-for(i in 1:___){
+for (i in 1:10) {
+  # Here, left of the bullseye is negative and right of the bullseye is positive.
+  x.ran_HVLB[i] <- runif(1, -2, 2)
   
- test = runif(n = ___, min = ___, max = ___) ## generate the random sample
- moment_store1[___] <- mean(___) ## calculate the first moment
- moment_store2[___] <- sum(___^2)/n ## calculate the second moment
+  x.ran_LVLB <- runif(1, ___, ___)
+  x.ran_LVHB <- runif(1, ___, ___)
+  x.ran_HVHB <- runif(1, ___, ___)
+
+  # Here, above the bullseye is positive and below the bullseye is negative.
+  y.ran_HVLB[i] <- runif(1, -2, 2)
   
-}
-```
+  y.ran_LVLB <- runif(1, ___, ___)
+  y.ran_LVHB <- runif(1, ___, ___)
+  y.ran_HVHB <- runif(1, ___, ___)
 
-```{r getMoment-solution}
-theta <- 2 ## pick any value of theta
-n <- 10 ## pick an n greater than 1
-
-num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
-
-moment_store1 <- rep(NA, num_rep)
-moment_store2 <- rep(NA, num_rep)
-
-for(i in 1:num_rep){
+  # Draw the dart at the (x,y) coordinates from the previous draw
+  points(x.ran_HVLB, y.ran_HVLB, pch = "X", cex = 2, col = "black")
+  points(x.ran_LVLB, y.ran_HVLB, pch = "X", cex = 2, col = ___)
+  points(x.ran_LVHB, y.ran_HVLB, pch = "X", cex = 2, col = ___)
+  points(x.ran_HVHB, y.ran_HVLB, pch = "X", cex = 2, col = ___)
   
- test = runif(n = n, min = -1*theta, max = 2*theta) ## generate the random sample
- moment_store1[i] <- mean(test) ## calculate the first moment
- moment_store2[i] <- sum(test^2)/n ## calculate the second moment
   
-}
-
-```
-
-```{r getMoment-check}
-# check code
-gradethis::grade_code()
-```
-
-## Comparing the Empirical to the Theoretical
-
-Now that we have a bunch of moments from the situations we are interested in (stored in `moment_store` and `moment_store2`), how do we know what is typical (i.e. what do we "expect") and quantify the variation?
-
-
-```{r getMoment2-setup}
-theta <- 2 ## pick any value of theta
-n <- 10 ## pick an n greater than 1
-
-num_rep <-  1000 ## how many times we want to repeat the simulation, something fairly large
-
-moment_store1 <- rep(NA, num_rep)
-moment_store2 <- rep(NA, num_rep)
-
-for(i in 1:num_rep){
+  Bias.black <- mean(x.ran_HVLB) + mean(y.ran_HVLB)
+  Variance.black <- var(x.ran_HVLB) + var(y.ran_HVLB)
   
- test = runif(n, -1*theta, 2*theta)
- moment_store1[i] <- mean(test)
- moment_store2[i] <- sum(test^2)/n
+  Bias.red <- mean(___) + mean(___)
+  Variance.red <- var(___) + var(___)
   
-}
-```
-
-
-```{r getMoment2, exercise = TRUE}
-## first moment's properties
-mean(___)
-var(___)
-
-## second moment's properties
-mean(___)
-var(___)
-```
-
-```{r getMoment2-solution}
-## first moment's properties
-mean(moment_store1)
-var(moment_store1)
-
-## second moment's properties
-mean(moment_store2)
-var(moment_store2)
-```
-
-```{r getMoment2-check}
-# check code
-gradethis::grade_code()
-```
-
-
-Now write your derived expectations and variances as functions of $n$ and $\theta$ (as formulas) and check if the values are close to the one we observed empirically.
-
-```{r eqnSolution2-setup}
-theta <- 2 ## pick a value greater than zero
-n <- 10 ## pick an n greater than 1
-```
-
-```{r eqnSolution2, exercise = TRUE}
-## first moment's properties
-true_expectation1 <- ___
-true_variance1 <- ___
-
-true_expectation1 ## print out answer
-true_variance1 ## print out answer
-
-## second moment's properties
-true_expectation2 <- ___
-true_variance2 <- ___
-
-true_expectation2 ## print out answer
-true_variance2 ## print out answer
-```
-
-## Moment Generating Functions - Setup
-
-Suppose we are interested in the moment generating function for an Poisson distribution defined by parameter $\lambda$.
-
-If we derive it we get $E[e^(tX)] = exp(\lambda(e^t -1))$. What if we wanted to double check our calculation to make sure we didn't make a mistake? We can generate data from a Poisson.
-
-```{r poisGenerate, exercise = T}
-lambda <- 2 ## pick any value greater than zero
-sample_size <- 1000 ## pick something relatively large
-
-X <- rpois(n = sample_size, lambda = lambda)
-```
-
-Now we want to know what the MGF looks like for many different $t$ to understand its shape. This code will give us 10 values between 0 and 2.
-
-```{r seqT, exercise = T}
-# define t (in an interval near 0)
-t <- seq(from = 0, to = 2, length.out = 10)
-
-t
-```
-
-## Moment Generating Functions - Two Ways
-
-We can write our theoretical MGF as a formula. 
-
-```{r mgfT-setup}
-lambda <- 2 ## pick any value greater than zero
-t <- seq(from = 0, to = 2, length.out = 10)
-```
-
-```{r mgfT, exercise = T}
-MGF_theoretical <- exp(lambda * (exp(t)- 1)) ## what we calculate
-```
-
-To calculate the empirical MGF we need to approximate the required expectation for each of the values in $t$. It sounds like we need a loop!
-
-```{r squuhgtztakteehy-setup}
-lambda <- 2 ## pick any value greater than zero
-sample_size <- 1000 ## pick something relatively large
-
-X <- rpois(n = sample_size, lambda = lambda)
-t <- seq(from = 0, to = 2, length.out = 10)
-```
-
-```{r squuhgtztakteehy, exercise = TRUE}
-MGF_empirical <- rep(NA, length(___)) ## how many calculations are we doing?
-
-for(i in 1:length(___)){
+  Bias.blue <- mean(___) + mean(___)
+  Variance.blue <- var(___) + var(___)
   
- MGF_empirical[___] <- mean(exp(t[___]*___))
-  
+  Bias.orange <- mean(___) + mean(___)
+  Variance.orange <- var(___) + var(___)
+
 }
 
-MGF_empirical
+# Legend for bias of each scenario
+legend("topleft", title = "Bias", legend=round(c(Bias.black, Bias.red, Bias.blue, Bias.orange), 2), col = c("black", "red", "blue", "orange"), pch="X")	
+
+# Legend for variance of each scenario
+legend("topright", title = "Variance", legend = round(c(Variance.black, Variance.red, Variance.blue, Variance.orange), 2), col = c("black", "red", "blue", "orange"), pch="X")	
 ```
 
+**After creating your target (and in your Rmd file), in 1 - 2 sentences, explain why it is desirable to have estimators that are unbiased with low variance.**
 
-```{r squuhgtztakteehy-solution}
-MGF_empirical <- rep(NA, length(t))
+## Lab Question #2 
 
-for(i in 1:length(t)){
-  
- MGF_empirical[i] <- mean(exp(t[i]*X))
-  
+We are now going to run some simulations based on the example that we used in the "Properties of Point Estimators" packet from lecture.
+
+Let $X_1, X_2, ... X_n \sim^{iid} Uniform(0,\theta)$. Recall that $\hat{\theta}){MOM} = 2 \bar{X}$ and $\hat{\theta}_{MLE*} = \frac{n+1}{n} X_{(n)}$ are two unbiased estimators for $\theta$.
+
+We are going to run a simulation to see how these two estimators perform.
+
+Here is pseudocode for which you will write the actual code for in your Rmd (**#2a**). 
+
+- Draw random samples of size 25 from a Uniform(0,12) distribution.
+
+- For each sample, compute $2\bar{x}$ and $26/25 \times max\{x_1, x_2, ..., x_n\}$ and record those values. 
+- Repeat this 1000 times.
+
+**2b)** Create two histograms of the 1000 replications, one for each estimate.
+
+Make sure that your histograms have the same x and y axes for comparison (this can be done with the arguments xlim = c(a, b) and ylim = c(d, e), where you have to decide on a, b, d, e, see below). Make sure you include informative x and y axis labels and a title.
+
+```{r histNice, exercise = T}
+x <- rnorm(50, 2, 1) ## generate some fake data
+y <- rnorm(50, 3, 1) ## generate some fake data
+
+sameMinLimitX <- min(c(x, y)) ## take the minimum of all your data
+sameMaxLimitX <- max(c(x, y)) ## take the maximum of all your data
+
+testHistX = hist(x) ## make the histogram to see how high the bars are by default
+testHistY = hist(y) ## make the histogram to see how high the bars are by default
+
+sameMaxLimitY <- max(c(testHistX$counts, testHistY$counts)) ## take the maximum height of bars
+
+
+hist(x, xlim = c(sameMinLimitX, sameMaxLimitX), ylim = c(0, sameMaxLimitY), main = "Informative title here", xlab = "Informative x label here", ylab = "Informative y label here")
+
+hist(y, xlim = c(sameMinLimitX, sameMaxLimitX), ylim = c(0, sameMaxLimitY), main = "Informative title here", xlab = "Informative x label here", ylab = "Informative y label here")
+```
+
+**2c)** What is the statistical term of the distributions estimated in the histograms?
+
+**2d)** Which estimator exhibits the smallest amount of variability? Is that what you expected? Why or why not?
+
+## Calculating MLEs
+
+In this final section, we will calculate maximum likelihood estimators for particular distributions using R. Here is a skeleton of what a log-likelihood function looks like in R.
+
+```{r, likFunction, echo = T, eval = F}
+
+# You will first give your function a name.
+    # Then specify the necessary parameters (pars) and data (object) for your function.
+    # You will open the function ({)
+    # Then you will specify the form of your log-likelihood (logl)
+    # You need to tell the function what it should return when you use it
+    # Note: the function that we will use to optimize our likelihood only minimizes
+    #       functions, therefore we will return the negative log-likelihood
+    # Finally, close your function (})
+    name = function(pars, object){
+          logl = loglikelihood function here
+          return(-logl)
 }
 
-MGF_empirical
-
 ```
 
-```{r squuhgtztakteehy-check}
-# check code
-gradethis::grade_code()
-```
+## Poisson Likelihood Function
 
+Let $X_1, X_2, ..., X_n \sim^{iid} Poisson(\lambda)$. Then, the log-likelihood function is given by:
 
+$$l(\lambda) = \sum_{i=1}^n x_i ln(\lambda) - n\lambda - \sum_{i=1}^n ln(x_i!)$$.
 
+Since the last term does not include the parameter $\lambda$, it can be safely ignored for optimization. Thus, the kernel of the log-likelihood function is:
 
-## Moment Generating Functions - Comparisons (the big reveal!)
+$$l(\lambda) \propto \sum_{i=1}^n x_i ln(\lambda) - n\lambda$$.
 
-Now let's see if the two two MGFs match.
+We can program this function using the following syntax:
 
-```{r plot-setup}
-lambda <- 2 ## pick any value greater than zero
-sample_size <- 1000 ## pick something relatively large
-
-X <- rpois(n = sample_size, lambda = lambda)
-t <- seq(from = 0, to = 2, length.out = 10)
-
-MGF_empirical <- rep(NA, length(t))
-
-for(i in 1:length(t)){
-  
- MGF_empirical[i] <- mean(exp(t[i]*X))
-  
+```{r, poissonLik, excercise = T}
+poisson.lik <- function(lambda, x) {
+  logl <- sum(x) * log(lambda) - length(x) * lambda
+  return(-logl)
 }
 
-MGF_theoretical <- exp(lambda * (exp(t)- 1)) ## what we calculate
+```
+
+Once the log-likelihood function has been declared, then the `nlm` (non-linear minimization) function can be invoked. The minimum specification of this command is `nlm(log-likelihood, starting values, data)`. Here, `starting values` is your (vector of) starting value(s) for the optimization of your parameter.
+
+We will now simulate a data set of 1000 observations from a Poisson($\lambda$ = 3.25) and numerically find the maximum likelihood estimate.
+
+
+```{r, poissonLik2, exercise = T}
+# Set the seed so that we all generate the same data set.
+set.seed(288)
+
+poiss.data <- rpois(1000, 3.25)
+
+# Note that we are using 1 as the starting value.
+out <- nlm(poisson.lik, 1, x = poiss.data)
+pois.mle <- out$estimate
+
+pois.mle
 
 ```
 
+How did we do? Not too bad considering the true value of $\lambda$ was 3.25. Is this the value that you were expecting? Why or why not?
 
-```{r plot, exercise = T}
-plot(t, MGF_empirical, main = "Poisson MGF", xlab = "t",
-     ylab = "", type = "l", col = "black", lwd = 3)
-points(t, MGF_theoretical, pch = 16,
-      lwd = 3, col = "red")
-legend("topleft", legend = c("Analytical MGF", "Empirical MGF"),
-       lty=c(1,1), lwd=c(2.5,2.5),
-       col=c("red", "black"))
+
+## Lab Question #3
+
+Recall that on HW #9, I asked you to write down (but not solve) the equations that you would need to maximize to find the MLEs for $(\alpha, \beta)$ from a Gamma distribution. These partial derivatives are not something that we would want to do by hand (taking the derivative of the gamma function is not too fun), so instead, we will find the MLEs numerically.
+
+**3a)** Write the code for gamma.lik, the log-likelihood function of a Gamma$(\alpha, \beta)$. Note, that this function will now have a vector for the pars argument. As you know, to create a vector, you use the concatenate function `c()`. To specify the $i$th position of a vector you would use `[i]` on your vector. 
+
+```{r, cat, exercise = T}
+
+pars <- c(1, 2, 3)
+
+pars[2]
+
 ```
 
-## RMarkdown refresher
+**3b)** Read in "gamma_data.csv" from Moodle (make sure it is in the same folder as your Rmd file) and optimize this data with starting values of (1, 1) for $(\alpha, \beta)$.
 
-If you are unfamiliar with RMarkdown documents, watch the intro video [here](https://rmarkdown.rstudio.com/lesson-1.html) and browse the associated [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf). We will be working in RMarkdown documents in future labs.
+```{r, readData, echo = T, eval = F}
 
-## Submit checkpoint
+gamma_data <- read.csv("gamma_data.csv") ## data frame 
 
-```{r context="server"}
-learnrhash::encoder_logic(strip_output = T)
+gamma_data$x ## vector
+
 ```
 
-Click "Generate" and copy and paste that "hash" into the last question on the Google Form below (fill out your name and lab number as well before submitting.)
+Note: if you use `read.csv()`, R will read in the data as a data frame and your likelihood function will not be able to handle an object of that class. To avoid this issue, you will have to pull off the `x` column from the data (`dataname$x`) and pass that into your likelihood function.
 
-If the Google Form doesn't appear below, submit [here](https://docs.google.com/forms/d/e/1FAIpQLSdCDDcfFHZAkl4ubLNb2O8fr1a_BC2on93iy6mm9WHWwZf2Rw/viewform?usp=sf_link).
+**3c)** What are your MLEs for $(\alpha, \beta)$?
 
-```{r encode, echo=FALSE}
-learnrhash::encoder_ui(
-  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
-  ui_after  = learnrhash::iframe_ui(
-    src = "https://docs.google.com/forms/d/e/1FAIpQLSdCDDcfFHZAkl4ubLNb2O8fr1a_BC2on93iy6mm9WHWwZf2Rw/viewform", ## change link, include name
-    width="900px", height= "1000px"
-  )
-)
-```
+
+* * *
+
+This lab was created by A. Flynt and was adapted and learnr-ified by S. Stoudt.
