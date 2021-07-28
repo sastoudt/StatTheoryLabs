@@ -1,0 +1,55 @@
+---
+title: "Capture-Recapture Explorer"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(plotly)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+
+```
+
+```{r, echo=FALSE}
+sliderInput("t", "tagged in first collection (t)", min = 10, max = 100, value = 10,step = 5)
+sliderInput("r", "recaptured in second collection (r)", min = 0, max = 100, value = 5,step = 5)
+sliderInput("m", "total in second collection (m)", min = 10, max = 100, value = 20,step = 5)
+
+plotlyOutput("likPlot")
+```
+
+```{r, context="server"}
+output$likPlot <- renderPlotly({
+  n <- seq(0,100, by = 5)
+  a <- choose(input$t, input$r)
+  b <- choose(n-input$t, input$m-input$r)
+  c <- choose(n, input$m)
+  toPlot <- cbind.data.frame(n = n, lik = (a*b)/c)
+ g <- ggplot(toPlot, aes(n, lik))+geom_point()+theme_minimal(base_size = 20)+xlab("n")+ylab("likelihood")
+ ggplotly(g)
+})
+```
+
+```{r mle}
+question("Try out a few scenarios and choose while MLE is consistent with what you observe.",
+    answer("m*t/r",  correct = T),
+    answer("m*r/t"),
+    answer("r*t/m"),
+    answer("m/m*r*t"),
+    allow_retry = TRUE,
+    random_answer_order = T
+  )
+```

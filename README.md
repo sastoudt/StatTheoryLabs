@@ -60,6 +60,8 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "lab1": Estimation
 - "lab2": Distributions Based on Gaussian
 - "project_prep": Introduction to Simulation Studies of Power (still workshopping)
+- "capture_recapture": Determine the MLE via inspection (still workshopping)
+
 
 
 
