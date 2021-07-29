@@ -18,7 +18,8 @@ Imports:
     gradethis (>= 0.2.0.9001),
     learnr (>= 0.10.1.9007),
     learnrhash (>= 0.1.0.9000),
-    plotly
+    plotly,
+    broom
 Remotes: 
     rstudio-education/gradethis,
     rstudio/learnr,

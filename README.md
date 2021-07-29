@@ -59,7 +59,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "lab0": Using Simulations to Check Theory
 - "lab1": Estimation
 - "lab2": Distributions Based on Gaussian
-- "project_prep": Introduction to Simulation Studies of Power (still workshopping)
+- "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
 - "capture_recapture": Determine the MLE via inspection (still workshopping)
 
 

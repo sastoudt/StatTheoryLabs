@@ -27,7 +27,7 @@ simulated_data <- data.frame(
 # Creating Dependent variable
 simulated_data <- simulated_data %>% 
   mutate(
-    y = 2.80 + .21*x + rnorm(n = 100, mean = 0, sd = .74)
+    y = 2.80 + 0.21*x + rnorm(n = 100, mean = 0, sd = 0.74)
     ) 
 
 sim.dataset <- function(n, b0, b1, residual_se) {
@@ -47,34 +47,38 @@ sim.dataset <- function(n, b0, b1, residual_se) {
   return(simulated_data)
 }
 
-simulate.power <- function(n.sims, n, b0, b1, residual_se) {
-  
+simulate.est <- function(n.sims, n, b0, b1, residual_se) {
+
   # Dataframe to hold results:
-  coef.power <- data.frame(
-    sig.b0 = rep(NA, n.sims),
-    sig.b1 = rep(NA, n.sims))
-  
+  coef.est <- data.frame(
+    est.b1 = rep(NA, n.sims),
+    cover.b1 = rep(NA, n.sims)
+  )
+
   # Simulating many tests:
   for (dataset.i in 1:n.sims) {
     simulated_df <- sim.dataset(n = n, b0 = b0, b1 = b1, residual_se = residual_se)
     model <- tidy(lm(y ~ x, data = simulated_df))
-    coef.power$sig.b0[dataset.i] <- model$p.value[1] < .05
-    coef.power$sig.b1[dataset.i] <- model$p.value[2] < .05
+    t_star <- qt(0.975, df = n - 2)
+    coef.est$est.b1[dataset.i] <- model$estimate[2]
+    coef.est$cover.b1[dataset.i] <- ((model$estimate[2] - t_star * model$std.error[2]) < b1 &
+                                       b1 < (model$estimate[2] + t_star * model$std.error[2]))
   }
-  
-  # Aggregating into summary 
-  coef.power <- summarise(coef.power,
-                          b0.power = mean(sig.b0),
-                          b1.power = mean(sig.b1))
-  
-  # Returning a summary dataframe
-  return(coef.power)
-}
 
-coef.power <- data.frame(
-  sig.b0 = rep(NA, 500),
-  sig.b1 = rep(NA, 500)
+  # Aggregating into summary
+  coef.est <- summarise(coef.est,
+    b1.est = mean(est.b1),
+    b1.cover = mean(cover.b1)
   )
+
+  # Returning a summary dataframe
+  return(coef.est)
+}
+coef.est <- data.frame(
+  est.b1 = rep(NA, 500),
+  cover.b1 = rep(NA, 500)
+)
+
 ```
 
 ## Getting Started - Some New Packages
@@ -116,7 +120,7 @@ This is equivalent to going through each row, performing the linear combination,
 ```{r simDat2, exercise = T}
 simulated_data <- simulated_data %>%
   mutate(
-    y = 2.80 + .21 * x + rnorm(n = 100, mean = 0, sd = .74)
+    y = 2.80 + 0.21 * x + rnorm(n = 100, mean = 0, sd = 0.74)
   )
 
 head(simulated_data)
@@ -193,7 +197,7 @@ sim.dataset <- function(n, b0, b1, residual_se) {
 Let's try it out! We call the function we just wrote, plugging in the expected parameters, and save the output to `test_dataset`.
 
 ```{r testF, exercise = T}
-test_dataset <- sim.dataset(n = 150, b0 = 2.80, b1 = .21, residual_se = .74)
+test_dataset <- sim.dataset(n = 150, b0 = 2.80, b1 = 0.21, residual_se = 0.74)
 
 ggplot(test_dataset, aes(x, y)) + 
   geom_point() +
@@ -211,13 +215,13 @@ summary(lm(y ~ x, data = test_dataset))
 We'll need to create a dataframe to store our results.
 
 ```{r storage, exercise = T}
-coef.power <- data.frame(
-  sig.b0 = rep(NA, 500),
-  sig.b1 = rep(NA, 500)
-  )
+coef.est <- data.frame(
+  est.b1 = rep(NA, 500),
+  cover.b1 = rep(NA, 500)
+)
 
-head(coef.power)
-dim(coef.power)
+head(coef.est)
+dim(coef.est)
 ```
 
 Note the `tidy` function helps us pull out the quantities of interest from the model summary. 
@@ -228,55 +232,62 @@ Here we have chosen our $\alpha$ to be 0.05. If the p-value for the coefficient 
 for (dataset.i in 1:500) {
   simulated_df <- sim.dataset(n = 100, b0 = 2.80, b1 = .21, residual_se = .76)
   model <- tidy(lm(y ~ x, data = simulated_df))
-  coef.power$sig.b0[dataset.i] <- model$p.value[1] < .05
-  coef.power$sig.b1[dataset.i] <- model$p.value[2] < .05
+  t_star <- qt(0.975, df = n - 2)
+  coef.est$est.b1[dataset.i] <- model$est[2]
+  coef.est$cover.b1[dataset.i] <- ((model$est - t_star * model$std.error[2]) < b1 &
+    b1 < (model$est + t_star * model$std.error[2]))
 }
 
-table(coef.power$sig.b0)
+summary(coef.est$est.b1)
 
-table(coef.power$sig.b1)
+table(coef.est$cover.b1)
 ```
 
-We can get a quick sense of how many times (out of 500) each coefficient was significant (TRUE).
+We can get a quick sense of how accurate our estimates and whether our confidence intervals for that estimate have the expected coverage (i.e. how many times (out of 500) did the confidence interval contain the truth `c`over.b = TRUE`).
 
-## Function - Get Power
+## Function - Get Estimates and Confidence Intervals
 
-```{r funcP, exercise = T}
-simulate.power <- function(n.sims, n, b0, b1, residual_se) {
-  
+```{r funcE, exercise = T}
+simulate.est <- function(n.sims, n, b0, b1, residual_se) {
+
   # Dataframe to hold results:
-  coef.power <- data.frame(
-    sig.b0 = rep(NA, n.sims),
-    sig.b1 = rep(NA, n.sims))
-  
+  coef.est <- data.frame(
+    est.b1 = rep(NA, n.sims),
+    cover.b1 = rep(NA, n.sims)
+  )
+
   # Simulating many tests:
   for (dataset.i in 1:n.sims) {
     simulated_df <- sim.dataset(n = n, b0 = b0, b1 = b1, residual_se = residual_se)
     model <- tidy(lm(y ~ x, data = simulated_df))
-    coef.power$sig.b0[dataset.i] <- model$p.value[1] < .05
-    coef.power$sig.b1[dataset.i] <- model$p.value[2] < .05
+    t_star <- qt(0.975, df = n - 2)
+    coef.est$est.b1[dataset.i] <- model$estimate[2]
+    coef.est$cover.b1[dataset.i] <- ((model$estimate[2] - t_star * model$std.error[2]) < b1 &
+                                       b1 < (model$estimate[2] + t_star * model$std.error[2]))
   }
-  
-  # Aggregating into summary 
-  coef.power <- summarise(coef.power,
-                          b0.power = mean(sig.b0),
-                          b1.power = mean(sig.b1))
-  
+
+  # Aggregating into summary
+  coef.est <- summarise(coef.est,
+    b1.est = mean(est.b1),
+    b1.cover = mean(cover.b1)
+  )
+
   # Returning a summary dataframe
-  return(coef.power)
+  return(coef.est)
 }
+
 ```
 
 Let's test this one out too!
 
-```{r, power, exercise = T}
-simulate.power(n.sims = 500,
+```{r, est, exercise = T}
+simulate.est(n.sims = 500,
                n = 100, 
-               b0 = 2.80, b1 = .21, residual_se = .74)
+               b0 = 2.80, b1 = 0.21, residual_se = 0.74)
 
-simulate.power(n.sims = 500,
+simulate.est(n.sims = 500,
                n = 250, 
-               b0 = 2.80, b1 = .21, residual_se = 1)
+               b0 = 2.80, b1 = 0.21, residual_se = 0.74)
 ```
 
 It looks like more data buys us a little more power.
@@ -301,8 +312,8 @@ num_levels <- length(b1.truth) ## how many scenarios
 
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
   b1.truth = b1.truth
 )
 ```
@@ -317,20 +328,20 @@ b1.truth <- c(0.1, 0.2, 0.5, 1) ## possible scenarios
 
 num_levels <- length(b1.truth) ## how many scenarios
 
-## create a space to store power from each scenario
+## create a space to store estimates from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
   b1.truth = b1.truth
 )
 ```
 
 ```{r, outline1b, exercise = T}
 for (i in 1:num_levels) {
-  sim_study_output[i, 1:2] <- simulate.power(
+  sim_study_output[i, 1:2] <- simulate.est(
     n.sims = num_reps,
     n = sample_size,
-    b0 = 2.80, b1 = b1.truth[i], residual_se = .74
+    b0 = 2.80, b1 = b1.truth[i], residual_se = 0.74
   )
   ## only overwrite the first two columns
   ## same scenario except each time we change b1
@@ -339,15 +350,25 @@ for (i in 1:num_levels) {
 
 sim_study_output
 
-ggplot(sim_study_output, aes(x = b1.truth, y = b1.power)) +
+ggplot(sim_study_output, aes(x = b1.truth, y = (b1.est-b1.truth)/b1.truth)) +
   geom_point() +
   geom_line() +
-  labs(x = "Slope Coefficient", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size") +
+  labs(x = "Slope Coefficient (truth)", y = "Scaled Bias") +
+  ggtitle("Bias across Effect Sizes") +
+  theme_minimal(base_size = 20)
+
+ggplot(sim_study_output, aes(x = b1.truth, y = b1.cover)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 0.95) +
+  labs(x = "Slope Coefficient (truth)", y = "Coverage for a 95% Interval") +
+  ggtitle("Coverage across Effect Sizes") +
   theme_minimal(base_size = 20)
 ```
 
-We can plot the power as a function of the slope coefficient.
+We can plot the scaled bias as a function of the slope coefficient. Why do we scale the bias? We want to know how far off is considered "a lot" with respect to the original effect size. 
+
+We can also plot the coverage and compare it to what we expect (here 0.95). At first this might look like the coverge fluctuates wildly, but take a closer look at the y-axis scale. Every situation is very close to the "correct" coverage.
 
 ## Outline of a Simulation Study - Changing Two Parameters
 
@@ -368,12 +389,13 @@ all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth)
 head(all_scenarios)
 dim(all_scenarios)
 
-## create a space to store power from each scenario
+## create a space to store estimates from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
+  b1.truth = as.factor(all_scenarios$b1.truth),
+  sample_size = all_scenarios$sample_size
+
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
@@ -393,10 +415,11 @@ all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth)
 
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
+  b1.truth = as.factor(all_scenarios$b1.truth),
+  sample_size = all_scenarios$sample_size
+
 )
 ```
 
@@ -406,10 +429,10 @@ Now we are interested in the relationship between sample size and power for diff
 
 ```{r, outline2b, exercise = T}
 for (i in 1:num_levels) {
-  sim_study_output[i, 1:2] <- simulate.power(
+  sim_study_output[i, 1:2] <- simulate.est(
     n.sims = num_reps,
     n = all_scenarios$sample_size[i],
-    b0 = 2.80, b1 = all_scenarios$b1.truth[i], residual_se = .74
+    b0 = 2.80, b1 = all_scenarios$b1.truth[i], residual_se = 0.74
   )
   ## only overwrite the first two columns
   ## same scenario except each time we change b1 and sample size
@@ -418,13 +441,22 @@ for (i in 1:num_levels) {
 
 sim_study_output
 
-ggplot(sim_study_output, aes(x = sample_size, y = b1.power, col = b1.truth)) +
+ggplot(sim_study_output, aes(x = sample_size, y = (b1.est-as.numeric(b1.truth))/as.numeric(b1.truth), col = b1.truth)) +
   geom_point() +
   geom_line() +
-  labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size \n and Sample Size") +
+  labs(x = "Sample Size", y = "Scaled Bias") +
+  ggtitle("Bias When Varying Effect Size \n and Sample Size") +
   theme_minimal(base_size = 20)
 ## the \n adds a line break in the title
+## note we need b1.truth to be numeric to do calculations with it but a factor to color by it
+
+ggplot(sim_study_output, aes(x = sample_size, y = b1.cover, col = b1.truth)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 0.95) +
+  labs(x = "Sample Size", y = "Coverage for a 95% Interval") +
+  ggtitle("Coverage When Varying \n Effect Size \n and Sample Size") +
+  theme_minimal(base_size = 20)
 ```
 
 ## Outline of a Simulation Study - Changing Three Parameters
@@ -449,11 +481,11 @@ dim(all_scenarios)
 
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size,
-  residual_se = as.factor(residual_se)
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
+  b1.truth = as.factor(all_scenarios$b1.truth),
+  sample_size = all_scenarios$sample_size,
+  residual_se = as.factor(all_scenarios$residual_se)
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
@@ -473,11 +505,11 @@ all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth, res
 
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size,
-  residual_se = as.factor(residual_se)
+  b1.est = rep(NA, num_levels),
+  b1.cover = rep(NA, num_levels),
+  b1.truth = as.factor(all_scenarios$b1.truth),
+  sample_size = all_scenarios$sample_size,
+  residual_se = as.factor(all_scenarios$residual_se)
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
@@ -485,7 +517,7 @@ sim_study_output <- data.frame(
 
 ```{r outline3b, exercise = T}
 for (i in 1:num_levels) {
-  sim_study_output[i, 1:2] <- simulate.power(
+  sim_study_output[i, 1:2] <- simulate.est(
     n.sims = num_reps,
     n = all_scenarios$sample_size[i],
     b0 = 2.80, b1 = all_scenarios$b1.truth[i], residual_se = all_scenarios$residual_se[i]
@@ -497,15 +529,24 @@ for (i in 1:num_levels) {
 
 sim_study_output
 
-ggplot(sim_study_output, aes(x = sample_size, y = b1.power, col = b1.truth)) +
+ggplot(sim_study_output, aes(x = sample_size, y = (b1.est - as.numeric(b1.truth))/as.numeric(b1.truth), col = b1.truth)) +
   geom_point() +
   geom_line() +
   facet_wrap(~residual_se) +
-  labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size \n and Sample Size") +
+  labs(x = "Sample Size", y = "Scaled Bias") +
+  ggtitle("Bias When Varying Effect Size \n and Sample Size") +
   theme_minimal(base_size = 20)
 ## the \n adds a line break in the title
 ## the facet_wrap makes a different plot of the same form for each of the specified categories
+
+ggplot(sim_study_output, aes(x = sample_size, y = b1.cover, col = b1.truth)) +
+  geom_point() +
+  geom_line() +
+  geom_hline(yintercept = 0.95) +
+  facet_wrap(~residual_se) +
+  labs(x = "Sample Size", y = "Coverage for a 95% Interval") +
+  ggtitle("Coverage When Varying \n Effect Size \n and Sample Size") +
+  theme_minimal(base_size = 20)
 ```
 
 Now we are interested in the relationship between sample size and power for different scenarios that vary on two other parameters. We can plot the power as a function of the sample size and denote the scenarios with different colors and across multiple panels or "facets".
