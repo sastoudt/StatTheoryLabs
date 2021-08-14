@@ -143,3 +143,9 @@ mean(obs == guess)
 guess = ifelse(guess == "green", 1, 0)
 var(guess)
 ```
+
+* * *
+
+This lab was adapted and learnr-ified by S. Stoudt from the Can You "Beat" Randomness (Zieffler and Catalysts for Change 2013) activity and the adaptation of this activity (Green and Blankenship 2015).
+
+
