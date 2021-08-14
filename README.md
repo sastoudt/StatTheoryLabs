@@ -53,12 +53,13 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 
 ## Available Tutorials
 
+- "first-day": first day activity to guess the color
 - "hw2": check a homework problem empirically
 - "hw3": check a homework problem empirically
 - "hw4": check a homework problem empirically
 - "lab0": Using Simulations to Check Theory
 - "lab1": Estimation
-- "lab2": Distributions Based on Gaussian
+- "lab2": Sampling Distributions and the CLT
 - "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
 - "capture_recapture": Determine the MLE via inspection (still workshopping)
 

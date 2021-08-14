@@ -1,5 +1,5 @@
 ---
-title: "Distributions Based on Gaussian"
+title: "Sampling Distributions and the CLT"
 output: 
   learnr::tutorial:
     progressive: true
@@ -66,7 +66,7 @@ The CLT states that if $X_1, X_2, ..., X_n \sim^{iid} f_X$, where $f_X$ has mean
 
 $$ \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \rightarrow^{dist} N(0,1)$$
 
-where \rightarrow^{dist} means "converges in distribution as $n\rightarrow \inf$.
+where $\rightarrow^{dist}$ means "converges in distribution as $n\rightarrow \inf$".
 
 We are going to illustrate the CLT for a finite population. 
 

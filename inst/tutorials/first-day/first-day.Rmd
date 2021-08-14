@@ -1,0 +1,145 @@
+---
+title: "Guess the Color"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+
+generateColor <- function(num){
+  samp = rbinom(num, 1, prob = 0.75)
+  show = ifelse(samp == 1, "green","red")
+  return(show)
+}
+```
+
+## One Observation
+
+I have a function that returns either "red" or "green". We don't know anything else about it. 
+
+```{r, one-light, exercise = T}
+generateColor(1)
+```
+
+**How can we predict what the next color is?**
+
+## More Observations
+
+It might be helpful to see more observations to better understand the function `generateColor`.
+
+```{r, more-obs, exercise = T}
+generateColor(10)
+```
+
+
+## Your Strategy
+
+So we've learned that `generateColor` produces "green" about 75% of the time and "red" about 25% of the time. 
+
+```{r, student-strategy, exercise = T}
+
+
+```
+
+**What is your strategy of predicting what the next color is?**
+
+**How would you assess whether or not your strategy is "better" than someone else's?**
+
+**What does it mean to be "better?"**
+
+
+## Strategy 1
+
+What if we just stuck with the most likely outcome each time and always picked "green"?
+
+```{r, strat1, exercise = T}
+obs = generateColor(1000)
+guess = rep("green", 1000)
+```
+
+
+**What's the expected value of correct guesses?**
+
+**What's the variance of our estimator**
+
+## Strategy 1 Performance - Simulation
+
+We can double check our calculations by using simulation. 
+
+```{r, strat1-perf, exercise = T}
+obs = generateColor(1000)
+guess = rep("green", 1000)
+
+## What's the expected value of proportion of correct guesses?
+mean(obs == guess)
+
+## What's the variance of our estimator?
+guess = ifelse(guess == "green", 1, 0)
+var(guess)
+
+```
+
+## Strategy 2
+
+```{r, strat2, exercise = T}
+obs = generateColor(1000)
+
+guess = rbinom(1000, 1, prob = 0.75)
+guess = ifelse(guess == 1, "green", "red")
+```
+
+
+**What's the expected value of correct guesses?**
+
+
+**What's the variance of our estimator?**
+
+
+## Strategy 2 Performance - Simulation
+
+We can double check our calculations by using simulation. 
+
+
+```{r, strat2-perf, exercise = T}
+obs = generateColor(1000)
+
+guess = rbinom(1000, 1, prob = 0.75)
+guess = ifelse(guess == 1, "green", "red")
+
+## What's the expected value of proportion of correct guesses?
+mean(obs == guess)
+
+## What's the variance of our estimator?
+guess = ifelse(guess == "green", 1, 0)
+var(guess)
+```
+
+## Your Strategy Performance - Simulation
+
+```{r, your-strat, exercise = T}
+obs = generateColor(1000)
+guess = 
+
+
+## What's the expected value of proportion of correct guesses?
+mean(obs == guess)
+
+## What's the variance of our estimator?
+guess = ifelse(guess == "green", 1, 0)
+var(guess)
+```

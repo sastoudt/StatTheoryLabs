@@ -328,7 +328,7 @@ legend("topright", title = "Variance", legend = round(c(Variance.black, Variance
 
 ## Lab Question #2 
 
-Let $X_1, X_2, ... X_n \sim^{iid} Uniform(0,\theta)$. Recall that $\hat{\theta}){MOM} = 2 \bar{X}$ and $\hat{\theta}_{MLE*} = \frac{n+1}{n} X_{(n)}$ are two unbiased estimators for $\theta$.
+Let $X_1, X_2, ... X_n \sim^{iid} Uniform(0,\theta)$. Recall that $\hat{\theta}_{MOM} = 2 \bar{X}$ and $\hat{\theta}_{MLE*} = \frac{n+1}{n} X_{(n)}$ are two unbiased estimators for $\theta$.
 
 We are going to run a simulation to see how these two estimators perform.
 
