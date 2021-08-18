@@ -97,7 +97,7 @@ stored_values
 
 ## Getting started - Saving output in loops cont.
 
-But what if we didn't want to store the actual values but rather some summary of them? Now we don't need to make room for a two-dimensional object. Instead `stored_means` is a one-dimensional vector of NAs ready for `n` values (we `rep`eated NA, $n$` times).
+But what if we didn't want to store the actual values but rather some summary of them? Now we don't need to make room for a two-dimensional object. Instead `stored_means` is a one-dimensional vector of NAs ready for `n` values (we `rep`eated NA, $n$ times).
 
 ```{r, storedLoop2, exercise = T}
 n <- 5
@@ -325,7 +325,7 @@ Note: This exercise is adapted from [here](https://bookdown.org/probability/beta
 
 Suppose we are interested in the moment generating function for an Poisson distribution defined by parameter $\lambda$.
 
-If we derive it we get $E[e^(tX)] = exp(\lambda(e^t -1))$. What if we wanted to double check our calculation to make sure we didn't make a mistake? We can generate data from a Poisson.
+If we derive it we get $E[e^{tX}] = exp(\lambda(e^t -1))$. What if we wanted to double check our calculation to make sure we didn't make a mistake? We can generate data from a Poisson.
 
 ```{r poisGenerate, exercise = T}
 lambda <- 2 ## pick any value greater than zero

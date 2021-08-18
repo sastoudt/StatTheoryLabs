@@ -9,7 +9,6 @@ library(learnr)
 library(learnrhash)
 library(tidyverse)
 library(gradethis)
-library(openintro)
 tutorial_options(
   # use gradethis for checking
   exercise.checker = gradethis::grade_learnr
@@ -81,7 +80,7 @@ question("Which would you use to answer Question 1b?",
 
 ## Checking Question 1c from the MGF examples (part of HW 3) 
 
-**c.)** Find $E[X^2+e^\{0.5X\}]$.
+**c.)** Find $E[X^2+e^{0.5X}]$.
 
 To check Question 1c from the MGF examples (part of HW 3) we will need to generate random numbers from a specific normal distribution. 
 

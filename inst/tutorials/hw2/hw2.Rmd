@@ -9,7 +9,6 @@ library(learnr)
 library(learnrhash)
 library(tidyverse)
 library(gradethis)
-library(openintro)
 tutorial_options(
   # use gradethis for checking
   exercise.checker = gradethis::grade_learnr
@@ -43,7 +42,7 @@ To learn what a function does and what paramters it expects, you can consult the
 help(exp)
 ```
 
-## Checking H2 2, Question 2
+## Checking HW 2, Question 2
 
 Suppose that $X_1 \sim Binomial(n=20, p = 1/5)$ and $X_2 \sim Poisson(\lambda = 3)$. Further assume that $X_1$ and $X_2$ are independent. Let $Y = 3X_1 + 2X_2$.
 
