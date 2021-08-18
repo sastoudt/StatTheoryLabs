@@ -25,9 +25,9 @@ set.seed(113877)
 
 Recall that the sampling distribution of an estimator is the distribution of values of that estimator taken from all possible samples of the same size from the population.
 
-For example, we can simulate the (approximate) sampling distribution for the mean of an exponential distribution with parameter $\beta$ = 15.
+For example, we can simulate the (approximate) sampling distribution for the mean of an exponential distribution with parameter $\beta = 15$.
 
-We will complete 1000 iterations, where we draw samples of size `n = 100` from an Exp($\beta$ = 15) population.
+We will complete 1000 iterations, where we draw samples of size `n = 100` from an Exp($\beta = 15$) population.
 
 ```{r, exp, exercise = T}
 
@@ -46,10 +46,10 @@ qqline(my.means)
 
 ```
 
-We know from the CLT that theoretically, the sampling distribution of $\bar{X}$ should be approximately Normal, centered around 15 with a standard error of 15/$\sqrt{100}$.
+We know from the CLT that theoretically, the sampling distribution of $\bar{X}$ should be approximately Normal, centered around 15 with a standard error of $15/\sqrt{100}$.
 
 $$\bar{X} \approx N(\mu = 15, se = \frac{\sigma}{\sqrt{n}} = 15/10)$$
-How did we do?
+How did we do? Was $n=100$ large enough for the CLT to "kick in"?
 
 ## Exponential Distribution Parameterization
 
