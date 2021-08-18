@@ -58,11 +58,10 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "hw3": check a homework problem empirically
 - "hw4": check a homework problem empirically
 - "lab0": Using Simulations to Check Theory
-- "lab1": Estimation
+- "old_lab1": Estimation
+- "capture_recapture": replacing "old_lab1" as "lab 1" (still workshopping)
 - "lab2": Sampling Distributions and the CLT
 - "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
-- "capture_recapture": Determine the MLE via inspection (still workshopping)
-
 
 
 
