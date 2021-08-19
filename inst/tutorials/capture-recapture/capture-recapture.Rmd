@@ -88,6 +88,33 @@ Say we miss 1 out of every 4 deer (and therefore detect 3 out of every 4 deer) a
 
 But we don't know the probability of detection. What do we do when we don't know something? We plug-in an estimate for it instead. This is called the plug-in principle, and it is often used in statistics. We will pick up here in Lab 1. 
 
+## Some logistics for Lab 1
+
+This lab will not require any code, but we will use it as a way to get comfortable working in R Markdown documents. You will use R Markdown to create reproducible lab reports and project reports. 
+
+In RStudio, go to New File -> R Markdown... Then, choose From Template and then choose `Lab Report` from the list of templates. Make sure to name the document appropriately and pick a location for the file where you know how to find it on your computer.
+
+See the following video describing how to get started with creating these 
+reports for this lab, and all future labs:
+
+[**Basic R Markdown with an OpenIntro Lab**](https://www.youtube.com/watch?v=Pdc368lS2hk)
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Pdc368lS2hk" frameborder="0" allowfullscreen></iframe>
+
+**Note: This video was made using `oilabs`. We will NOT be using `oilabs`. Be sure to pick the Lab Report template that goes with `openintro` as shown in screenshot above. Make sure you have `library(openintro)` in your first chunk not `library(oilabs)`.**
+
+Throughout this tutorial you will see questions marked in bold (there are 10 of them). You should copy these questions into your lab report and answer them. You will not need any coding chunks, but you should take advantage of formatting options to make the report readable. Check out the [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) for tips.
+
+When you are finished editing your R Markdown document click the "Knit" button and choose "Knit to HTML" in the top left corner of RStudio. This will run all of your code and create a formatted document of the output. If you get an error, it means something in your R Markdown file isn't right, either an error in code or some error in formatting. 
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-LastName-LastName-L-01.Rmd  (add a third last name if applicable)
+
+LastName-LastName-LastName-L-01.html
+
+*Due*: Wednesday, September 22nd at 5 PM
+
+
 ## What does capture-recapture data tell us about the detection probability?
 
 We're in the field trying to estimate the abundance $N$ of deer. On our first day we capture $n_1$ individuals. What proportion of the total number of individuals is $n_1$?
@@ -136,7 +163,7 @@ $$\frac{{n_1 \choose m_2}{N-n_1 \choose n_2 - m_2}}{{N \choose n_2}}$$
 
 We want the value of $N$ that maximes the likelihood of this happening as our estimate. This would be a gnarly thing to maximize by hand. Let's investigate graphically.
 
-**Question: For three scenarios, use the hover feature to approximate the maximum of the likelihood curve. Write down the paramters you used and the values of the maximum points. Compare those values to the two value of the two estimators we have seen so far (LP and MoM).**
+**Question: For three different scenarios, use the hover feature to approximate the maximum of the likelihood curve. Write down the parameters you used and the values of the maximum points. Compare those values to those of the other two estimators we have seen so far (LP and MoM).**
 
 ```{r, echo=FALSE}
 sliderInput("n_1", "tagged in first collection (n_1)", min = 10, max = 100, value = 10,step = 5)
@@ -182,9 +209,9 @@ i.e. The sampling distribution of $\hat{N}_{LP}$ is concentrated as much as poss
 
 The above estimators depends on three different parameters which are hard to vary simultaneously and assess their effect on the overal estimate. Let's examine some "profiles" of $N_{LP}$ aka look at different slices of this multi-dimensional space where we fix two parameters (as well as the true abundance) and vary the other one. 
 
-**Question: When does this get close to the truth? Try a few combinations and note what you observe.**
+**Question: When does this get close to the truth? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters (i.e. treat n_1 as the number of animals seen on day one, not just as notation)**
 
-**Question: How can we be really wrong? So far we've been worried about underestimating. Try to find a situation where we overestimate the abundance. How likely is that situation to occur? Hint: consider the implied detection probability.**
+**Question: So far we've been worried about underestimating since we will likely not detect some individuals. Try to find a situation where we overestimate the abundance by a lot. How likely is that situation to occur? Hint: consider the implied detection probability of the scenario.**
 
 
 ```{r,  echo=FALSE}
@@ -228,21 +255,22 @@ output$estPlot2 <- renderPlotly({
 
 ## Asymptotics 
 
-The estimate approaches the truth (is asymptotically unbiased) as the "sample size" gets larger. I personally find it a bit ambiguous which sample size we are referring to: $n_1$? $n_2$? $N$? $m_2$?
+The estimate approaches the truth (is asymptotically unbiased) as the "sample size" gets larger. I personally find it a bit ambiguous which sample size we are referring to: $n_1$? $n_2$? $N$? $m_2$? And they all are connected a bit.
 
 All else equal, we should improve our estimate as $m_2$ gets larger. However, how close we get to the truth is limited by $n_1$ as $m_2 \leq n_1$. This intuitively makes sense. The information lies in the number of repeats v. the number tagged. If these are close, then we have a large detection probability for those tagged individuals (and hence all of the individuals since we are assuming they are the same).
 
-In the extreme case, if $n_1 = N$, then we need $m_2 = n_1$ to get our estimate exactly right. If $n_1 < N$ then the closest we can get to the truth is $\frac{n_1 n_2}{n_1} = n_2$ when $m_2 = n_1$. 
+In the extreme case, if $n_1 = N$, then we need $m_2 = n_1$ to get our estimate exactly right. If $n_1 < N$ then the closest we can get to the truth is $\frac{n_1 n_2}{n_1} = n_2$ when $m_2 = n_1$. This shows that the second day's sample also affects the overall quality even under ideal conditions on the first day.
 
 ## Variance
 
 The variance of the $N_{LP}$ estimator again is a function of three parameters, so we will want to look at some profiles to understand when the variance is small.
 
-**Question: What situations minimize the variance? Try a few combinations and note what you observe.**
+**Question: What situations minimize the variance? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters**
+
 
 ```{r,  echo=FALSE}
-sliderInput("N4", "true abundance", min = 10, max = 100, value = 10,step = 5)
-sliderInput("n_14", "number seen and tagged on day 1 (should be less than N)", min = 0, max = 100, value = 5,step = 5)
+sliderInput("N4", "true abundance", min = 10, max = 100, value = 40,step = 5)
+sliderInput("n_14", "number seen and tagged on day 1 (should be less than N)", min = 0, max = 100, value = 15,step = 5)
 sliderInput("n_24", "number seen on day 2 (should be less than N)", min = 10, max = 100, value = 20,step = 5)
 
 plotlyOutput("varPlot")
@@ -251,7 +279,7 @@ plotlyOutput("varPlot")
 ```{r,  context="server"}
 output$varPlot <- renderPlotly({
   m_2 <- seq(0, input$N4, by = 1)
-  var <- input$n_24 *(input$n_14/input$N4)*((input$N4-input$n_14)/input$N4)*((input$N4 - input$n_24)/(input$N4 -1))
+  var <- ((input$n_14+1)*(input$n_24+1)*(input$n_14 - m_2)*(input$n_24-m_2))/((m_2+1)^2*(m_2+2))
   toPlot <- cbind.data.frame(m_2 = m_2, var = var)
  g <- ggplot(toPlot, aes(m_2, var))+geom_point()+theme_minimal(base_size = 20)+xlab("number recaptured on day 2")+ylab("variance of estimate")+xlim(0, input$n_14)
  ggplotly(g)
@@ -259,41 +287,42 @@ output$varPlot <- renderPlotly({
 })
 ```
 
-```{r,  echo=FALSE}
-sliderInput("N5", "true abundance", min = 10, max = 100, value = 20,step = 5)
-sliderInput("n_15", "number seen and tagged on day 1 (should be less than N)", min = 0, max = 100, value = 10,step = 5)
-sliderInput("m_25", "number recaptured on day 2 (should be less than n_1)", min = 0, max = 100, value = 5,step = 5)
 
-plotlyOutput("varPlot2")
+## Adjusting for the Small-Sample Bias
+
+Chapman adjusted the Lincoln-Peterson estimate such that it is a less biased estimator in the small-sample case and when $n_1 + n_2 \geq N$.
+
+$$\hat{N}_C = \frac{(n_1+1)(n_2+1)}{(m_2 + 1)} - 1$$
+
+
+```{r,  echo=FALSE}
+sliderInput("Na", "true abundance", min = 10, max = 100, value = 20,step = 5)
+sliderInput("n_1a", "number seen and tagged on day 1 (should be less than N)", min = 0, max = 100, value = 5,step = 5)
+sliderInput("n_2a", "number seen on day 2 (should be less than N)", min = 10, max = 100, value = 10,step = 5)
+
+plotlyOutput("estPlot_adj")
 ```
 
 ```{r,  context="server"}
-output$varPlot2 <- renderPlotly({
-  n_2 <- seq(0, input$N5, by = 1)
-  var <- n_2 *(input$n_15/input$N5)*((input$N5-input$n_15)/input$N5)*((input$N5 - input$n_25)/(input$N5 -1))
-  toPlot <- cbind.data.frame(n_2 = n_2, var=var)
-
- g <- ggplot(toPlot, aes(n_2, var))+geom_point()+theme_minimal(base_size = 20)+xlab("number seen on day 2")+ylab("variance")
+output$estPlot_adj <- renderPlotly({
+  m_2 <- seq(0, input$Na, by = 1)
+  est <- ((input$n_1a+1)*(input$n_2a+1))/(m_2+1)-1
+  toPlot <- cbind.data.frame(m_2 = m_2, est = est)
+ g <- ggplot(toPlot, aes(m_2, est))+geom_point()+theme_minimal(base_size = 20)+xlab("number recaptured on day 2")+ylab("estimate")+geom_hline(yintercept = input$Na)+xlim(0, input$n_1a)
  ggplotly(g)
 
 })
 ```
 
-## Adjusting for the Small-Sample Bias
-
-Chapman adjusted the Lincoln-Peterson estimate such that it is an exactly unbiased estimator of $N$ when $n_1 + n_2 \geq N$.
-
-$$\hat{N}_C = \frac{(n_1+1)(n_2+1)}{(m_2 + 1)} - 1$$
-
-**some slider here + question**
-
 Of course we don't know $N$. However, others have given us some guard rails. Robson and Reiger showed that the bias of $\hat{N}_C$ is less than 2% if $\frac{n_1 n_2}{N} > 4$. Again we don't know $N$, but they found that if $m_2 \geq 7$ then there is a 95% chance that $\frac{n_1 n_2}{N} > 4$.
+
+**Question:** You likely have seen this kind of de-biasing trick used before. Read [this Wikipedia section on standard deviation estimation](https://en.wikipedia.org/wiki/Standard_deviation#Estimation) and write a few sentences that relate the different estimators in this lab and those of the standard deviation in terms of motivation and approach.
 
 ## Recap of Assumptions 
 
 - The population is closed between samples (as are markings).
 - The detection probability $p$ does not change across individuals or over time.
-- Each sample of teh population is a random sample.
+- Each sample of the population is a random sample.
 
 These assumptions are likely not met in practice. On the positive side, assumptions being broken provide great opportunities for research. One can investigate questions of the form "what happens to the bias and variance of the estimator if *fill-in-the-blank* happens?". You may even be able to reason about the sign of the bias which can help you make decisions about the quality of your current estimate in the mean time.
 
@@ -304,4 +333,11 @@ These assumptions are likely not met in practice. On the positive side, assumpti
 This learnr tutorial was developed by S. Stoudt but pulls materials from a variety of sources.
 
 - [Rushing Lab course materials](https://rushinglab.github.io/WILD3810/articles/Lecture2/lecture2.html#1)
-- 
+- [Ogle's capture-recapture notes](https://derekogle.com/NCNRS349/modules/MarkRecap/BKG)
+
+
+## Original Literature
+
+- [Lincoln](https://books.google.com/books?hl=en&lr=&id=vY3EsdnzcPcC&oi=fnd&pg=PA2&dq=%22Calculating+Waterfowl+Abundance+on+the+Basis+of+Banding+Returns%22.+United+States+Department+of+Agriculture+Circular&ots=apI-gEfeR7&sig=9kGoHEmqjVVR_-YzA1ipAh4OYLY)
+- [Chapman](https://catalog.hathitrust.org/Record/005761134)
+- [Robson and Reiger](https://www.tandfonline.com/doi/abs/10.1577/1548-8659(1964)93[215:SSIPME]2.0.CO;2)
