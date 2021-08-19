@@ -61,6 +61,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "old_lab1": Estimation
 - "lab1": Estimation (capture-recapture)
 - "lab2": Sampling Distributions and the CLT
+- "lab3": Resampling Methods
 - "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
 
 

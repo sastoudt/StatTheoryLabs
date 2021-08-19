@@ -21,6 +21,10 @@ set.seed(113877)
 
 ```
 
+## Getting Started
+
+The following tutorial will help prepare you for the questions that you will need to answer for the lab, listed at the end.
+
 ## Sampling Distributions
 
 Recall that the sampling distribution of an estimator is the distribution of values of that estimator taken from all possible samples of the same size from the population.
@@ -103,8 +107,7 @@ cor(x,y)
 
 ## Some logistics for Lab 2
 
-
-You should have a template.Rmd in your project. Open it, copy and paste it into a new Rmd file and proceed. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option).
+You should have a template.Rmd in your project. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option). Answer the following questions in that document. Make sure to label them and use formatting to make it straightforward to read. Code and text will be intermingled. 
 
 Submit your R Markdown document and knitted file to Moodle as:
 
@@ -115,7 +118,6 @@ LastName-LastName-LastName-L-02.html
 To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
 
 *Due*: Wednesday, October 13th at 5 PM
-
 
 
 ## Lab Question #1
