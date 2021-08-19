@@ -101,6 +101,20 @@ cor(x,y)
 ```
 
 
+## Some logistics for Lab 2
+
+
+You should have a template.Rmd in your project. Open it, copy and paste it into a new Rmd file and proceed. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option).
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-LastName-LastName-L-02.Rmd  (add a third last name if applicable)
+
+LastName-LastName-LastName-L-02.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Wednesday, October 13th at 5 PM
 
 
 

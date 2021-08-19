@@ -459,9 +459,11 @@ learnrhash::encoder_ui(
 
 1. If you are unfamiliar with RMarkdown documents, watch the intro video [here](https://rmarkdown.rstudio.com/lesson-1.html) and browse the associated [cheatsheet](https://github.com/rstudio/cheatsheets/raw/master/rmarkdown-2.0.pdf). We will be working in RMarkdown documents in future labs.
 
-2. Create a new RMarkdown document. Give it the title "Lab0 - Read Data" and add your name as author.
+2. Create a new RMarkdown document. Give it the title "Lab0 - Read Data" and add your name as author. You should have a template.Rmd in your project. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option).
 
-3. Download the csv file associated with this lab from Moodle and put it in the same folder as your lab Rmd file. 
+
+3. Download the csv file associated with this lab from Moodle and put it in the same folder as your lab Rmd file. To get these files onto your cloud space, look in the "Files" pane in the bottom right. Click the "Upload" button.
+
 
 4. Create a new code chunk and put the following two lines of code:
 
@@ -471,12 +473,21 @@ head(data)
 ```
 
 
-5. Knit this document to html. Note R will look for the data in the same place where the Rmd file lives. 
+5. When you are finished editing your R Markdown document click the "Knit" button and choose "Knit to HTML" in the top left corner of RStudio. This will run all of your code and create a formatted document of the output. If you get an error, it means something in your R Markdown file isn't right, either an error in code or some error in formatting. Note R will look for the data in the same place where the Rmd file lives. 
 
 **Deliverables** 
 
 1. Make sure you have submitted the Google Form above.
-2. Submit the Rmd and html files to Moodle.
+2. Submit the Rmd and html files to Moodle. Name them as follows:
+
+LastName-LastName-LastName-L-00.Rmd  (add a third last name if applicable)
+
+LastName-LastName-LastName-L-00.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, September 6th at 5 PM
+
 
 * * *
 
