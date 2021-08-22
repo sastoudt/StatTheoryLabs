@@ -86,11 +86,15 @@ We can double check our calculations by using simulation.
 obs = generateColor(1000)
 guess = rep("green", 1000)
 
-## What's the expected value of proportion of correct guesses?
+## What's the probability we correct right on the next guess?
 mean(obs == guess)
 
+##What's the expected value of our estimator?
+guess <- ifelse(guess == "green", 1, 0)
+mean(guess)
+
+
 ## What's the variance of our estimator?
-guess = ifelse(guess == "green", 1, 0)
 var(guess)
 
 ```
@@ -123,11 +127,15 @@ obs = generateColor(1000)
 guess = rbinom(1000, 1, prob = 0.75)
 guess = ifelse(guess == 1, "green", "red")
 
-## What's the expected value of proportion of correct guesses?
+## What's the probability we correct right on the next guess?
 mean(obs == guess)
 
+##What's the expected value of our estimator?
+guess <- ifelse(guess == "green", 1, 0)
+mean(guess)
+
+
 ## What's the variance of our estimator?
-guess = ifelse(guess == "green", 1, 0)
 var(guess)
 ```
 
@@ -137,12 +145,15 @@ var(guess)
 obs = generateColor(1000)
 guess = 
 
-
-## What's the expected value of proportion of correct guesses?
+## What's the probability we correct right on the next guess?
 mean(obs == guess)
 
+##What's the expected value of our estimator?
+guess <- ifelse(guess == "green", 1, 0)
+mean(guess)
+
+
 ## What's the variance of our estimator?
-guess = ifelse(guess == "green", 1, 0)
 var(guess)
 ```
 
