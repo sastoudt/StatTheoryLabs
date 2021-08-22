@@ -72,8 +72,9 @@ obs = generateColor(1000)
 guess = rep("green", 1000)
 ```
 
+**What's the probability we correct right on the next guess?**
 
-**What's the expected value of correct guesses?**
+**What's the expected value of our estimator?**
 
 **What's the variance of our estimator**
 
@@ -104,8 +105,9 @@ guess = ifelse(guess == 1, "green", "red")
 ```
 
 
-**What's the expected value of correct guesses?**
+**What's the probability we correct right on the next guess?**
 
+**What's the expected value of our estimator?**
 
 **What's the variance of our estimator?**
 
