@@ -1,0 +1,53 @@
+---
+title: "Homework 5 Checker"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+set.seed(113877)
+```
+
+
+## Checking HW 5, Question 3c and 3d 
+
+```{r checkSol, exercise = TRUE}
+n <- 3 ## number of draws from the distribution
+rep_times <- 1000
+
+obs_1 <- rep(NA, rep_times)
+obs_min <- rep(NA, rep_times)
+
+for(i in 1:rep_times){
+data_sample <- rexp(n, rate = 1) ## draw from an exponential variable
+obs_1[i] = data_sample[1] ## store the first observation
+obs_min[i] = min(data_sample) ## store the minimum
+}
+## we have to draw 3 values, many times to get an empirical sense of the probabilities and moments
+
+prob_obs1_less_1_emp <- length(which(obs_1 <1))/rep_times 
+## which returns the ids for those in obs_1 that are less than 1, length returns the length of that vector of ids, we want the proportion out of total replicates
+
+prob_obs1_less_1_emp 
+
+prob_min_less_1_emp <- length(which(obs_min <1))/rep_times
+
+prob_min_less_1_emp
+
+moment_two_emp <- var(obs_min) + mean(obs_min)^2
+
+moment_two_emp
+```
+
+
+
+
