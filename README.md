@@ -57,6 +57,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "hw2": check a homework problem empirically
 - "hw3": check a homework problem empirically
 - "hw4": check a homework problem empirically
+- "hw10": setup and guidance for a homework problem
 - "lab0": Using Simulations to Check Theory
 - "old_lab1": Estimation
 - "lab1": Estimation (capture-recapture)
