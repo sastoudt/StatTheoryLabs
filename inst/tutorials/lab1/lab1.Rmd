@@ -25,9 +25,9 @@ set.seed(113877)
 
 ## Roadmap
 
-If you have completed HW 8, you can skip to the "What does capture-recapture data tell us about the detection probability?" section.
+If you have completed HW 8 and 9, you can skip to the "What does capture-recapture data tell us about the detection probability?" section.
 
-If you have not completed HW 8 (or want a refresher), read through the next six sections before continuing.
+If you have not completed HW 8 and 9 (or want a refresher), read through the next six sections before continuing.
 
 
 ## Data in the wild
@@ -52,7 +52,7 @@ A good first step would be to go out to the study site and count how many deer w
 
 ## Bounding abundance
 
-If we assume we never mis-identify a species i.e. never have a false positive (which is a pretty big assumption), we are still left with th epossibility that we didn't see an individual of the species, even when it was there (false negative). Therefore, our $\hat{N}$ is a lower bound on $N$.
+If we assume we never mis-identify a species i.e. never have a false positive (which is a pretty big assumption), we are still left with the possibility that we didn't see an individual of the species, even when it was there (false negative). Therefore, our $\hat{N}$ is a lower bound on $N$.
 
 ## How many animals did we miss?
 
