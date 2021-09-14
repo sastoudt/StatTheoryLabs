@@ -92,17 +92,15 @@ But we don't know the probability of detection. What do we do when we don't know
 
 This lab will not require any code, but we will use it as a way to get comfortable working in R Markdown documents. You will use R Markdown to create reproducible lab reports and project reports. 
 
-You should have a template.Rmd in your project. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option).
-
-Throughout this tutorial you will see questions marked in bold (there are 10 of them). You should copy these questions into your lab report and answer them. You will not need any coding chunks, but you should take advantage of formatting options to make the report readable. Check out the [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) for tips.
+You should have a lab1_template.Rmd in your project. Throughout this tutorial you will see questions marked in bold (there are 10 of them). I have copied these questions into your lab report so that you can more easily answer them. You will not need any coding chunks, but you should take advantage of formatting options to make the report readable. Check out the [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) for tips.
 
 When you are finished editing your R Markdown document click the "Knit" button and choose "Knit to HTML" in the top left corner of RStudio. This will run all of your code and create a formatted document of the output. If you get an error, it means something in your R Markdown file isn't right, either an error in code or some error in formatting. 
 
 Submit your R Markdown document and knitted file to Moodle as:
 
-LastName-LastName-LastName-L-01.Rmd  (add a third last name if applicable)
+LastName-L-01.Rmd 
 
-LastName-LastName-LastName-L-01.html
+LastName-L-01.html
 
 To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
 
@@ -136,7 +134,7 @@ Lincoln and Peterson reasoned their way to this estimator. What if we wanted to 
 
 Let's define some notation to help us reason a different way about this problem. We capture, tag, and release $n_1$ animals on day 1. We then capture $n_2$ animals on day 2, $m_2$ of them are tagged (and hence seen on day 1). What is the total abundance $N$? This is a combinatorics problem.
 
-The total number of ways we could have seen $n_2$ animals on day 2 if $N$ were possible is {N \choose n_2}.
+The total number of ways we could have seen $n_2$ animals on day 2 if $N$ were possible is ${N \choose n_2}$.
 
 The total number of ways we could have seen $n_2$ animals in our particular way (with $m_2$ repeats and $n_2-m_2$ new animals) was to choose $m_2$ animals to see twice out of $n_1$ possible animals we've already seen once and to choose $n_2 - m_2$ new animals out of $N-n_1$ to see for the first time. 
 
