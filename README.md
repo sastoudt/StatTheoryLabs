@@ -64,6 +64,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "lab2": Sampling Distributions and the CLT
 - "lab3": Resampling Methods
 - "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
+- "prob_sims": Probability Simulations (by Anthony Scotina, minorly adjusted)
 
 
 
