@@ -25,7 +25,7 @@ set.seed(113877)
 
 ## Roadmap
 
-If you have completed HW 8 and 9, you can skip to the "What does capture-recapture data tell us about the detection probability?" section.
+If you have completed HW 8 and 9, you can skip to the "Some logistics for Lab 1" section.
 
 If you have not completed HW 8 and 9 (or want a refresher), read through the next six sections before continuing.
 
@@ -199,9 +199,9 @@ i.e. The sampling distribution of $\hat{N}_{LP}$ is concentrated as much as poss
 
 ## Expected Value
 
-The above estimators depends on three different parameters which are hard to vary simultaneously and assess their effect on the overal estimate. Let's examine some "profiles" of $N_{LP}$ aka look at different slices of this multi-dimensional space where we fix two parameters (as well as the true abundance) and vary the other one. 
+The above estimators depends on three different parameters which are hard to vary simultaneously and assess their effect on the overall estimate. Let's examine some "profiles" of $N_{LP}$ aka look at different slices of this multi-dimensional space where we fix two parameters (as well as the true abundance) and vary the other one. 
 
-**Question: When does this get close to the truth? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters (i.e. treat n_1 as the number of animals seen on day one, not just as notation)**
+**Question: When does this get close to the truth? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters (i.e. treat $n_1$ as the number of animals seen on day one, not just as notation)**
 
 **Question: So far we've been worried about underestimating since we will likely not detect some individuals. Try to find a situation where we overestimate the abundance by a lot. How likely is that situation to occur? Hint: consider the implied detection probability of the scenario.**
 
