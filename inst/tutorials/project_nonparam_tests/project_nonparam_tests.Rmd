@@ -257,8 +257,6 @@ There is inherent randomness in a simulation study. This is not ideal as your an
 
 Talking more about this is beyond the scope of the class, but if you are interested, I point you to Kellie Ottoboni's cool work on [sampling in R](http://www.kellieottoboni.com/posts/2019/01/random-problems-with-r/).
 
-Be patient. This has to go through 500*4 linear regressions.
-
 ```{r outline, exercise = T}
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 500 ## turn into a variable so we can easily change it
@@ -467,6 +465,14 @@ ggplot(sim_study_output, aes(x = sample_size, y = param.power, col = true_mean))
   theme_minimal(base_size = 20)
 ## the \n adds a line break in the title
 ## the facet_wrap makes a different plot of the same form for each of the specified categories
+
+ggplot(sim_study_output, aes(x = sample_size, y = nonparam.power, col = true_mean)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~true_sd) +
+  labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
+  ggtitle("Power When Varying Second Mean, Second SD, \n and Sample Size") +
+  theme_minimal(base_size = 20)
 ```
 
 Now we are interested in the relationship between sample size and power for different scenarios that vary on two other parameters. We can plot the power as a function of the sample size and denote the scenarios with different colors and across multiple panels or "facets".
