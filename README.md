@@ -63,7 +63,8 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "lab1": Estimation (capture-recapture)
 - "lab2": Sampling Distributions and the CLT
 - "lab3": Resampling Methods
-- "project_prep": Introduction to Simulation Studies of Slope Estimation in OLS (still workshopping)
+- "project_prep_linreg_est_ci": Introduction to Simulation Studies of Slope Estimation in OLS  (not using Fall 21)
+- "project_prep_linreg_power": Introduction to Simulation Studies of OLS Power (not using Fall 21) 
 - "prob_sims": Probability Simulations (by Anthony Scotina, minorly adjusted)
 
 
