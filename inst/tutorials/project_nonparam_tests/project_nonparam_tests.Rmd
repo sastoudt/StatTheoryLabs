@@ -9,16 +9,41 @@ runtime: shiny_prerendered
 
 ```{r setup, include=FALSE}
 library(learnr)
-library(learnrhash)
 library(tidyverse)
 library(gradethis)
-library(broom)
 tutorial_options(
   # use gradethis for checking
   exercise.checker = gradethis::grade_learnr
   )
 knitr::opts_chunk$set(echo = FALSE)
 set.seed(113877)
+simulated_data <- data.frame(
+  x = rnorm(n = 100, mean = 5, sd = 1)
+)
+simulated_data <- simulated_data %>%
+  mutate(
+    y =  rnorm(n = 100, mean = 5, sd = .74)
+  )
+
+sim.dataset <- function(n, mean_vals, sd_vals) {
+  # Simulate X variable:
+  simulated_data <- data.frame(
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+  )
+  # Simulate Y variable:
+  simulated_data <- simulated_data %>%
+    mutate(
+      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
+    )
+  # Return dataset
+  return(simulated_data)
+}
+
+
+power.val <- data.frame(
+  pval_param = rep(NA, 500),
+  pval_nonparam = rep(NA, 500)
+  )
 
 ```
 
@@ -35,7 +60,7 @@ library(tidyverse)
 
 The `head` function shows the first 6 rows of the dataframe, so that we can peak and see what our new data looks like. The `dim` function tells us the dimensions of the object. This can come in handy for checking that we have something with the dimensions we expect (like here we said `n=100` so we should end up with something that has 100 rows).
 
-**Generate an explanatory variable**
+**Generate data for one group**
 
 ```{r simDat, exercise = T}
 simulated_data <- data.frame(
@@ -45,7 +70,7 @@ head(simulated_data)
 dim(simulated_data)
 ```
 
-**Generate the response variable based on the explanatory variable**
+**Generate data for another group**
 
 The `%>%` operator is called the **piping** operator. It takes the output of the previous expression and pipes it into the first argument of the function in the following one. 
 To continue our analogy with mathematical functions, `x %>% f(y)` is equivalent to `f(x, y)`.
@@ -119,7 +144,7 @@ sim.dataset <- function(n, mean_vals, sd_vals) {
   return(simulated_data)
 }
 
-## Note: your sim.dataset might look different, perhaps you won't want rnorm for example
+## Note: your sim.dataset might look different, perhaps you won't want rnorm for example or you want differing sample sizes.
 ```
 
 Let's try it out! We call the function we just wrote, plugging in the expected parameters, and save the output to `test_dataset`.
@@ -155,19 +180,23 @@ head(power.val)
 dim(power.val)
 ```
 
+This project takes the place of an exam on Hypothesis Tests. We will learn about the theory behind them and talk about a property of them called power. To have enough of a big picture understanding to get started, be sure to read the [Wiki page](https://en.wikipedia.org/wiki/Power_of_a_test) up to and including the "Interpretation" section.
 
 Here we have chosen our $\alpha$ to be 0.05. If the p-value for the coefficient is less than $\alpha$ we will reject the null hypothesis.
 
-```{r firstSim, echo = T, eval = F}
+```{r firstSim, exercise = T}
+#Note: you can't run this until you fill in things where the ## are
+
+
 significance_value <- 0.05
 
 for (dataset.i in 1:500) {
   simulated_df <- sim.dataset(n = 150, mean_vals = c(0,5), sd_vals = c(1,1))
   res_param = ## replace with your parametric test
   res_nonparam = ## replace with your nonparametric test
-  power.val$pval_param[dataset.i] <- #res_param's pvalue
+  power.val$pval_param[dataset.i] <- ## res_param's pvalue
                                           < significance_value
-  power.val$pval_nonparam[dataset.i] <- #res_nonparam's pvalue
+  power.val$pval_nonparam[dataset.i] <- ## res_nonparam's pvalue
                                             < significance_value
 }
 table(power.val$pval_param)
@@ -178,7 +207,12 @@ We can get a quick sense of how many times (out of 500) each test was rejected (
 
 ## Function - Get Power
 
-```{r funcP, echo = T, eval = F}
+```{r funcP, exercise = T}
+#Note: you can't run this until you fill in things where the ## are
+
+## Because simulate.power is not yet defined, the rest of the tutorial will not be runnable until this is changed. I provide a template for you to walk through this on your own for your own scenario. Here we just want to make sure we understand the structure (else go through code annotation steps).
+
+
 simulate.power <- function(n.sims, n, mean_vals, sd_vals) {
   
   # Dataframe to hold results:
@@ -192,9 +226,9 @@ simulate.power <- function(n.sims, n, mean_vals, sd_vals) {
     simulated_df <- sim.dataset(n = n, mean_vals = mean_vals, sd_vals = sd_vals)
     res_param <- ## replace with your parametric test
     res_nonparam <- ## replace with your nonparametric test
-    power.val$pval_param[dataset.i] <- #res_param's pvalue
+    power.val$pval_param[dataset.i] <- ## res_param's pvalue
                                           < significance_value
-    power.val$pval_nonparam[dataset.i] <- #res_nonparam's pvalue
+    power.val$pval_nonparam[dataset.i] <- ## res_nonparam's pvalue
                                             < significance_value
   }
   
@@ -229,50 +263,67 @@ Be patient. This has to go through 500*4 linear regressions.
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 500 ## turn into a variable so we can easily change it
 sample_size <- 100 ## turn into a variable so we can easily change it
-b1.truth <- c(0.1, 0.2, 0.5, 1) ## possible scenarios
-num_levels <- length(b1.truth) ## how many scenarios
+second_mean <- c(0, 0.1, 0.5, 1) ## possible scenarios
+num_levels <- length(second_mean) ## how many scenarios
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = b1.truth
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = second_mean
 )
 ```
 
-```{r outline1b-setup}
+```{r, outline1b-setup}
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 500 ## turn into a variable so we can easily change it
 sample_size <- 100 ## turn into a variable so we can easily change it
-b1.truth <- c(0.1, 0.2, 0.5, 1) ## possible scenarios
-num_levels <- length(b1.truth) ## how many scenarios
+second_mean <- c(0, 0.1, 0.5, 1) ## possible scenarios
+num_levels <- length(second_mean) ## how many scenarios
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = b1.truth
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = second_mean
 )
 ```
+
+
+
 
 ```{r, outline1b, exercise = T}
 for (i in 1:num_levels) {
   sim_study_output[i, 1:2] <- simulate.power(
     n.sims = num_reps,
     n = sample_size,
-    b0 = 2.80, b1 = b1.truth[i], residual_se = .74
+    mean_vals = c(0, second_mean[i]), sd_vals = c(1,1)
   )
-  ## only overwrite the first two columns
-  ## same scenario except each time we change b1
+  ## only override first two columns with power values
+  ## same scenario except each time we change the mean of the second dataset
 }
+
 sim_study_output
-ggplot(sim_study_output, aes(x = b1.truth, y = b1.power)) +
+
+ggplot(sim_study_output, aes(x = true_mean, y = param.power)) +
   geom_point() +
   geom_line() +
-  labs(x = "Slope Coefficient", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size") +
+  labs(x = "Second Mean", y = "Power (alpha = 0.05)") +
+  ggtitle("Power of Parametric Test \n Varying Difference From First Mean (0)") +
   theme_minimal(base_size = 20)
+
+ggplot(sim_study_output, aes(x = true_mean, y = nonparam.power)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Second Mean", y = "Power (alpha = 0.05)") +
+  ggtitle("Power of Nonparametric Test \n Varying Difference From First Mean (0)") +
+  theme_minimal(base_size = 20)
+# \n is a line break
 ```
 
-We can plot the power as a function of the slope coefficient.
+We can plot the power as a function of the second mean.
+
+If we want these on the same plot we have to rearrange the data a little bit ("tidy" it) and then make a new plot. 
+
+**Extra credit opportunity**: Write the code to put `param.power` and `nonparam.power` results in the same plot taking advantage of functions `pivot_wider` and/or `pivot_longer` (see [here](https://github.com/rstudio/cheatsheets/raw/master/tidyr.pdf) for more details).
 
 ## Outline of a Simulation Study - Changing Two Parameters
 
@@ -282,18 +333,18 @@ What if we want to change two parameters. Now we need all combinations of pairs 
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 500 ## turn into a variable so we can easily change it
 sample_size <- c(50, 100, 150) ## possible scenarios
-b1.truth <- c(0.1, 0.2, 0.5, 1) ## possible scenarios
-num_levels <- length(b1.truth) * length(sample_size) ## how many scenarios
-all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth)
+second_mean <- c(0, 0.1, 0.5, 1) ## possible scenarios
+num_levels <- length(second_mean) * length(sample_size) ## how many scenarios
+all_scenarios <- expand.grid(sample_size = sample_size, second_mean = second_mean)
 ## get all possible combinations of these two parameters
 head(all_scenarios)
 dim(all_scenarios)
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = as.factor(second_mean),
+  sample_size = as.factor(sample_size)
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
@@ -302,20 +353,22 @@ sim_study_output <- data.frame(
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 500 ## turn into a variable so we can easily change it
 sample_size <- c(50, 100, 150) ## possible scenarios
-b1.truth <- c(0.1, 0.2, 0.5, 1) ## possible scenarios
-num_levels <- length(b1.truth) * length(sample_size) ## how many scenarios
-all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth)
+second_mean <- c(0, 0.1, 0.5, 1) ## possible scenarios
+num_levels <- length(second_mean) * length(sample_size) ## how many scenarios
+all_scenarios <- expand.grid(sample_size = sample_size, second_mean = second_mean)
+## get all possible combinations of these two parameters
+head(all_scenarios)
+dim(all_scenarios)
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = as.factor(second_mean),
+  sample_size = as.factor(sample_size)
 )
 ```
 
-Now we are interested in the relationship between sample size and power for different scenarios. We can plot the power as a function of the sample size and denote the scenarios with different colors.
-
+Now we are interested in the relationship between sample size and power for different mean scenarios. We can plot the power as a function of the sample size and denote the scenarios with different colors.
 
 
 ```{r, outline2b, exercise = T}
@@ -323,19 +376,26 @@ for (i in 1:num_levels) {
   sim_study_output[i, 1:2] <- simulate.power(
     n.sims = num_reps,
     n = all_scenarios$sample_size[i],
-    b0 = 2.80, b1 = all_scenarios$b1.truth[i], residual_se = .74
+    mean_vals = c(0, second_mean[i]), sd_vals = c(1,1)
   )
   ## only overwrite the first two columns
-  ## same scenario except each time we change b1 and sample size
+  ## same scenario except each time we change second mean and sample size
 }
 sim_study_output
-ggplot(sim_study_output, aes(x = sample_size, y = b1.power, col = b1.truth)) +
+ggplot(sim_study_output, aes(x = sample_size, y = param.power, col = mean_vals)) +
   geom_point() +
   geom_line() +
   labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size \n and Sample Size") +
+  ggtitle("Power of Parametric Test \n When Varying Second Mean \n and Sample Size") +
   theme_minimal(base_size = 20)
 ## the \n adds a line break in the title
+
+ggplot(sim_study_output, aes(x = sample_size, y = nonparam.power, col = mean_vals)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
+  ggtitle("Power of Nonparametric Test \n When Varying Second Mean \n and Sample Size") +
+  theme_minimal(base_size = 20)
 ```
 
 ## Outline of a Simulation Study - Changing Three Parameters
@@ -346,39 +406,42 @@ What if we want to change three parameters? Now we need all combinations of trip
 set.seed(721226) ## set seed so your findings are reproducible
 num_reps <- 100 ## turn into a variable so we can easily change it
 sample_size <- c(50, 100, 150) ## possible scenarios
-b1.truth <- c(0.1, 0.5, 1) ## possible scenarios
-residual_se <- c(0.2, 0.5, 0.75)
-num_levels <- length(b1.truth) * length(sample_size) * length(residual_se) ## how many scenarios
-all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth, residual_se = residual_se)
+second_mean <- c(0, 0.5, 1) ## possible scenarios
+second_sd <- c(1, 0.2, 2)
+num_levels <- length(second_mean) * length(sample_size) * length(second_sd) ## how many scenarios
+all_scenarios <- expand.grid(sample_size = sample_size, second_mean = second_mean, second_sd = second_sd)
 ## get all possible combinations of these two parameters
 head(all_scenarios)
 dim(all_scenarios)
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size,
-  residual_se = as.factor(residual_se)
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = as.factor(second_mean),
+  true_sd = as.factor(second_sd),
+  sample_size = as.factor(sample_size)
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
 
 ```{r outline3b-setup}
 set.seed(721226) ## set seed so your findings are reproducible
-num_reps <- 500 ## turn into a variable so we can easily change it
+num_reps <- 100 ## turn into a variable so we can easily change it
 sample_size <- c(50, 100, 150) ## possible scenarios
-b1.truth <- c(0.1, 0.5, 1) ## possible scenarios
-residual_se <- c(0.2, 0.5, 0.75)
-num_levels <- length(b1.truth) * length(sample_size) * length(residual_se) ## how many scenarios
-all_scenarios <- expand.grid(sample_size = sample_size, b1.truth = b1.truth, residual_se = residual_se)
+second_mean <- c(0, 0.5, 1) ## possible scenarios
+second_sd <- c(1, 0.2, 2)
+num_levels <- length(second_mean) * length(sample_size) * length(second_sd) ## how many scenarios
+all_scenarios <- expand.grid(sample_size = sample_size, second_mean = second_mean, second_sd = second_sd)
+## get all possible combinations of these two parameters
+head(all_scenarios)
+dim(all_scenarios)
 ## create a space to store power from each scenario
 sim_study_output <- data.frame(
-  b0.power = rep(NA, num_levels),
-  b1.power = rep(NA, num_levels),
-  b1.truth = as.factor(b1.truth),
-  sample_size = sample_size,
-  residual_se = as.factor(residual_se)
+  pval_param = rep(NA, num_levels),
+  pval_nonparam = rep(NA, num_levels),
+  true_mean = as.factor(second_mean),
+  true_sd = as.factor(second_sd),
+  sample_size = as.factor(sample_size)
 )
 ## the as.factor lets R know that we want this to be a category, useful for plotting later
 ```
@@ -389,18 +452,18 @@ for (i in 1:num_levels) {
   sim_study_output[i, 1:2] <- simulate.power(
     n.sims = num_reps,
     n = all_scenarios$sample_size[i],
-    b0 = 2.80, b1 = all_scenarios$b1.truth[i], residual_se = all_scenarios$residual_se[i]
+    mean_vals = c(0, second_mean[i]), sd_vals = c(1,second_sd[i])
   )
   ## only overwrite the first two columns
-  ## same scenario except each time we change b1, sample size, and residual standard error
+  ## same scenario except each time we change second mean, second sd, sample size
 }
 sim_study_output
-ggplot(sim_study_output, aes(x = sample_size, y = b1.power, col = b1.truth)) +
+ggplot(sim_study_output, aes(x = sample_size, y = param.power, col = true_mean)) +
   geom_point() +
   geom_line() +
-  facet_wrap(~residual_se) +
+  facet_wrap(~true_sd) +
   labs(x = "Sample Size", y = "Power (alpha = 0.05)") +
-  ggtitle("Power When Varying Effect Size \n and Sample Size") +
+  ggtitle("Power When Varying Second Mean, Second SD, \n and Sample Size") +
   theme_minimal(base_size = 20)
 ## the \n adds a line break in the title
 ## the facet_wrap makes a different plot of the same form for each of the specified categories
@@ -410,8 +473,41 @@ Now we are interested in the relationship between sample size and power for diff
 
 ## Project Preview
 
-Each project group will use the same number of replications, the same values the intercept for the regression line, the same sample sizes (multiple, across x-axis in result plots), the same slope coefficients for the regression line (multiple, color in result plots) and the same number of levels of misspecification (multiple, facets in result plots). You will be responsible for specifying what those misspecification levels look like. The residual standard error will take different forms depending on the misspecification scenario you are in.
+Each student will use the same number of replications, the same baseline mean and standard deviation for normal distributions, the same sample sizes (multiple, across x-axis in result plots), and the same number of levels of misspecification (multiple, facets in result plots). You will be responsible for specifying what those misspecification levels look like. The variability may take different forms based on your scenario (i.e. if you aren't working with normal distributions).
+
+## Your Immediate Tasks
+
+Tomorrow will be a work day on the project. Before the next Project checkpoint (evening session, October 7th), you are responsible for completing the following:
+
+- Make sure you understand the code chunks in this tutorial as they will provide the skeleton of your own simulation study. You may want to go through the Code Annotation process (described below for reference) for some of the more complicated code chunks (especially those that write and use functions in loops). 
+
+- Read the [Wiki page](https://en.wikipedia.org/wiki/Power_of_a_test) about Power up to and including the "Interpretation" section.
+
+- Understand the null and alternative hypotheses for your two tests (a parametric and nonparametric test). They will have the same set.
+
+- Understand how to use your two functions (a parametric and nonparametric test). This means understanding inputs (what form of data do they expect), outputs (how do you get what you need out of them), and other tuning parameters (which should you use for your study).
+
+- Understand the assumptions that your tests are making. These will help inform what scenarios are "interesting" and worth exploring in your simulation study (i.e. you may want to break an assumption and see how they perform when compared to how they perform in ideal conditions).
+
+- Come talk to me in office hours if you have questions about any of the above. Progress will be hindered if there is still confusion about these moving forward.
+
+- **Extra credit opportunity**: Write the code to put `param.power` and `nonparam.power` results in the same plot taking advantage of functions `pivot_wider` and/or `pivot_longer` (see [here](https://github.com/rstudio/cheatsheets/raw/master/tidyr.pdf) for more details). This code must have a working example to be considered, not just a code sketch. 
+
+
+**Annotating Code**
+
+1. Do an initial reading of each code chunk. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+
+2. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+
+3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+
+4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+
+5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
+
+
 
 * * *
 
-This lab uses materials from [A. Hales](https://osf.io/rzbyj/) and various Open Intro labs and was adapted and learnr-ified by S. Stoudt.
+This lab adapts some power materials from [A. Hales](https://osf.io/rzbyj/) and coding instruction from various Open Intro labs and was adapted and learnr-ified by S. Stoudt.
