@@ -1,0 +1,130 @@
+---
+title: "Introduction to the Final Project"
+author: "Your Name"
+date: "3/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Location tests - alternatives to the t-test
+
+```{r}
+t.test(..., var.equal = T) ## traditional t test
+```
+
+Fisher-Pitman Permutation Test - 
+
+```{r}
+library(coin)
+
+oneway_test()
+```
+
+Wilcoxon Rank Sum Test aka Mann-Whitney U Test - 
+
+```{r}
+wilcox.test()
+```
+
+Baumgartner, Weiss, Schindler test - 
+
+```{r}
+library(BWStest)
+
+bws_test()
+```
+
+## Location tests - alternatives to Welch's t-test
+
+```{r}
+t.test(..., var.equal = F) ## Welch's t-test
+```
+
+Lepage test - 
+
+```{r}
+library(nonpar)
+
+lepage.test()
+```
+
+Cucconi test - 
+
+```{r}
+library(nonpar)
+
+cucconi.test()
+```
+
+Brunner Munzel Test
+
+```{r}
+library(lawstat)
+
+brunner.munzel.test()
+```
+
+
+**Task**: Read the [Wiki page](https://en.wikipedia.org/wiki/Power_of_a_test) about Power up to and including the "Interpretation" section. In a few sentences explain power to a person who has not taken a statistics class.
+
+**Task**: Write down and understand the null and alternative hypotheses for your two tests (a parametric and nonparametric test). 
+
+**Task**: Understand how to use your two functions (a parametric and nonparametric test). This means understanding inputs (what form of data do they expect), outputs (how do you get what you need out of them), and other tuning parameters (which should you use for your study). Use the help function. Run them on the simulated data provided below.
+
+```{r}
+set.seed(17126)
+
+simulated_data <- data.frame(
+  x = rnorm(n = 100, mean = 5, sd = 1),
+  y = rnorm(n = 100, mean = 5, sd = .74)
+)
+
+## load your package if necessary
+
+param_test_results <- 
+nonparam_test_results <- 
+  
+
+```
+
+**Task**: Access the p-value from `param_test_results` and `nonparam_test_results. Use the help function.
+
+```{r}
+
+
+```
+
+**Task**: Write down and understand the assumptions that your tests are making. These will help inform what scenarios are "interesting" and worth exploring in your simulation study (i.e. you may want to break an assumption and see how they perform when compared to how they perform in ideal conditions).
+
+**Task**: Generate 100 values from a distribution where you expect your parametric test to work. Plot a histogram of that data.
+
+```{r}
+
+
+```
+
+**Task**: Generate 100 values from a distribution where you expect your parametric test to break and your nonparametric test to continue to work. Plot a histogram of that data.
+
+```{r}
+
+
+```
+
+## Deliverables
+
+Come talk to me in office hours if you have questions about any of the above. Progress will be hindered if there is still confusion about these moving forward. 
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-Proj-Check-01.Rmd 
+
+LastName-Proj-Check-01.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, March 7th by class time
+
+I will read through and give you feedback during the Evening Project Checkin on March 7th. 

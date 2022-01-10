@@ -1,7 +1,7 @@
 ---
 title: 'Lab 2: Template'
-author: "Sara Stoudt"
-date: "1/7/2022"
+author: "Your Name"
+date: "3/2/2022"
 output: html_document
 ---
 

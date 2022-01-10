@@ -7,13 +7,15 @@ learnr tutorials and labs for a mathematical statistics course
 
 `remove.packages("learnr") ## might not need this if you do not have learnr pre-installed`
 
+`install.packages("remotes")`
+
 `remotes::install_github("rstudio/learnr")`
 
 `remotes::install_github("rstudio-education/gradethis")`
 
 `remotes::install_github("rundel/learnrhash")`
 
-`remotes::install_github("sastoudt/StatTheoryLabs")`
+`remotes::install_github("sastoudt/StatTheoryLabs", build_vignettes = T)`
 
 
 2. Thanks to Marney for this one: after install is complete (I know this seems weird, but go with it):
@@ -71,7 +73,6 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "lab0": reproducibility and documentation
 - "lab1": estimation (capture-recapture)
 - "lab2": sampling distributions
-- "intro-np": introduction to nonparametrics
 - "lab3": bootstrap
 - "lab4": confidence intervals
 - "lab5": hypothesis testing
@@ -80,6 +81,8 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "code-training-7": Simulation Scenarios and Preliminary Plots
 - "code-training-8": Tidy Data and Better Plots
 - "code-training-9": Plot Expectation Sketching
+- "intro-np": introduction to nonparametrics
+- "intro-project": introduction to final project
 
 (under development and updating for Spring 2022)
 
