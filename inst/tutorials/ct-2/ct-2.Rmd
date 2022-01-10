@@ -43,7 +43,7 @@ You may want to use this for a subset of code chunks in this tutorial.
 
 The `c()` function *concatenates* items (of homogenous type) into a vector; for example, `myvector = c(1, 3, 6, 9)` creates a vector that has four elements. To learn about how many elements in the vector there are, you can use the function `length`.
 
-```{r exercise = T}
+```{r myvec exercise = T}
 myvector <- c(1, 3, 6, 9)
 myvector
 
@@ -52,7 +52,7 @@ length(myvector)
 
 To access a particular element, you can use square brackets.
 
-```{r}
+```{r myvec2 exercise = T}
 myvector <- c(1, 3, 6, 9)
 
 myvector[2]
@@ -159,7 +159,7 @@ gradethis::grade_code()
 
 We can also ask questions about our data/variables. The `==` sign is a True/False test of equality. e.g. `row2 == 1` returns `TRUE` for every element in row2 that is equal to 1, and `FALSE` for elements different than 1. We can do similar things with the symbols `<`, `<=`, `>`, `>=`. 
 
-```{r exercise = T}
+```{r log exercise = T}
 row2 <- c(1, 2, 3, 1)
 
 row2 == 1
@@ -168,7 +168,7 @@ row2 == 1
 
 You can also combine two conditions with the AND (`&`) and OR (`|`) operators.
 
-```{r exercise = T}
+```{r log2 exercise = T}
 row2 <- c(1, 2, 3, 1)
 col3 <- c(1, 1, 3, 2)
 

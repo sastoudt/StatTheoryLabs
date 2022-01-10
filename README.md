@@ -11,6 +11,8 @@ learnr tutorials and labs for a mathematical statistics course
 
 `remotes::install_github("rstudio-education/gradethis")`
 
+`remotes::install_github("rundel/learnrhash")`
+
 `remotes::install_github("sastoudt/StatTheoryLabs")`
 
 
