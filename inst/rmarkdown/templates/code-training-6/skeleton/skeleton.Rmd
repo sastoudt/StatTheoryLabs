@@ -1,0 +1,158 @@
+---
+title: "Code Training 6"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simulate Dataset
+
+Here is my version of `sim.dataset` that you adapted last week.
+
+```{r}
+sim.dataset <- function(n, mean_vals, sd_vals) {
+  # Simulate X variable:
+  simulated_data <- data.frame(
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+  )
+  # Simulate Y variable:
+  simulated_data <- simulated_data %>%
+    mutate(
+      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
+    )
+  # Return dataset
+  return(simulated_data)
+}
+
+```
+
+## Create a dataframe to store our power calculation results
+
+**Task**: Refer to your response from the Project Checkpoint about power and/or the [Wiki page](https://en.wikipedia.org/wiki/Power_of_a_test) to refresh your memory about what we aiming to calculate in our simulation study.
+
+```{r}
+power.val <- data.frame(
+  pval_param = rep(NA, 500),
+  pval_nonparam = rep(NA, 500)
+  )
+head(power.val)
+dim(power.val)
+```
+
+
+## Skeleton for a power function
+
+
+1. Do an initial reading of each code chunk. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+    
+2. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+    
+3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+      
+4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+    
+5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
+
+**Task**: Go through the code annotation steps on the following code chunk. 
+
+
+```{r}
+significance_value <- 0.05
+
+simulate.power <- function(n.sims, n, mean_vals, sd_vals) {
+  
+  # Dataframe to hold results:
+  power.val <- data.frame(
+  pval_param = rep(NA, n.sims),
+  pval_nonparam = rep(NA, n.sims)
+  )
+  
+  # Simulating many tests:
+  for (dataset.i in 1:n.sims) {
+    simulated_df <- sim.dataset(n = n, mean_vals = mean_vals, sd_vals = sd_vals)
+    res_param <- ## replace with your parametric test
+    res_nonparam <- ## replace with your nonparametric test
+    power.val$pval_param[dataset.i] <- (## res_param's pvalue
+                                          < significance_value)
+    power.val$pval_nonparam[dataset.i] <- (## res_nonparam's pvalue
+                                            < significance_value)
+  }
+  
+  # Aggregating into summary 
+  power.val <- summarise(power.val,
+                          param.power = mean(pval_param),
+                          nonparam.power = mean(pval_nonparam))
+  
+  # Returning a summary dataframe
+  return(power.val)
+}
+```
+
+## Test the function
+
+**Task**: Take the code you wrote from your Project Checkpoint to run the two tests and access the p-values in the places and replace the double comments denoted above. You should then be able to run and test the function below.
+
+```{r}
+set.seed(1726)
+power_res <- simulate.power()
+
+head(power_res)
+dim(power_res)
+```
+
+## Simulate Dataset - Your Version
+
+Now copy and paste your version of the `sim.dataset` function from the previous code training here.
+
+```{r}
+
+
+```
+
+## Power Function - Your Version
+
+Adapt the power function that runs above to use your `sim.dataset` function. The inputs may need to change.
+
+```{r}
+
+
+```
+
+## Test your function
+
+Test a case where you expect the null hypothesis to *not* be rejected and hence have a low power.
+
+```{r}
+set.seed(1726)
+power_res <- simulate.power()
+
+head(power_res)
+dim(power_res)
+```
+
+Test a case where you expect the null hypothesis *to* be rejected and hence have a high power.
+
+```{r}
+set.seed(1726)
+power_res <- simulate.power()
+
+head(power_res)
+dim(power_res)
+```
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-CT-06.Rmd 
+
+LastName-CT-06.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, March 28th before class
+

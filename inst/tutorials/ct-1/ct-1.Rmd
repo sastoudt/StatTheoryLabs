@@ -1,0 +1,100 @@
+---
+title: "Coding Training 1: Intro to Interactive Tutorials"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+
+## How this works
+
+These tutorials take you step by step through content with text mixed with code chunks. These code chunks can be run and reveal output all within the self-contained tutorial. You do not need to copy and paste back and forth to the RStudio Console. You can get immediate feedback about whether your answers are right and wrong so that you can learn by trial and error without having to wait for feedback from me.
+
+However, these tutorials do time out and are not guaranteed to save your progress. You should wait to start these tutorials until you have a dedicated block of time to complete them in one sitting. I know this isn't ideal, but that is a limitation of this setup. 
+
+
+### Exercise 
+
+*Here's a simple exercise with an empty code chunk provided for entering the answer. You can type*
+
+Write the R code required to add two plus two. Note: R is really just a big calculator. We can type in mathematical expressions.
+
+```{r twoplustwo, exercise=TRUE}
+
+```
+
+```{r twoplustwo-solution}
+# solution code
+2+2
+```
+
+```{r twoplustwo-check}
+# check code
+gradethis::grade_code()
+```   
+   
+
+
+### Exercise with Hint
+
+*Here's an exercise where the code chunk is pre-populated with a fill-in-the-blank structure. There is also a "hint" to the correct solution available.*
+
+Modify the following code to limit the number of rows of the dataset `mtcars` to be printed:
+
+```{r print-limit, exercise=TRUE}
+___(mtcars)
+```
+
+```{r print-limit-hint}
+head(mtcars)
+```
+
+### Quiz
+
+I may ask questions in a quiz format to check your understanding. You get automatic feedback. Remember, you are not penalized for getting things wrong initially, but I do expect a good faith effort. Ask questions either on Slack or in office hours.
+
+```{r quiz}
+quiz(
+  question("Which package did you load to access this tutorial?",
+    answer("base"),
+    answer("tools"),
+    answer("StatTheoryLabs", correct = TRUE),
+    answer("codetools"),allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+## Submit progress
+
+As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 
+
+If a Google Form window does not appear, you can access it [here](https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform).
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform", 
+    width="900px", height= "1000px"
+  )
+)
+```

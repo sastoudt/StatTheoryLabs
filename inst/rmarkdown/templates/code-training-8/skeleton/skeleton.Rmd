@@ -1,0 +1,89 @@
+---
+title: "Code Training 8"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Your Simulate Dataset Function
+
+Put your custom `sim.dataset` here.
+
+```{r}
+
+```
+
+## Your Power Function
+
+Put your `simulate.power` here.
+
+```{r}
+
+```
+
+## Your Possible Scenarios
+
+Put the code for your `all_scenarios`, `sim_study_output`, and yourfor loop over all the scenarios here.
+
+```{r}
+
+
+
+```
+
+## Data Wrangling
+
+We ultimately want both tests' results on the same plot instead of two separate ones. To do this, you need to reformat your data. See `pivot_wider` and/or `pivot_longer` (see [here](https://github.com/rstudio/cheatsheets/raw/master/tidyr.pdf) for more details)
+
+It may also be helpful to read [Chapter 3 through section 3.6](https://r4ds.had.co.nz/data-visualisation.html) and [Chapter 12 through Section 12.3](https://r4ds.had.co.nz/tidy-data.html).
+
+
+```{r}
+## reformat your sim_study_output
+pivot.data <- 
+```
+
+## Updated Plots
+
+I have outlined the plots that will help you display your simulation study results with both test results displayed on the same plot. Go through this code carefully, make sure you understand what is being displayed, and fill in the labels to be informative. If you have more than four levels of your parameter, you will need to update the colors as well. Ask me for help if you need it.
+
+```{r}
+ggplot(subset(pivot.data, param1 == param2), aes(x = sample_size, y = power, col = interaction(test_type, param1), lty = interaction(test_type, param1), group = interaction(test_type, param1))) +
+  geom_point() +
+  geom_line() +
+  labs(x = "", y = "") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 10) +
+  scale_color_manual(name = "Simulation Conditions", values = rep(c("red", "red", "orange", "orange", "green", "green", "blue", "blue"), times = 2)) +
+  scale_linetype_manual(name = "Simulation Conditions", values = rep(c(1, 2), times = 4)) +
+  theme(legend.key.width = unit(3, "line"))
+
+ggplot(subset(pivot.data, param1 != param2), aes(x = sample_size, y = power, col = interaction(test_type, param1), lty = interaction(test_type, param1), group = interaction(test_type, param1))) +
+  geom_point() +
+  geom_line() +
+  labs(x = "", y = "") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 10) +
+  scale_color_manual(name = "Simulation Conditions", values = rep(c("red", "red", "orange", "orange", "green", "green", "blue", "blue"), times = 2)) +
+  scale_linetype_manual(name = "Simulation Conditions", values = rep(c(1, 2), times = 4)) +
+  theme(legend.key.width = unit(3, "line"))
+
+```
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-CT-08.Rmd 
+
+LastName-CT-08.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, April 18th before class
+
+

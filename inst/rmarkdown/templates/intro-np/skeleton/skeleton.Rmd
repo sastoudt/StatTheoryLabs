@@ -1,0 +1,201 @@
+---
+title: "Sampling and Intro to Nonparametrics"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Simple Simulations with `sample()`
+
+The `sample()` function is a simple, yet powerful tool. If we run `?sample`, we can see more information, but it boils down to the following syntax:
+
+```{r, eval = FALSE}
+sample(x, size, replace = FALSE, prob = NULL)
+```
+
+- `x` is the vector of all *objects* from which we are sampling. 
+
+- `size` is the number of objects we would like to select from `x`. If I would like to choose **5** numbers at random, I would enter `size = 5`. 
+
+- `replace` can take one of two values: `TRUE` or `FALSE` - these are case-sensitive, and R handles these two **logical** values rather carefully.
+    - If `replace = TRUE`, we will sample from `x`, `size` times, **with replacement**. In other words, if we select *five numbers* between 1 and 100 *with replacement*, we could potentially choose any of those numbers *more than once*. 
+    - If `replace = FALSE`, sampling is performed **without replacement**. This is the **default** setting. 
+    
+- `prob` is a *vector* of **probability weights**. This assigns a probability to each element in your vector, `x`. 
+    - If we would like to simulate flipping a *biased coin*, the vector `c("H", "T")` might have the probability weights of `prob = c(0.75, 0.25)`. This just means that our biased coin has a 75% probability of landing *Heads*. 
+    - `prob = NULL` by **default**, which means it assumes each element from `x` has an equally-likely chance of being sampled. 
+    
+
+We can specify the vector `x` in a number of ways. For example...
+
+- `c("H", "T")` is one way to specify the two possible outcomes from a *single coin flip*. 
+
+- `1:100`, `seq(from = 1, to = 100, by = 1)` or `c(1, 2, 3, 4, ..., 99, 100)` are three different ways to specify a vector of the numbers 1 through 100. 
+    - I personally prefer `1:100` - if you use `c(...)`, you would actually have to type out *every single number* from 1 through 100. I got lazy and added the `...` instead! 
+
+- There are several ways we could specify a vector of 52 playing cards. 
+    - If we don't care about the suit or number, we could just sample from `1:52`, treating each card uniquely. 
+    - If we *did* care about the suit of the card, we could type something like:
+```{r}
+    c(rep("Hearts", 13), rep("Diamonds", 13), rep("Spades", 13), rep("Clubs", 13))
+```
+    
+> 🚨**NOTE**🚨: The `sample()` will never return the same output twice, unless you run `set.seed(338)` (or with any other number) just before `sample()`. This will control R's built-in *random number generator*.
+    
+### Exercise 1 
+
+There are **7** people in this class, including Prof. Stoudt. Let's suppose each person in the class is assigned a different number from 1 through 7. Using `sample()`, randomly select four numbers from this list, **with replacement**. 
+
+```{r}
+
+```
+
+
+### Exercise 2
+
+Simulate flipping a coin ten times. In this context, why is it essential to sample *with replacement*?
+
+```{r}
+
+```
+
+### Exercise 3
+
+Suppose we would like to flip a six-sided die, but the sides, *y*, are biased, such that:
+
+```{r}
+data.frame(y = "Prob(y)", one = 0.05, two = 0.25, three = 0.1, four = 0.1, five = 0.4, six = 0.1) 
+```
+
+Simulate rolling this *biased* die 20 times. 
+
+```{r}
+
+```
+
+
+
+## Nerve fiber pulses (bootstrap)
+
+Cox and Lewis (1966) reported 799 waiting times between successive pulses along a nerve fiber. We don't know anything about the true distribution of these. You can see the distribuiton of waiting times as well as the empirical CDF (an estimate of the true CDF) below.
+
+
+```{r}
+nerve <- read.csv("nerve.csv", header = F)
+head(nerve)
+length(nerve)
+
+## it is not important that you understand these two pre-processing steps
+nerve <- unname(unlist(nerve))
+nerve <- nerve[1:(length(nerve)-1)]
+nerve <- nerve[!is.na(nerve)]
+
+hist(nerve)
+plot(ecdf(nerve))
+```
+
+We are interested in estimating the skewness of the waiting times, where skewness is defined as:
+
+$$\kappa = \frac{E[X-\mu]^3}{\sigma^3}$$
+
+How might we estimate this with the data we have?
+
+```{r}
+
+```
+
+Now suppose we want the sampling distribution of kappa. We are limited to the data we have (we can't go back to the population).
+
+Now let's "bootstrap" to estimate the sampling distribution of kappa.
+
+```{r}
+n <- length(nerve)
+n
+
+B <- 10000
+
+kappa_hat_star <- rep(NA, B)
+
+for(i in 1:B){
+  
+  ## Step 1: Draw a random resample of size n with replacement from the original sample
+  sampled_data <- 
+    
+  ## Step 2: Compute your statistic from the resampled data.
+
+  
+  
+  
+  kappa_hat_star[i] <- 
+  
+} ## Step 3: Repeat Steps 1 and 2 B times
+
+
+## Step 4: Construct the bootstrap distribution (approximating the sampling distribution)
+hist(kappa_hat_star)
+
+## Step 5: Estimate the standard error, build intervals, etc.
+
+```
+
+## Gene Example (permutation test)
+
+DNA microarrays allow researchers to measure the expression levels of thousands of genes. The data are the levels of messenger RNA (mRNA) of each gene, which is thought to provide a measure of how much protein that gene produces. Roughly, the larger the number, the more active the gene. Efron et al. (2001) shows the expression levels or genes from ten patients with two types of liver cancer cells. There are 2,638 genes in this experiment and the data are log-ratios of the intensity levels of two different color dyes used on the arrays.
+
+We will test whether the median level of gene 1 is different between the two groups.
+
+**Task:** What is the null and alternative hypothesis?
+
+Let $\nu_1$ denote the level of gene 1 of Type I and $\nu_2$ denote the level of gene 1 of Type II. We will consider the difference in the sample medians, namely $t_{obs} = \hat{\nu_1} - \hat{\nu_2}$. We don't know what the distribution of the difference in medians of data coming from unknown distributions is. How can we do inference?
+
+```{r}
+gene1 <- c(230, -1350, -1580, -400, -760, 970, 110, -50, -190, -200)
+type <- rep(1:2, each = 5)
+
+data <- cbind.data.frame(gene1 = gene1, type = type)
+head(data)
+```
+
+Now we estimate the permutation distribution, i.e. what would happen if our null hypothesis was true?
+
+```{r}
+## Step 1: compute the observed value of the test statistic.
+
+t_obs <- 
+t_obs  
+
+
+B <- 10000
+
+t_star <- rep(NA, B)
+
+for(i in 1:B){
+  ## Step 2: Randomly permute the data into two groups and calculate the test statistic on the permuted data
+  
+  ## The key here is how Step 2 is related to the null hypothesis
+  
+  shuffled_data <- 
+  statistic <- 
+  t_star[i] <- statistic
+} ## Step 3: Repeat Step 2 B times to create the permutation distribution
+
+
+hist(t_star)
+```
+
+Now we check to see if our observed test statistic is unusal given the simulated permutation distribution.
+
+```{r}
+hist(t_star)
+abline(v = t_obs, col="red")
+  
+## what proportion of the B values in the permutation distribution are more extreme than what we observed?
+
+
+```
+
+Note: Simple Simulations with `sample()` material comes from Anthony Scotina.

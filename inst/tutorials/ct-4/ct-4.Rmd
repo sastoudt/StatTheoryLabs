@@ -1,0 +1,277 @@
+---
+title: "Coding Training 4: Plots and Probability Distributions"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+
+set.seed(113877)
+simulated_data <- data.frame(
+  x = rnorm(n = 100, mean = 5, sd = 1),
+  y = rnorm(n = 100, mean = 5, sd = .74), 
+  z = factor(c(rep(T, 50), rep(F, 50)))
+)
+```
+
+## Quick R Plots - base
+
+We can make plots quickly using functionality in what is called "base R" without loading any additional packages. If the data is represented in a vector, we can use that object on its own. If we want to grab a column out of a dataframe, then we need to access it using the dollar sign: dataset$colname.
+
+```{r exercise}
+x <- rnorm(100, 0, 1) ## x is a vector
+
+hist(x, main = "title", xlab = "units", ylab = "density")
+
+simulated_data <- data.frame(
+  x = rnorm(n = 100, mean = 5, sd = 1),
+  y = rnorm(n = 100, mean = 5, sd = .74)
+)
+
+
+hist(simulated_data$x) ## x is a column in the dataframe simulated_data
+
+plot(simulated_data$x, simulated_data$y, main = "title", xlab = "x", ylab = "y")
+```
+
+## Normal, t, chi-squared
+
+These distributions will be very useful to you in your final project. It is important to understand their properties to know how to use them. The best way to learn about them is to generate data from them with different values for the parameters and plot them to notice their differences. 
+
+```{r exercise = T}
+
+x <- rnorm(5000, 0, 1)
+y <- rt(5000, 10)
+z <- rchisq(5000, 10)
+
+
+hist(x, main = "normal")
+hist(y, main = "t")
+hist(z, main = "chi-squared")
+```
+
+```{r }
+question("Is the normal distribution symmetric?",
+    answer("Yes", correct = T),
+    answer("No"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("Is the t distribution symmetric?",
+    answer("Yes", correct = T),
+    answer("No"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("Is the chi-squared distribution symmetric?",
+    answer("Yes"),
+    answer("No", correct = T),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+
+```{r exercise = T}
+y <- rt(5000, 10)
+y2 <- rt(5000, 100)
+
+
+hist(y, main = "t, df = 10")
+hist(y2, main = "t, df = 100")
+```
+
+```{r exercise = T}
+z <- rchisq(5000, 10)
+z2 <- rchisq(5000, 100)
+
+
+hist(z, main = "chi-squared, df = 10")
+hist(z2, main = "chi-squared, df = 100")
+```
+
+```{r }
+question("As you increase the degrees of freedom:",
+    answer("The t distribution becomes more normal", correct = T),
+    answer("The t distribution gets heavier tails"),
+    answer("The t distribution gets more symmetric"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("As you decrease the degrees of freedom:",
+    answer("The chi-squared distribution becomes less normal", correct = T),
+    answer("The chi-squared distribution gets more symmetric"),
+    answer("The chi-squared distribution gets less heavy tails"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("As you decrease the degrees of freedom:",
+    answer("The mean of the chi-squared distribution gets smaller", correct = T),
+    answer("The mean of the chi-squared distribution gets larger"),
+    answer("The mean of the t distribution gets larger"),
+    answer("The mean of the t distribution gets smaller"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("If two t distributions have the same degrees of freedom:",
+    answer("they have the same expected value", correct = T),
+    answer("they have different expected values"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+question("If two chi-squared distributions have the same degrees of freedom:",
+    answer("they have the same expected value", correct = T),
+    answer("they have different expected values"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+
+## Fancier Plots - ggplot
+
+
+When we are working quickly it can be nice to make simple plots, but we will want more professional looking graphs for the final project. You need to load the `tidyverse` package before using this functionality. 
+
+With `ggplot()`:
+
+- The first argument is always the dataset. 
+- Next, you provide the variables from the dataset to be assigned to `aes`thetic elements of the plot, e.g. the x and the y axes. 
+- Finally, you use another layer, separated by a `+` to specify the `geom`etric object for the plot. Since we want to scatterplot, we use `geom_point()`.
+
+For instance, if you wanted to visualize the scatterplot below using a line graph, you would replace `geom_point()` with `geom_line()`.
+
+
+```{r exercise = T}
+library(tidyverse)
+
+ggplot(simulated_data, aes(x, y)) + 
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Informative X label here", y = "Informative Y label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+
+ggplot(simulated_data, aes(x)) + 
+  geom_histogram() +
+  labs(x = "Informative X label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+
+ggplot(simulated_data, aes(y)) + 
+  geom_histogram() +
+  labs(x = "Informative X label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+```
+
+## Color and Line Type
+
+Changing the color (`col`) and/or the line type (`lty`) allow you to show a third variable in a 2D plot.These are specified within the `aes`.
+
+```{r exercise = T}
+
+ggplot(simulated_data, aes(x, y, col = z)) + 
+  geom_point() +
+  labs(x = "Informative X label here", y = "Informative Y label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+
+ggplot(simulated_data, aes(x, y, lty = z)) + 
+  geom_line() +
+  labs(x = "Informative X label here", y = "Informative Y label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+
+```
+
+## Facets
+
+If you want to make the same type of plot, but one for each group, you use the facet option. The tilde (~) is important in the command.
+
+```{r exercise = T}
+ggplot(simulated_data, aes(x, y)) + 
+  facet_wrap(~z) +
+  labs(x = "Informative X label here", y = "Informative Y label here") +
+  ggtitle("Informative title here") +
+  theme_minimal(base_size = 20)
+
+
+```
+
+## Your Turn
+
+Now you will make some plots that answer particular questions. We will be using the `mtcars` dataset, so first you should read about what variables are contained in this dataset.
+
+```{r exercise = T}
+help(mtcars)
+```
+
+You will also want to look through the [capabilities of `ggplot`](https://www.maths.usyd.edu.au/u/UG/SM/STAT3022/r/current/Misc/data-visualization-2.1.pdf) in case we have not yet have seen an example of the type of plot you might think is best for the task at hand.
+
+*Hint:* When deciding between using color or a facet to separate categories, consider the number of categories. It is easier to distinguish between 2 or 3 colors than it is to distinguish between 5 or 6. 
+
+*Hint:* If `ggplot` is not treating a variable as a category like you want, try `as.factor(var_name)` instead of `var_name`. 
+
+**Does the relationship between the miles per gallon and weight of the car differ depending on the number of carburetors?**
+
+```{r exercise = T}
+
+```
+
+**Does the relationship between the 1/4 mile time and weight of the car differ depending on the engine type?**
+
+```{r exercise = T}
+
+```
+
+
+**Is there a miles per gallon advantage for cars of a particular transmission type?**
+
+
+```{r exercise = T}
+
+```
+
+**Task**: Take a screenshot of each of your three plots and post them to Slack on the #random channel. Briefly justify the plotting decisions you made.  
+
+
+## Submit progress
+
+As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 
+
+If a Google Form window does not appear, you can access it [here](https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform).
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform", 
+    width="900px", height= "1000px"
+  )
+)
+```
+
+

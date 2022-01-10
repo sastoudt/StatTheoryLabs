@@ -12,150 +12,27 @@ runtime: shiny_prerendered
 library(learnr)
 library(learnrhash)
 library(tidyverse)
-library(gradethis)
+#library(gradethis)
 library(plotly)
-tutorial_options(
+#tutorial_options(
   # use gradethis for checking
-  exercise.checker = gradethis::grade_learnr
-  )
+#  exercise.checker = gradethis::grade_learnr
+#  )
 knitr::opts_chunk$set(echo = FALSE)
 set.seed(113877)
 
 ```
 
-## Roadmap
+These applets will help you explore estimators for abundance in a capture-recapture framework.
 
-If you have completed HW 8 and 9, you can skip to the "Some logistics for Lab 1" section.
-
-If you have not completed HW 8 and 9 (or want a refresher), read through the next six sections before continuing.
-
-
-## Data in the wild
-
-Suppose you are working with an ecologist who wants to know how many deer are in their study site (this is formally called deer abundance). This may be part of an effort to determine whether the population is on the rise or declining, perhaps in connection to a particular disease like [chronic wasting disease](https://www.usgs.gov/faqs/what-chronic-wasting-disease?qt-news_science_products=0#qt-news_science_products).
-
-A good first step would be to go out to the study site and count how many deer we see as we walk through sub-sites. Let's call this estimate $\hat{N}$ and the true population abundance $N$.
-
-**Question:** Do you think $\hat{N}$ is a good estimate of $N$? Why or why not?
-
-## What can go wrong in a count?
-
-**Question:** Do you expect $\hat{N}$ to be closer or further away from $N$ if:
-
-- the animal of interest is large (like a deer) or small (like a butterfly)?
-
-- the animal of interest is relatively calm around people or skittish?
-
-- it's a clear day or it's pouring down rain?
-
-- easy to identify or looks similar to another species?
-
-## Bounding abundance
-
-If we assume we never mis-identify a species i.e. never have a false positive (which is a pretty big assumption), we are still left with the possibility that we didn't see an individual of the species, even when it was there (false negative). Therefore, our $\hat{N}$ is a lower bound on $N$.
-
-## How many animals did we miss?
-
-Suppose we go out the next day and do a recount, we'll call this estimate $\hat{N}_2$. 
-
-To make $\hat{N}$ and $\hat{N}_2$ comparable we need to make another pretty big assumption. We need to assume that the total abundance over the area $N$ hasn't changed within the time frame we are doing the multiple samples. This assumption is formally called "closure" (the system of interest is closed to births, deaths, and movement in and out of the region). Maybe in the span of one day, we might feel pretty comfortable with this assumption for animals that don't move quickly and/or have a relatively small home range (the space they roam). 
-
-Now we have a new lower bound on the abundance the maximum of $\hat{N}$ and $\hat{N}_2$. (Do you see why?)
-
-**Question:** What could have happened if:
-
-- $\hat{N}_2 > \hat{N}$?
-- $\hat{N}_2 < \hat{N}$?
-- $\hat{N}_2 = \hat{N}$?
-
-We don't know if the deer we are seeing today are the same or different than the deer we saw yesterday. Likely, $\hat{N}_2$ is a combination of old and new deer. What if we had some way of telling the difference between the two?
-
-## Capture-recapture
-
-This whole field experiment motivates a commonly used technique for ecologists: capture-recapture. What if we tagged animals we saw on Day 1 (capture) so that we could tell that we saw them before if we see them on Day 2 (re-capture)? Note: the goal is to do this in a minimally invasive way, but it still takes more resources to do and requires us to actually capture each animal we see which is, as you can imagine, hard.
-
-Now $\hat{N}_2$ can be partitioned into old and new deer: 
-
-$\hat{N}_2 = N_{new} + N_{old}$.
-
-**Question:** If $N_{old}$ is a small proportion of $\hat{N}_2$ do you expect our lower bound on $N$ to be closer or further away from $N$ than if it was a large proportion of $\hat{N}_2$? Why?
-
-## Estimating the probability of detection $p$
-
-If we knew how often we failed to detect a species, we could adjust our estimate for $N$ accordingly.
-
-Say we miss 1 out of every 4 deer (and therefore detect 3 out of every 4 deer) and we saw 11 deer. Then we know we have likely missed 12*(1/4) = 3 deer, so we can update our estimate to 11 + 3 = 14.
-
-But we don't know the probability of detection. What do we do when we don't know something? We plug-in an estimate for it instead. This is called the plug-in principle, and it is often used in statistics. We will pick up here in Lab 1. 
-
-## Some logistics for Lab 1
-
-This lab will not require any code, but we will use it as a way to get comfortable working in R Markdown documents. You will use R Markdown to create reproducible lab reports and project reports. 
-
-You should have a lab1_template.Rmd in your project. Throughout this tutorial you will see questions marked in bold (there are 10 of them). I have copied these questions into your lab report so that you can more easily answer them. You will not need any coding chunks, but you should take advantage of formatting options to make the report readable. Check out the [R Markdown Cheatsheet](https://www.rstudio.com/wp-content/uploads/2015/02/rmarkdown-cheatsheet.pdf) for tips.
-
-When you are finished editing your R Markdown document click the "Knit" button and choose "Knit to HTML" in the top left corner of RStudio. This will run all of your code and create a formatted document of the output. If you get an error, it means something in your R Markdown file isn't right, either an error in code or some error in formatting. 
-
-Submit your R Markdown document and knitted file to Moodle as:
-
-LastName-L-01.Rmd 
-
-LastName-L-01.html
-
-To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
-
-*Due*: Wednesday, September 22nd at 5 PM
-
-
-## What does capture-recapture data tell us about the detection probability?
-
-We're in the field trying to estimate the abundance $N$ of deer. On our first day we capture $n_1$ individuals. What proportion of the total number of individuals is $n_1$?
-
-$$p = \frac{n_1}{N}$$
-
-In the long run $p$ should be a good estimate of the probability of detection for any one individual. (Do you see why?)
-
-If we knew $p$, we could estimate $N$ as $n_1/p$.
-
-We don't know $p$, but we do have some extra information thanks to our capture-recapture sampling strategy: the number of individuals we capture on day 2, $n_2$, and the number of individuals we saw on both days, $m_2$.
-
-Assume every individual of the species has the same probability of being detected. This is another big assumption as some members of the species may be more or less visible (for example, due to different sizes) or more or less shy than others.
-
-Frederick Charles Lincoln and C.G. Johannes Petersen recognized that:
-
-$$\frac{m_2}{n_2} = \frac{n_1}{N}$$
-**Question: Explain in words why this is true.**
-
-Then $\hat{N}_{LP} = \frac{n_1 n_2}{m_2}$.
-
-## Method of Moments Estimator (MoM)
-
-Lincoln and Peterson reasoned their way to this estimator. What if we wanted to take a different approach and find the Method of Moments Estimator?
-
-Let's define some notation to help us reason a different way about this problem. We capture, tag, and release $n_1$ animals on day 1. We then capture $n_2$ animals on day 2, $m_2$ of them are tagged (and hence seen on day 1). What is the total abundance $N$? This is a combinatorics problem.
-
-The total number of ways we could have seen $n_2$ animals on day 2 if $N$ were possible is ${N \choose n_2}$.
-
-The total number of ways we could have seen $n_2$ animals in our particular way (with $m_2$ repeats and $n_2-m_2$ new animals) was to choose $m_2$ animals to see twice out of $n_1$ possible animals we've already seen once and to choose $n_2 - m_2$ new animals out of $N-n_1$ to see for the first time. 
-
-So the probability of this happening is:
-
-$$\frac{{n_1 \choose m_2}{N-n_1 \choose n_2 - m_2}}{{N \choose n_2}}$$
-
-**Question**: What is this distribution and what are its first two moments? Hint: we have seen and derived them before.
-
-**Question**: Based on your answer above, what is the method of moments estimate?
-
-
-## Maximum-Likelihood Estimate (MLE)
-
-What if we wanted the MLE instead?
-
-$$\frac{{n_1 \choose m_2}{N-n_1 \choose n_2 - m_2}}{{N \choose n_2}}$$
+## Question 4 - Likelihood Plots
 
 We want the value of $N$ that maximes the likelihood of this happening as our estimate. This would be a gnarly thing to maximize by hand. Let's investigate graphically.
 
-**Question: For three different scenarios, use the hover feature to approximate the maximum of the likelihood curve. Write down the parameters you used and the values of the maximum points. Compare those values to those of the other two estimators we have seen so far (LP and MoM).**
+For three different scenarios, use the hover feature to approximate the maximum of the likelihood curve. Write down the parameters you used and the values of the maximum points at those values of the parameters. Compare those values to those of the other two estimators we have seen so far (LP and MoM). Note: you can calculate these by plugging in the parameters you use in the applet.
+
+Write your answer in your lab report.
+
 
 ```{r, echo=FALSE}
 sliderInput("n_1", "tagged in first collection (n_1)", min = 10, max = 100, value = 10,step = 5)
@@ -177,33 +54,17 @@ output$likPlot <- renderPlotly({
 })
 ```
 
-## How "good" is the Lincoln-Peterson estimator $\hat{N}_{LP}$?
 
-$\hat{N}_{LP}$ is a random variable.
 
-It is a function of of the data (individual sightings summarized by $n_1$, $n_2$, and $m_2$) and will therefore produce a different estimate from each different sample.
-
-- As a RV, $\hat{N}_{LP}$ has a sampling distribution.
-
-This is the distribution of values of $\hat{N}_{LP}$ produced from all possible samples of the same size from the population (n_1 and n_2 are the same but m_2 may differ).
-
-- We would like $\hat{N}_{LP}$ to be unbiased.
-
-i.e. The sampling distribution of $\hat{N}_{LP}$ is centered at $N$
-
-- We would like $\hat{N}_{LP}$ to have small variance.
-
-i.e. The sampling distribution of $\hat{N}_{LP}$ is concentrated as much as possible around $N$.
-
-**Question: In 1-2 sentences, explain why it is desirable to have estimators that are unbiased with low variance.**
-
-## Expected Value
+## Questions 6 and 7
 
 The above estimators depends on three different parameters which are hard to vary simultaneously and assess their effect on the overall estimate. Let's examine some "profiles" of $N_{LP}$ aka look at different slices of this multi-dimensional space where we fix two parameters (as well as the true abundance) and vary the other one. 
 
 **Question: When does this get close to the truth? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters (i.e. treat $n_1$ as the number of animals seen on day one, not just as notation)**
 
 **Question: So far we've been worried about underestimating since we will likely not detect some individuals. Try to find a situation where we overestimate the abundance by a lot. How likely is that situation to occur? Hint: consider the implied detection probability of the scenario.**
+
+Write your answers in your lab report.
 
 
 ```{r,  echo=FALSE}
@@ -245,19 +106,15 @@ output$estPlot2 <- renderPlotly({
 })
 ```
 
-## Asymptotics 
 
-The estimate approaches the truth (is asymptotically unbiased) as the "sample size" gets larger. I personally find it a bit ambiguous which sample size we are referring to: $n_1$? $n_2$? $N$? $m_2$? And they all are connected a bit.
-
-All else equal, we should improve our estimate as $m_2$ gets larger. However, how close we get to the truth is limited by $n_1$ as $m_2 \leq n_1$. This intuitively makes sense. The information lies in the number of repeats v. the number tagged. If these are close, then we have a large detection probability for those tagged individuals (and hence all of the individuals since we are assuming they are the same).
-
-In the extreme case, if $n_1 = N$, then we need $m_2 = n_1$ to get our estimate exactly right. If $n_1 < N$ then the closest we can get to the truth is $\frac{n_1 n_2}{n_1} = n_2$ when $m_2 = n_1$. This shows that the second day's sample also affects the overall quality even under ideal conditions on the first day.
-
-## Variance
+## Question 8
 
 The variance of the $N_{LP}$ estimator again is a function of three parameters, so we will want to look at some profiles to understand when the variance is small.
 
 **Question: What situations minimize the variance? Try a few combinations and note what you observe. Make sure to talk about the context of the parameters**
+
+
+Write your answer in your lab report.
 
 
 ```{r,  echo=FALSE}
@@ -282,9 +139,7 @@ output$varPlot <- renderPlotly({
 
 ## Adjusting for the Small-Sample Bias
 
-Chapman adjusted the Lincoln-Peterson estimate such that it is a less biased estimator in the small-sample case and when $n_1 + n_2 \geq N$.
-
-$$\hat{N}_C = \frac{(n_1+1)(n_2+1)}{(m_2 + 1)} - 1$$
+Nothing to write down here.
 
 
 ```{r,  echo=FALSE}
@@ -306,30 +161,3 @@ output$estPlot_adj <- renderPlotly({
 })
 ```
 
-Of course we don't know $N$. However, others have given us some guard rails. Robson and Reiger showed that the bias of $\hat{N}_C$ is less than 2% if $\frac{n_1 n_2}{N} > 4$. Again we don't know $N$, but they found that if $m_2 \geq 7$ then there is a 95% chance that $\frac{n_1 n_2}{N} > 4$.
-
-**Question:** You likely have seen this kind of de-biasing trick used before. Read [this Wikipedia section on standard deviation estimation](https://en.wikipedia.org/wiki/Standard_deviation#Estimation) and write a few sentences that relate the different estimators in this lab and those of the standard deviation in terms of motivation and approach.
-
-## Recap of Assumptions 
-
-- The population is closed between samples (as are markings).
-- The detection probability $p$ does not change across individuals or over time.
-- Each sample of the population is a random sample.
-
-These assumptions are likely not met in practice. On the positive side, assumptions being broken provide great opportunities for research. One can investigate questions of the form "what happens to the bias and variance of the estimator if *fill-in-the-blank* happens?". You may even be able to reason about the sign of the bias which can help you make decisions about the quality of your current estimate in the mean time.
-
-**Question:** Suppose animals that are marked are less likely to be observed later because they become shy of humans. How do you expect this to affect your estimate of $N$? Explain.
-
-## Resources
-
-This learnr tutorial was developed by S. Stoudt but pulls materials from a variety of sources.
-
-- [Rushing Lab course materials](https://rushinglab.github.io/WILD3810/articles/Lecture2/lecture2.html#1)
-- [Ogle's capture-recapture notes](https://derekogle.com/NCNRS349/modules/MarkRecap/BKG)
-
-
-## Original Literature
-
-- [Lincoln](https://books.google.com/books?hl=en&lr=&id=vY3EsdnzcPcC&oi=fnd&pg=PA2&dq=%22Calculating+Waterfowl+Abundance+on+the+Basis+of+Banding+Returns%22.+United+States+Department+of+Agriculture+Circular&ots=apI-gEfeR7&sig=9kGoHEmqjVVR_-YzA1ipAh4OYLY)
-- [Chapman](https://catalog.hathitrust.org/Record/005761134)
-- [Robson and Reiger](https://www.tandfonline.com/doi/abs/10.1577/1548-8659(1964)93[215:SSIPME]2.0.CO;2)

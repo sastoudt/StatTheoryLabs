@@ -1,0 +1,97 @@
+---
+title: "Code Training 5"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Code Annotation
+
+1. Do an initial reading of each code chunk. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+    
+2. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+    
+3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+      
+4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+    
+5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
+
+**Task**: Go through the code annotation steps on the following code chunk.
+
+```{r}
+sim.dataset <- function(n, mean_vals, sd_vals) {
+  # Simulate X variable:
+  simulated_data <- data.frame(
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+  )
+  # Simulate Y variable:
+  simulated_data <- simulated_data %>%
+    mutate(
+      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
+    )
+  # Return dataset
+  return(simulated_data)
+}
+
+```
+
+
+## Write a function 
+
+**Task**: Write a function to simulate sample data (for two groups) for your scenario. You may adapt the skeleton below
+
+```{r}
+sim.dataset <- function(n, mean_vals, sd_vals) {
+  # Simulate X variable:
+  simulated_data <- data.frame(
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+  )
+  # Simulate Y variable:
+  simulated_data <- simulated_data %>%
+    mutate(
+      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
+    )
+  # Return dataset
+  return(simulated_data)
+}
+
+```
+
+
+## Test your function
+
+**Task**: Test your function to make sure this is what you expect.
+
+```{r}
+set.seed(1726)
+test_data <- sim.dataset()
+
+head(test_data)
+dim(test_data)
+```
+
+## Plot your data
+
+**Task**: Plot the distribution of each of your two datasets. Practice writing informative labels. Remember to load the `tidyverse` if you are using ggplot.
+
+```{r}
+
+
+```
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-CT-05.Rmd 
+
+LastName-CT-05.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, March 21st before class

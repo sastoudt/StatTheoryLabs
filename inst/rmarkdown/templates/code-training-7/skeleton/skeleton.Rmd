@@ -1,0 +1,127 @@
+---
+title: "Code Training 7"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Your Simulate Dataset Function
+
+Put your custom `sim.dataset` here.
+
+```{r}
+
+```
+
+## Your Power Function
+
+Put your `simulate.power` here.
+
+```{r}
+
+```
+
+## Possible Scenarios
+
+You should already have decided what distribution(s) you will be generating data from. Now you should pick values of the parameters for each dataset to try out in a comprehensive simulation study. 
+
+The goal is to have some scenarios where the parametric test does well, the parametric test fails but the non-parametric test does well, and see the in-between to identify the break point. 
+
+```{r}
+num_reps <- 100 
+sample_size <- c() ## at least 3 sample sizes
+
+param1 <- c() ## at least 4 values for the parameter of the distribution used for the first data set
+param2 <- c() ## at least 4 values for the parameter of the distribution used for the second data set
+
+num_levels <- length(param1) * length(sample_size) * length(param2) ## how many scenarios
+
+all_scenarios <- expand.grid(sample_size = sample_size, param1 = param1, param2 = param2)
+## get all possible combinations of these two parameters
+```
+
+**Task**: Write me a paragraph that explains your choices for `sample_size`, `param1`, and `param2` and levels of relevant parameters in the context of your two tests.
+
+```{r}
+## create a space to store power from each scenario
+sim_study_output <- data.frame(
+  power_param = rep(NA, num_levels), 
+  power_nonparam = rep(NA, num_levels), 
+  param1 = as.factor(all_scenarios$param1), 
+  param2 = as.factor(all_scenarios$param2), 
+  sample_size = as.factor(all_scenarios$sample_size) 
+)
+```
+
+## Simulate power for each scenario
+
+```{r}
+for (i in 1:num_levels) {
+  sim_study_output[i, 1:2] <- simulate.power()
+  ## you will want to use the following as part of your inputs to the above power call
+  # sim_study_output$param1[i]
+  # sim_study_output$param2[i]
+  # sim_study_output$sample_size[i]
+}
+
+```
+
+## Preliminary Plots
+
+I have outlined the following plots that will help you display your simulation study results. Go through this code carefully, make sure you understand what is being displayed, and fill in the labels to be informative.
+
+```{r}
+# situations where you should NOT reject null
+# PLOT A
+ggplot(subset(sim_study_output, param1 == param2), aes(x = sample_size, y = power_param, col = param1, group = param1)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "", y = " ") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 20)
+
+## situations where you should reject null
+## PLOT B
+ggplot(subset(sim_study_output, param1 != param2), aes(x = sample_size, y = power_param, col = param1, group = param1)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~param2)+
+  labs(x = "", y = "") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 20)
+
+# situations where you should NOT reject null
+# PLOT C
+ggplot(subset(sim_study_output, param1 == param2), aes(x = sample_size, y = power_nonparam, col = param1, group = param1)) +
+  geom_point() +
+  geom_line() +
+  labs(x = "", y = " ") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 20)
+
+## situations where you should reject null
+## PLOT D
+ggplot(subset(sim_study_output, param1 != param2), aes(x = sample_size, y = power_nonparam, col = param1, group = param1)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~param2)+
+  labs(x = "", y = "") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  ggtitle("") + ## TO DO: FIX THIS LABEL TO BE INFORMATIVE
+  theme_minimal(base_size = 20)
+```
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-CT-07.Rmd 
+
+LastName-CT-07.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, April 4th before class

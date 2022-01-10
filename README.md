@@ -30,7 +30,7 @@ Exit RStudio and then open it again.
 
 ### Launch a lesson:
 
-1. In the console (bottom left) type: `learnr::run_tutorial("lesson1", "StatTheoryLabs")`
+1. In the console (bottom left) type: `learnr::run_tutorial("ct-1", "StatTheoryLabs")`
 
 ### Stop a lesson 
 
@@ -51,30 +51,35 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 
 ![](popups.png) 
 
+## Available Vignettes
+
+- "code-training-1": intro to RStudio
+
 ## Available Tutorials
 
 - "first-day": first day activity to guess the color
-- "hw2": check a homework problem empirically
-- "hw3": check a homework problem empirically
-- "hw4": check a homework problem empirically
-- "hw10": setup and guidance for a homework problem
-- "lab0": Using Simulations to Check Theory
-- "old_lab1": Estimation
+- "ct-1": code training 1 - intro to interactive tutorials
+- "ct-2": code training 2 - structures and subsetting
+- "ct-3": code training 3 - loops
+- "ct-4": code training 4 - plots and probability distributions
 - "lab1": Estimation (capture-recapture)
-- "lab2": Sampling Distributions and the CLT
-- "lab3": Resampling Methods
-- "project_prep_linreg_est_ci": Introduction to Simulation Studies of Slope Estimation in OLS  (not using Fall 21)
-- "project_prep_linreg_power": Introduction to Simulation Studies of OLS Power (not using Fall 21) 
-- "prob_sims": Probability Simulations (by Anthony Scotina, minorly adjusted)
 
+## Available Templates
 
+- "lab0": reproducibility and documentation
+- "lab1": estimation (capture-recapture)
+- "lab2": sampling distributions
+- "intro-np": introduction to nonparametrics
+- "lab3": bootstrap
+- "lab4": confidence intervals
+- "lab5": hypothesis testing
+- "code-training-5": Functions and Simulating Data
+- "code-training-6": Functions and Simulating Power
+- "code-training-7": Simulation Scenarios and Preliminary Plots
+- "code-training-8": Tidy Data and Better Plots
+- "code-training-9": Plot Expectation Sketching
 
-More coming soon... (in development Summer 2021)
-
-## Lab Instructions
-
-TBA
-
+(under development and updating for Spring 2022)
 
 ## How to Submit Google Form portion of Lab
 

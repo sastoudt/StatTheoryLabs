@@ -1,0 +1,279 @@
+---
+title: "Lab 4 Template"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Part I: Exploring Confidence Levels
+
+Recall the level of confidence associated with an inteval estimator is defined as the probability of the interval estimates containing the true parameter in repeated sampling.
+
+That is, if we draw thousands of random samples from a distribution and compute thousands of 100(1-$\alpha$)% confidence intervals, approximately 100(1-$\alpha$)% of those inervals will contain the true parameter.
+
+In this section, we are going to illustrate this idea via simulation. 
+
+
+```{r}
+# Set up a counter
+counter <- 0
+
+# Set up blank plot with specified ranges
+plot(x = c(22, 28), y = c(1, 100), type = "n", xlab = "", ylab = "")
+# Draw a vertical line at mu = 25
+abline(v = 25, lwd = 2)
+
+for(i in 1:1000){
+	# Generate the random sample of size 30
+	# Remember, rnorm requires sd, not the var
+	x <- rnorm(30, 25, 4)
+	# Lower limit
+	L <- mean(x) - qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Upper limit
+	U <- mean(x) + qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Check if mu = 25 is in the interval
+	# Increase the counter by 1 if yes
+	if (L < 25 && U > 25){
+	  counter <- counter + 1
+	}
+	# Plot first 100 intervals 
+	# Interval will be green if it contains mu, red if not	
+	color <- ifelse(L < 25 && U > 25, "green", "red")
+	if (i <= 100){
+	  segments(L, i, U, i, col = color)}
+}
+
+# Proportion of times interval contains mu
+counter/1000
+```
+
+**Question 1 - Annotating Code**
+
+a. Do an initial reading of the code in the chunk above. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+
+b. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+
+c. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+
+d. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+
+e. Write a two to three sentence description of what the code chunk does that someone without a coding background could understand.
+
+**Question 2 - Adapting Code**
+
+a. Adapt the following code to run a simulation that computes 90% confidence intervals instead.
+
+```{r}
+# Set up a counter
+counter <- 0
+
+# Set up blank plot with specified ranges
+plot(x = c(22, 28), y = c(1, 100), type = "n", xlab = "", ylab = "")
+# Draw a vertical line at mu = 25
+abline(v = 25, lwd = 2)
+
+for(i in 1:1000){
+	# Generate the random sample of size 30
+	# Remember, rnorm requires sd, not the var
+	x <- rnorm(30, 25, 4)
+	# Lower limit
+	L <- mean(x) - qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Upper limit
+	U <- mean(x) + qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Check if mu = 25 is in the interval
+	# Increase the counter by 1 if yes
+	if (L < 25 && U > 25){
+	  counter <- counter + 1
+	}
+	# Plot first 100 intervals 
+	# Interval will be green if it contains mu, red if not	
+	color <- ifelse(L < 25 && U > 25, "green", "red")
+	if (i <= 100){
+	  segments(L, i, U, i, col = color)}
+}
+
+# Proportion of times interval contains mu
+counter/1000
+```
+
+b. What proportion of intervals contained $\mu$? Was it what you expected?
+
+c. How do your intervals in this code chunk compare to those from the first code chunk?
+
+**Question 3 - More Adapting Code**
+
+Recall that since the data we were generating were iid from a Normal distribution, the sample mean has an exact Normal distribution with mean $\mu$ and standard error $\sigma/\sqrt{n}$ (this is the sampling distribution of the mean). When the data are not Normal, we can use the CLT to obtain the approximate sampling distribution of $\bar{X}$ as long as the sample size is large enough and the variance is finite.
+
+a. Copy and paste the first code chunk here. Adapt it to run a simulation that computes 95% confidence intervals with data generated from a Poisson random variable with parameter $\lambda = 3$. Your sample size should be $n=5$.
+
+
+```{r}
+# Set up a counter
+counter <- 0
+
+# Set up blank plot with specified ranges
+plot(x = c(22, 28), y = c(1, 100), type = "n", xlab = "", ylab = "")
+# Draw a vertical line at mu = 25
+abline(v = 25, lwd = 2)
+
+for(i in 1:1000){
+	# Generate the random sample of size 30
+	# Remember, rnorm requires sd, not the var
+	x <- rnorm(30, 25, 4)
+	# Lower limit
+	L <- mean(x) - qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Upper limit
+	U <- mean(x) + qnorm(.975, 0, 1)*(4/sqrt(30))
+	# Check if mu = 25 is in the interval
+	# Increase the counter by 1 if yes
+	if (L < 25 && U > 25){
+	  counter <- counter + 1
+	}
+	# Plot first 100 intervals 
+	# Interval will be green if it contains mu, red if not	
+	color <- ifelse(L < 25 && U > 25, "green", "red")
+	if (i <= 100){
+	  segments(L, i, U, i, col = color)}
+}
+
+# Proportion of times interval contains mu
+counter/1000
+```
+
+
+b. What proportion of your intervals contained $\lambda$? Should you be confident in your result? Why or why not?
+
+c. Copy and paste your code chunk from 3a and adapt it to run the same simulation, but now with a sample size of $n=50$. 
+
+d. What proportion of your intervals contain $\lambda$ now? How do your intervals change (between $n=5$ and $n=50$ for Poisson case)? Do you feel conident in your results now? Why or why not?
+
+## Part II: Violating Assumptions
+
+Recall that when we have iid data from $N(\mu, \sigma^2)$ and $\sigma$ is unknown, we can estimate it with the sample standard deviation $s$, and now have the following pivot:
+
+$$\frac{\bar{X}-\mu}{s/\sqrt{n}} \sim t_{n-1}$$
+When the population is normally distributed, the t-confidence interval is exact: a $100(1-\alpha)%$ interval covers $\mu$ with probability $1-\alpha$, or equivalent, misses $\mu$ on either side with probability $\alpha/2$. Again, notice that this assumes that the underlying population is normal. So what happens if that is not the case?
+
+**Question 4 - Using Coding Structure in New Context**
+
+a. Goal: Count the number of times (out of 10^5) the 95% CI misses the mean $\mu = \alpha*\beta$ on each side when the data comes from the right-skewed gamma distribution with $\alpha = 5$ and $\beta = 2$. 
+
+This goal should remind us of a familiar coding task.
+
+Relevant pseudo-code:
+
+- Generate a sample of size $n=20$ from a gamma distribution. Remember that the gamma functions in R have the reciprocal parameterization.
+
+- Calculate the lower and upper bound of the conidence interval
+
+- Now instead of seeing if $\mu$ is contained in the interval (like we did in Part I), break it into two steps. First see if the interal is abouve $\mu$ and increase a counter `tooLow` if yes. Then see if the entire interval is above $\mu$ and increase a counter `tooHigh` if yes.
+
+- Calculate the proportion of confidence intervals that were too low and too high.
+
+b. Repeat this simulation by changing the sample size to $n=250$. How does the sample size affect the frequency of missing $\mu$? 
+
+
+## Part III: Bootstrap t-Confidence Interval for $\mu$
+
+The main weakness of the t-CI occurs when the population is skewed. 
+
+Instead of assuming that the t-statistic follows a t-distribution, we could estimate the actual distribution of the t-statistic and create an interval based on that. This process is called the bootstrap t-interval. (We need to use the bootstrap to approximate the sampling distribution of the t-statistic since we don't trust that it is exactly defined by the t-distribution).
+
+For each of $B$ resamples, calculate the bootstrap t-statistic:
+
+$$T^* = \frac{\bar{x}^* - \bar{x}}{s^*/\sqrt{n}}$$
+
+where $\bar{x}^*$ and $s^*$ are the mean and standard deviation o the bootstrap resample and $\bar{x}$ is the mean of the original sample.
+
+Let $Q_1^*$ and $Q_2^*$ be the $\alpha/2$ and $1-\alpha/2$ quantiles of the bootstrap distribution, respectively. The bootstrap t-confidence interval for the mean is:
+
+$$(\bar{x} - Q_2^* \frac{s}{\sqrt{n}}, \bar{x} - Q_1^* \frac{s}{\sqrt{n}} )$$ 
+
+**Question 5 - Apply Concepts to Real Data**
+
+Arsenic is a naturally occuring element in the groundwater of Bangladesh. However, uch of this groundwater is used for drinking water by rural populations, so arsenic poisoning is a serious health issue. The distribution o arsenic concentrations from 271 wells in Bangladesh is incredibly right skewed, with mean 125.31 and standard deviation 297.98.
+
+a. Create a histogram of the arsenic levels.
+
+```{r}
+bangladesh <- read.csv("Bangladesh.csv", header = TRUE)
+arsenic <- bangladesh$Arsenic
+xbar <- mean(arsenic)
+n <- length(arsenic)
+```
+
+
+b. Find a 95% t-confidence interval for the mean $\mu$ of arsenic levels in Bangladesh.
+
+c. Find the 95% bootstrap percentile and 95% bootstrap t-confidence intervals fo the mean arsenic levels in Bangladesh and compare the results of these two to the interval you found in part b. Which interval would you report to a policy official and why?
+
+Recall the pseudo-code for a bootstrap scenario (or refer to Lab 3):
+
+- Allocate a vector to store results.
+- Loop over B = 10000 resamplings.
+- Sample the same sample size, with replacement, from data.
+- Calculate and store value of interest.
+- Outside loop use bootstrap distribution to calculate intervals.
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-L-04.Rmd
+
+LastName-L-04.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Friday, April 8th  at 5 PM
+
+## Opportunity for Extra Credit
+
+1. Read [Chapter 3 through section 3.6](https://r4ds.had.co.nz/data-visualisation.html).
+
+2. Read [Chapter 12 through Section 12.3](https://r4ds.had.co.nz/tidy-data.html).
+
+3. What are the advantages and disadvantages of displaying the information in the `bangladesh` dataset like in the following code chunk? Consider the x and y scales.
+
+```{r}
+bangladesh$site_number = 1:nrow(bangladesh)
+
+ggplot(bangladesh, aes(x = site_number, y = Arsenic))+geom_point()+geom_line()
+ggplot(bangladesh, aes(x = site_number, y = Chlorine))+geom_point()+geom_line()
+ggplot(bangladesh, aes(x = site_number, y = Cobalt))+geom_point()+geom_line()
+```
+
+4. Explain what is happening in the following code chunk. Your response should reference the structure and size of `bangladesh` and `transformed_data.
+
+```{r}
+library(tidyverse)
+
+head(bangladesh)
+dim(bangladesh)
+
+transformed_data <- pivot_longer(bangladesh, 1:3, names_to = "Material", values_to = "Level")
+
+head(transformed_data)
+dim(bangladesh)
+```
+
+5. What are the advantages and disadvantages of displaying the information in the `bangladesh` dataset like in the following code chunk? Consider the x and y scales.
+
+```{r}
+ggplot(transformed_data, aes(x = site_number, y = Level, col = Material)) +
+  geom_point() +
+  geom_line()
+
+ggplot(transformed_data, aes(x = site_number, y = Level)) +
+  geom_point() +
+  geom_line() +
+  facet_wrap(~Material)
+```
+
+* * *
+
+This lab was created by A. Flynt and was adapted by S. Stoudt.

@@ -1,0 +1,80 @@
+---
+title: "Lab 5 Template"
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+You will need two new packages. Recall that you only have to install once.
+
+```{r}
+install.packages("EnvStats") ## run once and then comment out
+install.packages("palmerpenguins") ## run once and then comment out
+```
+
+```{r}
+library(EnvStats)
+library(palmerpenguins)
+```
+
+## Background
+
+The goal of this in-class activity is for you to practice using the built in R functions to carry out hypothesis tests.
+
+Before you get started, use the help function to learn more about how to run the following tests:
+
+- one or two means: `t.test`
+- single variance: `varTest` in the package EnvStats
+- ratio of variances: `var.test`
+- one or two proportions: `prop.test` (note: this function provides a chi squared test statistic as opposed to a z test statistic, this is just the square of our typical statistic)
+
+## Exercise 1
+
+```{r}
+pen_sub <- penguins[-c(4, 9:12, 48, 179, 219, 257, 269, 272), ]
+bodymass <- pen_sub$body_mass_g
+sex <- ifelse(pen_sub$sex == "female", 1, 2)
+```
+
+a.) Write a code comment for each of the three lines above explaining what is happening.
+
+b.) Test whether the average body mass of penguins is greater than 4150 grams using $\alpha=0.05$. Interpret your answer in context (i.e. you should write something, not just display code output).
+
+c.) Conduct a size 0.1 test on whether the variance of penguin body mass is less than 650000 grams. Interpret your answer in context (i.e. you should write something, not just display code output).
+
+d.) Determine whether or not it is reasonable to assume that the variation in body mass for female and male penguins is the same using $\alpha = 0.02$. 
+
+e.) Is it reasonable to assume that there is a difference in the average body mass of female and male penguins? Make your conclusion using $\alpha = 0.02$.
+
+## Exercise 2
+
+Do you believe that an exceptionally high percentage of the executives of large corporations are right-handed? Although 85% of the genral public is right-handed, a survey of 300 chief executive officers of large corporations found that 96% were right-handed. Conduct a test using the appropriate R function, using $\alpha =0.01$. Interpret your answer in context (i.e. you should write something, not just display code output). 
+
+## Exercise 3
+
+Infections following surgery is a serious concern that can have a major impact on a patient's road to recovery. One approach to counter infection is to kill surgical pathogens by oxidation. A study randomly assigned 250 patients to receive 30% inspired oxygen and 250 patients to receive 80% inspired oxygen. Of the patients receiving 30% inspired oxygen, 28 had a surgical wound infection compared to 13 patients who received the 80% inspired oxygen treatment. Conduct a test using the appropriate R function to see if this difference is statistically significant. Interpret your answer in context (i.e. you should write something, not just display code output).
+
+## Extra Credit Opportunity
+
+Print out and complete the Gallup confidence interval worksheet. Scan and upload to Moodle.
+
+## Deliverables
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-L-05.Rmd
+
+LastName-L-05.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, May 2nd at 5 PM
+
+
+* * *
+
+This lab was created by A. Flynt and was adapted by S. Stoudt.

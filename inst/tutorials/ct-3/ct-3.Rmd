@@ -1,0 +1,233 @@
+---
+title: "Coding Training 3: Loops"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Code Annotation
+
+Recall that a good way to approach this scenario is read through the code and going through the following annotation steps.
+
+  
+1. Do an initial reading of each code chunk. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+    
+2. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+    
+3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+      
+4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+    
+5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
+
+Loops will be an important part of many future labs and the final project. Take your time and make sure you understand the following code chunks. Ask questions in office hours and/or on Slack.
+
+## Getting started - Loops
+
+A simple for loop has the following structure:
+
+```{r loopEx, eval = F, echo = T}
+n <- 5
+
+for(i in 1:n){
+  print(1)
+}
+```
+
+This is read "for index $i$ in the sequence 1 to $n$, do the following" (whatever is in the curly braces). 
+
+```{r loop1}
+question("What would the for loop above do",
+    answer("Print 5 one time."),
+    answer("Print 5 five times"),
+    answer("Print 1 five times", correct = T),
+    answer("Print 1 one time."),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+## Getting started - Loops cont.
+
+In this class, we will often want to work with probability distributions. 
+
+```{r loopEx2, eval = F, echo = T}
+n <- 5
+sample_size <- 3
+
+for(i in 1:n){
+  x <- rnorm(n = sample_size, mean = 0, sd = 1)
+}
+```
+
+```{r loop2}
+question("What is in x at the end of the above for loop",
+    answer("3 numbers drawn from the specified normal distribution.", correct = T),
+    answer("15 numbers drawn from the specified normal distribution."),
+    answer("Nothing, x is empty."),
+    answer("1 number drawn from the specified normal distribution"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+```
+
+
+## Sums
+
+$$\sum_{i=0}^4 3i$$
+
+```{r}
+total <- 0 ## start the total at zero
+
+for(j in 0:4){ ## for index j in 0 through 4
+  
+  total <- total + 3*j ## overwrite total by adding 3*j 
+  
+  
+}
+
+total
+
+class(total) ## what type of object is this
+length(total)
+dim(total) ## not relevant for this type
+```
+
+
+## Products
+
+Go through the code annotation process for the following code chunk.
+
+$$\prod_{i=1}^4 2i$$
+
+```{r}
+total <- 1 ## do you understand why this starts at 1?
+
+for(i in 1:4){
+  
+  total <- total * 2*i
+  
+}
+
+total
+
+class(total)
+length(total)
+```
+
+## Simulate and Store Data
+
+
+```{r}
+num_sim <- 5 
+sample_size <- 3
+
+stored_data <- matrix(NA, nrow = num_sim, ncol = sample_size)
+## set up a place to store things
+## set up empty matrix of NAs with 5 rows and 3 columns
+
+for(i in 1:num_sim){ ## do something 5 times
+
+  x <- rnorm(n = sample_size, mean = 0, sd = 1) 
+  ## draw 3 random numbers from N(0,1)
+  stored_data[i,] <- x
+  ## over ride the ith row in stored_data with the 3 values we drew
+}
+
+stored_data ## print results
+```
+
+## Simulate and Store Results
+
+Go through the code annotation process for the following code chunk.
+
+```{r}
+num_sim <- 5
+sample_size <- 3
+
+stored_means <- rep(NA, length.out = num_sim)
+
+for(i in 1:num_sim){
+  x <- rnorm(n = sample_size, mean = 0, sd = 1)
+  stored_means[i] <- mean(x)
+  }
+
+stored_means
+```
+
+## Your Turn
+
+Suppose we are interested in finding the expected value of the maximum of $n = 10$ $iid$ uniform random variables defined on the range 0 to $\theta$ where $\theta = 2$. Let's calculate the maximum from a bunch of these simulations and see what we find. 
+
+```{r getMax, exercise = TRUE}
+theta <- 2 
+n <- 10 
+
+num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
+store_max <- ___(NA, ___)
+for (i in 1:___) {
+  test <- runif(n = ___, min = 0, max = theta)
+  store_max[___] <- max(test)
+}
+
+mean(___) ## to approximate the expected value
+var(___) ## to approximate the variance of the maximum of uniform r.v.
+```
+
+```{r getMax-solution}
+theta <- 2 
+n <- 10 
+
+num_rep <- 1000 ## how many times we want to repeat the simulation, something fairly large
+store_max <- rep(NA, num_rep)
+for (i in 1:num_rep) {
+  test <- runif(n = n, min = 0, max = theta)
+  store_max[i] <- max(test)
+}
+
+mean(store_max) ## to approximate the expected value
+var(store_max) ## to approximate the variance of the maximum of uniform r.v.
+```
+
+```{r getMax-check}
+# check code
+gradethis::grade_code()
+```
+
+
+
+## Submit progress
+
+As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 
+
+If a Google Form window does not appear, you can access it [here](https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform).
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform", 
+    width="900px", height= "1000px"
+  )
+)
+```
+
+

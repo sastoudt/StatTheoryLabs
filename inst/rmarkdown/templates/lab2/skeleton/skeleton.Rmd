@@ -1,0 +1,308 @@
+---
+title: 'Lab 2: Template'
+author: "Sara Stoudt"
+date: "1/7/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Some logistics for Lab 2
+
+You should have a template in your project. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option). Answer the following questions in that document. Make sure to label them and use formatting to make it straightforward to read. Code and text will be intermingled. 
+
+Submit your R Markdown document and knitted file to Moodle as:
+
+LastName-L-02.Rmd 
+
+LastName-L-02.html
+
+To get these files onto your own computer, look in the "Files" pane in the bottom right. Check the boxes next to the two files you want to export, click the "More" button (with a little blue gear), click "Export". Make sure you are exporting the files to a place where you can find them on your own computer. 
+
+*Due*: Monday, March 7th at 5 PM
+
+
+##  Sampling Distributions
+
+Recall that the sampling distribution of an estimator is the distribution of values of that estimator taken from all possible samples of the same size from the population.
+
+For example, we can simulate the (approximate) sampling distribution for the mean of an exponential distribution with parameter $\beta = 15$.
+
+We will complete 1000 iterations, where we draw samples of size `n = 100` from an Exp($\beta = 15$) population.
+
+```{r}
+num_sim <- 1000
+sample_size <- 100
+my_means <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  dat <- rexp(sample_size, 1 / 15) ## remember the parameterization
+  my_means[i] <- mean(dat)
+}
+
+hist(my_means)
+
+# Can check normality by how close the points fall to the line.
+qqnorm(my_means)
+qqline(my_means)
+```
+
+## Illustrating the CLT
+
+The CLT states that if $X_1, X_2, ..., X_n \sim^{iid} f_X$, where $f_X$ has mean $\mu$ and variance $\sigma^2 < \inf$, then
+
+$$ \frac{\bar{X}-\mu}{\sigma/\sqrt{n}} \rightarrow^{dist} N(0,1)$$
+
+where $\rightarrow^{dist}$ means "converges in distribution as $n\rightarrow \inf$".
+
+We know from the CLT that theoretically, the sampling distribution of $\bar{X}$ from the example above should be approximately Normal, centered around 15 with a standard error of $15/\sqrt{100}$.
+
+$$\bar{X} \approx N(\mu = 15, se = \frac{\sigma}{\sqrt{n}} = 15/10)$$
+How did we do? Was $n=100$ large enough for the CLT to "kick in"?
+
+## Question 1
+
+Perform the code annotation steps on the code chunk in the Sampling Distribution section above.
+
+1. Do an initial reading of each code chunk. Note any questions that pop into your head. If you do this inline, use a hashtag (#) to add a comment.
+    
+2. Identify any functions you do not understand and look them up using the help function `help(function_name)` or the "Help" tab in the bottom right pane. Make sure you understand the input paramters and the form of the output. 
+    
+3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
+      
+4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+    
+5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
+
+## Question 2
+
+**a.)** Consider the exponential distribution with $\beta$= 20.
+
+**(i)** Generate 1000 values from this distribution and calculate the median. Pay attention to the parameterization of the Exponential distribution in R.
+
+```{r}
+
+
+```
+
+**(ii)** Draw a random sample of size 15 from the exponential distribution with $\beta$  = 20 and graph it with a histogram. Describe the distribution of your sample. What are the mean and the standard deviation of your sample?
+
+```{r}
+
+
+```
+
+
+**(iii)** Run a simulation to find the approximate sampling distribution for the median of samples of size 15 from an exponential population with $\beta$  = 20 . Describe the sampling distribution and report the mean and the standard error of this distribution.
+
+```{r}
+num_sim <- 1000
+sample_size <- 
+my_medians <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  
+}
+
+hist(my_medians)
+
+```
+
+**(iv)** Repeat step (iii) but use a sample size of $n = 100$. How does the sample size affect the sampling distribution?
+
+```{r}
+num_sim <- 1000
+sample_size <- 
+my_medians <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  
+}
+
+hist(my_medians)
+
+```
+
+**b.)** Let $X_1, X_2, ..., X_n \sim^{iid} Exponential(\beta)$. Recall that (be able to show that) $X_{(1)} \sim Exp(\frac{\beta}{n})$. Simulate the sampling distribution of $X_{(1)}$ for samples of size $n=25$ from an exponential distribution with $\beta = 7$. Compare the theoretical expected value of $X_{(1)}$ to the simulated expected value.
+
+```{r}
+num_sim <- 1000
+sample_size <- 
+my_min <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  
+}
+
+hist(my_min)
+
+```
+
+**c.)** Let $X_1, X_2, ... X_10 \sim^{iid} N(20, 8^2)$ and $Y_1, Y_2, ... Y_15 \sim^{iid} N(16, 7^2)$. Let $W = \bar{X}+\bar{Y}$. 
+
+Note: There are 10 values for $X$ and 15 for $Y$.
+
+**(i)** Give the exact sampling distribution of $W$ (this is not a coding question).
+
+**(ii)** Simulate an approximate sampling distribution and plot your results. Check that the simulated mean and standard error are close to the theoretical mean and standard error from (i). Your code should be of the form:
+
+```{r}
+num_sim <- 1000
+W <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  ## simulate random samples for X
+  ## simulate random samples for Y
+  ## calculate and store W
+}
+
+hist(W)
+
+```
+
+
+## Question 3
+
+We are going to illustrate the CLT for a finite population. 
+
+First, we must create our "population." We will assume that our population consists of 400 observations from an Exponential with $\beta = 10$.
+
+```{r}
+set.seed(17) # ensures we all generate the same population
+N <- 400
+finpop <- rexp(N, 1 / 10)
+
+hist(finpop) # distribution of our finite pop.
+
+mean(finpop) # mean (mu) of our pop.
+
+sd(finpop) # stdev (sigma) or our pop.
+
+n <- 5 ## suppose we are interested in samples of size n = 5
+sd(finpop) / sqrt(n)  # theoretical standard error of sampling dist. of the mean(x)
+```
+
+
+**a.)** Simulate the sampling distribution of the sample mean for samples of size $n=5$. Make sure you are sampling from othe finite "population" as we defined above.
+
+```{r}
+num_sim <- 1000
+sample_size <- 
+my_means <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  
+}
+
+```
+
+
+**b.)** Plot your results. Does the sampling distribution of the sample mean appear approximately normal?
+
+```{r}
+hist(my_means)
+```
+
+**c.)** Compare the mean and standard error of your simulated sampling distribution to the theoretical ones.
+
+```{r}
+mean(my_means)
+sd(my_means)
+```
+
+**d.)** Repeate parts (a)-(c) for $n=25$ and $n=100$. What do you observe?
+
+```{r}
+num_sim <- 1000
+sample_size <- 
+my_means <- rep(NA, length.out = num_sim)
+
+
+for (i in 1:num_sim) {
+  
+}
+
+hist(my_means)
+mean(my_means)
+sd(my_means)
+```
+
+
+## Question #4
+
+We claimed in class that the sample mean and the sample variance are independent if an only if the sample is drawn from a Normal distribution. The proof of this result is relatively complicated, but we will try to verify it with simulations.
+
+**a.)** Create a `for` loop of 1000 replications that first samples 200 observations from a $N(1, 1)$, and then calculates and stores the sample mean and sample variance of each set of simulated data. This should leave you with 1000 means and 1000 variances.
+
+```{r}
+num_sim <- 
+sample_size <- 
+my_means <- rep(NA, length.out = ___ )
+my_vars <- rep(NA, length.out = ___ )
+
+
+for (i in 1:___) {
+  
+}
+
+
+
+```
+
+**b.)** Create a scatterplot of these values treating the means as the x-values and the variances as the y-values. Give informative axis labels and include a copy of your plot.
+
+
+```{r}
+plot(my_means, my_vars, main = "", xlab="", ylab="")
+```
+
+
+**c.)**  Calculate the correlation between the means and variances.
+
+```{r}
+cor(my_means, my_vars)
+```
+
+**d.)** Using the scatterplot produced and the correlation calculated, comment on the independence between the sample mean and the sample variance.
+
+Note: although a correlation of zero does not always imply independence, we will interpret it as such here. Recall that correlation is a real number between -1 and 1, where -1 is a perfect negative linear relationship and 1 is a perfect positive linear relationship.
+
+**e.)** Repeat (a) - (d), this time generating data from an Exponential(1). Note: the mean and variance of this distribution are both 1, just like for the data simulated in (a).
+
+```{r}
+
+
+```
+
+**f.)** Do your simulations agree with the Theorem?
+
+Note: If you are not yet convinced, I encourage you to try with samples from other distributions and/or different sample sizes and/or more replications.
+
+## Opportunity for Extra Credit
+
+Read Chapter 7 of Modern Dive (don't get bogged down in the code, it is a bit fancier than what we are used to, focus on conceptual) https://moderndive.com/7-sampling.html 
+
+Turn in Rmd and html with the following:
+
+Consider a population that has a normal distribution with mean 36 and variance 64. 
+
+a.) The sampling distribution of X-bar for samples of size 200 will have what distribution, mean, and standard error? (not a coding question)
+
+b.) Compute the bootstrap distribution for the maximum of a sample of size 200 from the population described above. Make a histogram of this distribution. Describe the shape, center, and spread of this distribution.
+
+c.) Repeat part b for samples of size 50. Make a histogram of this distribution. Describe the shape, center, and spread of this distribution and compare it to what you found in part b.
+
+Note: If Chapter 7 helped clarify your thinking about sampling distributions, Chapter 8 and 9 also provide another perspective on the bootstrap and hypothesis tests that might similarly help you.
+
+* * *
+
+This lab was created by A. Flynt and was adapted by S. Stoudt.
+
