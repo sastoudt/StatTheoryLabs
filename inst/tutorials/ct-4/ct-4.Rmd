@@ -30,7 +30,7 @@ simulated_data <- data.frame(
 
 We can make plots quickly using functionality in what is called "base R" without loading any additional packages. If the data is represented in a vector, we can use that object on its own. If we want to grab a column out of a dataframe, then we need to access it using the dollar sign: dataset$colname.
 
-```{r test exercise = T}
+```{r test, exercise = T}
 x <- rnorm(100, 0, 1) ## x is a vector
 
 hist(x, main = "title", xlab = "units", ylab = "density")
@@ -50,7 +50,7 @@ plot(simulated_data$x, simulated_data$y, main = "title", xlab = "x", ylab = "y")
 
 These distributions will be very useful to you in your final project. It is important to understand their properties to know how to use them. The best way to learn about them is to generate data from them with different values for the parameters and plot them to notice their differences. 
 
-```{r dist exercise = T}
+```{r dist, exercise = T}
 
 x <- rnorm(5000, 0, 1)
 y <- rt(5000, 10)
@@ -86,7 +86,7 @@ question("Is the chi-squared distribution symmetric?",
 ```
 
 
-```{r dist3 exercise = T}
+```{r dist3, exercise = T}
 y <- rt(5000, 10)
 y2 <- rt(5000, 100)
 
@@ -95,7 +95,7 @@ hist(y, main = "t, df = 10")
 hist(y2, main = "t, df = 100")
 ```
 
-```{r dist4 exercise = T}
+```{r dist4, exercise = T}
 z <- rchisq(5000, 10)
 z2 <- rchisq(5000, 100)
 
@@ -160,7 +160,7 @@ With `ggplot()`:
 For instance, if you wanted to visualize the scatterplot below using a line graph, you would replace `geom_point()` with `geom_line()`.
 
 
-```{r plot exercise = T}
+```{r plot, exercise = T}
 library(tidyverse)
 
 ggplot(simulated_data, aes(x, y)) + 
@@ -187,7 +187,7 @@ ggplot(simulated_data, aes(y)) +
 
 Changing the color (`col`) and/or the line type (`lty`) allow you to show a third variable in a 2D plot.These are specified within the `aes`.
 
-```{r plot2 exercise = T}
+```{r plot2, exercise = T}
 
 ggplot(simulated_data, aes(x, y, col = z)) + 
   geom_point() +
@@ -207,7 +207,7 @@ ggplot(simulated_data, aes(x, y, lty = z)) +
 
 If you want to make the same type of plot, but one for each group, you use the facet option. The tilde (~) is important in the command.
 
-```{r plot3 exercise = T}
+```{r plot3, exercise = T}
 ggplot(simulated_data, aes(x, y)) + 
   facet_wrap(~z) +
   labs(x = "Informative X label here", y = "Informative Y label here") +
@@ -221,7 +221,7 @@ ggplot(simulated_data, aes(x, y)) +
 
 Now you will make some plots that answer particular questions. We will be using the `mtcars` dataset, so first you should read about what variables are contained in this dataset.
 
-```{r plot5 exercise = T}
+```{r plot5, exercise = T}
 help(mtcars)
 ```
 
@@ -233,13 +233,13 @@ You will also want to look through the [capabilities of `ggplot`](https://www.ma
 
 **Does the relationship between the miles per gallon and weight of the car differ depending on the number of carburetors?**
 
-```{r plot6 exercise = T}
+```{r plot6, exercise = T}
 
 ```
 
 **Does the relationship between the 1/4 mile time and weight of the car differ depending on the engine type?**
 
-```{r plot7 exercise = T}
+```{r plot7, exercise = T}
 
 ```
 
@@ -247,7 +247,7 @@ You will also want to look through the [capabilities of `ggplot`](https://www.ma
 **Is there a miles per gallon advantage for cars of a particular transmission type?**
 
 
-```{r plot8 exercise = T}
+```{r plot8, exercise = T}
 
 ```
 
