@@ -111,6 +111,10 @@ $$\frac{m_2}{n_2} = \frac{n_1}{N}$$
 
 *Hint: Write out what each of these variables means in words and then think about what those two ratios mean conceptually. I encourage you to talk though this with a neighbor, but you must write your own response.*
 
+Here is a picture example of what might happen.
+
+![](cap-recap-ex.jpg)
+
 *If you have spent more than 10 minutes on this, raise your hand and we'll talk through it.*
 
 Then, rearranging, $\hat{N}_{LP} = \frac{n_1 n_2}{m_2}$.
@@ -129,12 +133,13 @@ So the probability of this happening is:
 
 $$\frac{{n_1 \choose m_2}{N-n_1 \choose n_2 - m_2}}{{N \choose n_2}}$$
 
-**Question 2**: What is this distribution and what are its first two moments? 
+**Question 2**: What is this distribution and what are its expectation and variance? 
 
-*Hint:* We have seen and derived them before. You will need to translate between two notations, but once you have identified the distribution, your book will be helpful in finding the moments.
+*Hint:* We have seen this distribution and derived these properties before. You will need to translate between two notations, but once you have identified the distribution, your book/distribution table will be helpful in finding the expectation and variance.
+
+*Hint:* Consider an individual that you spot on the second day. It is either a new individual you did not see on day one or it is a repeat that you saw on day one. Where have we seen something that considers a finite number of elements that have two characteristics?
 
 **Question 3**: Based on your answer above, what is the method of moments estimate for N?
-
 
 ## Maximum-Likelihood Estimate (MLE)
 
