@@ -1,0 +1,133 @@
+---
+title: "Code Training 9: Plot Expectation Sketching"
+output: learnr::tutorial
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Power
+
+```{r quiz1}
+  question("What can affect the power of a test (select ALL that apply)",
+    answer("sample size", correct = T),
+    answer("size of test", correct = T),
+    answer("effect size (e.g. magnitude of difference in means)", correct = TRUE),
+    answer("variance of the data generating process", correct = T),allow_retry = TRUE,
+    random_answer_order = T
+  )
+
+```
+
+Which of these factors are you changing in your simulation study? How are they related to the parameters you are varying?
+
+## Plot Expectation Sketching
+
+When working on a big simulation study, it can be helpful to first sketch out what you expect to see in your results before actually looking at them. This can help you think more conceptually about what you are working with rather than getting bogged down in the code.
+
+You will be making plots similar to the simple sketches below.
+
+
+![](power-sketches.jpg)
+
+
+```{r quiz2}
+  question("Suppose the x-axis is the size of the test. Which general trend do you expect to see?",
+    answer("A", correct = T),
+    answer("B"),
+    answer("C"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+```
+
+Why?
+
+```{r quiz3}
+  question("Suppose the x-axis is the sample size. Which general trend do you expect to see?",
+    answer("A", correct = T),
+    answer("B"),
+    answer("C"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+```
+
+Why?
+
+```{r quiz4}
+  question("Suppose the x-axis is the effect size. Which general trend do you expect to see?",
+    answer("A", correct = T),
+    answer("B"),
+    answer("C"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+```
+
+Why?
+
+```{r quiz5}
+  question("Suppose the x-axis is the variance of the data generating process. Which general trend do you expect to see?",
+    answer("A"),
+    answer("B", correct = T),
+    answer("C"),
+    allow_retry = TRUE,
+    random_answer_order = F
+  )
+
+```
+
+Why?
+
+## Your Turn
+
+Consider the plotting structure you set up in Code Training 8. You have two plots. What is the interpretation of the y-axis in each. What does your x-axis represent?
+
+Now you are going to start sketching. Do this on a piece of paper. You will need different colors to represent values of your parameter, and you will need to denote the two different tests with solid and dashed lines. Make sure to sketch a legend.
+
+Let's focus on one pane of each of your faceted plots to start. Label each of your two plots like you have them set up in Code Training 8. Draw a simplified version of what you expect to see when you plot your simulated data based on your knowledge of the simulation scenarios and your two tests' strengths and weaknesses.
+
+It will be helpful to first think of your answers to the following prompts.
+
+- If the parametric test is doing better than the nonparametric test, what would that look like? For what parameters do you expect the parametric test to do better? (this will affect your labels) 
+
+- If the parametric test does better at first but then the nonparametric test starts to do better, what would that look like? For what parameters do you expect the nonparametric test to do better? (this will affect your labels) 
+
+- If the parametric test works at first but then breaks down, what would that look like? For what parameters do you expect the parametric test to break? (this will affect your labels) 
+
+Once you have made two sketches, add one more facet to each of them. What do you expect to change (if anything) at a different value of whatever parameter you are displaying via the `facet_wrap`. 
+
+**Task**: Take a picture of your two sketches (two panes each) and post them to Slack on the #random channel. Briefly justify the sketching decisions you made.  
+## Submit progress
+
+As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 
+
+If a Google Form window does not appear, you can access it [here](https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform).
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform", 
+    width="900px", height= "1000px"
+  )
+)
+```
+
+
+
+
+
+
+

@@ -66,6 +66,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "ct-2": code training 2 - structures and subsetting
 - "ct-3": code training 3 - loops
 - "ct-4": code training 4 - plots and probability distributions
+- "ct-9": code training 9 - plot expectation sketching
 - "lab1": Estimation (capture-recapture)
 
 ## Available Templates
@@ -80,7 +81,6 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "code-training-6": Functions and Simulating Power
 - "code-training-7": Simulation Scenarios and Preliminary Plots
 - "code-training-8": Tidy Data and Better Plots
-- "code-training-9": Plot Expectation Sketching
 - "intro-np": introduction to nonparametrics
 - "intro-project": introduction to final project
 
