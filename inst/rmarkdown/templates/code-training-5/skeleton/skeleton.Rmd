@@ -25,15 +25,12 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ```{r}
 sim.dataset <- function(n, mean_vals, sd_vals) {
-  # Simulate X variable:
+  # Simulate X and Y variables:
   simulated_data <- data.frame(
-    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1]),
+    y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
   )
-  # Simulate Y variable:
-  simulated_data <- simulated_data %>%
-    mutate(
-      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
-    )
+  
   # Return dataset
   return(simulated_data)
 }
@@ -47,25 +44,21 @@ sim.dataset <- function(n, mean_vals, sd_vals) {
 
 ```{r}
 sim.dataset <- function(n, mean_vals, sd_vals) {
-  # Simulate X variable:
+  # Simulate X and Y variables:
   simulated_data <- data.frame(
-    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1])
+    x = rnorm(n = n, mean = mean_vals[1], sd = sd_vals[1]),
+    y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
   )
-  # Simulate Y variable:
-  simulated_data <- simulated_data %>%
-    mutate(
-      y = rnorm(n = n, mean = mean_vals[2], sd = sd_vals[2])
-    )
+  
   # Return dataset
   return(simulated_data)
 }
-
 ```
 
 
 ## Test your function
 
-**Task**: Test your function to make sure this is what you expect.
+**Task**: Test your function to make sure the result is what you expect.
 
 ```{r}
 set.seed(1726)

@@ -18,7 +18,11 @@ We will be using R Markdown to create reproducible lab reports. See the followin
 
 [**Using R Markdown for Lab Reports in RStudio**](https://youtu.be/o0h-eVABe9M)
 
-We will *not* be using the templates that the video references. Instead, we will start from scratch. In RStudio, go to New File -> R Markdown. Often, I will give you a template that you can add to. Be sure to add your name to the author heading.
+We will *not* be using the templates that the video references. Instead, we will start either start from scratch or use a template from the `StatTheoryLabs` package (see below).
+
+![](template.png)
+
+In RStudio, if you want to create a new file from scratch, go to New File -> R Markdown. Often, I will give you a template that you can add to. Be sure to add your name to the author heading.
 
 Going forward you should refrain from typing your code directly in the console, and instead type any code (final correct answer, or anything you're just trying out) in the R Markdown file and run the chunk using either the Run button on the chunk  (green sideways triangle) or by highlighting the code and clicking Run on the top  right corner of the R Markdown editor. 
 
@@ -100,7 +104,6 @@ See this link [Calling functions](https://r4ds.had.co.nz/workflow-basics.html#ca
 
 Sometimes the help document doesn't tell you what you want to know.  Don't feel shy about doing an internet search for more helpful answers and examples.  All of us (even the most experienced programmers) turn to the internet and other resources for help.
 
-**Task**: Use the help function to learn about the `rexp` function. Generate 2 random values from an exponential distribution with mean 2. Pay special attention to the parameterization. 
 
 ## Random Number Generation and Reproducibility
 
@@ -117,6 +120,12 @@ rnorm(1, 1, 1)
 ```
 
 **Task**: Use the help function to understand what is happening here in the code chunk above. Explain in a code comment.
+
+**Task**: Use the help function to learn about the `rexp` function. Generate 2 random values from an exponential distribution with mean 2. Pay special attention to the parameterization and don't forget to set your seed.
+
+```{r}
+
+```
 
 ## Knitting Your Document
 

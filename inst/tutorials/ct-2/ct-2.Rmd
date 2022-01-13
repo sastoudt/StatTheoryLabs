@@ -30,18 +30,18 @@ As you learn about R code you will encounter code chunks that you don't fully un
     
 3. Identify any overall structure. Is a subtask repeated multiple times? How many times?
       
-4. For each object, predict their size. Check your intuition using `dim` or `length`. You may also want to use `class` to identify the type of an object.
+4. For each object, predict their size. Check your intuition using `dim` or `length` (explained below). You may also want to use `class` to identify the type of an object (explained below).
     
 5. Write a one to two sentence description of what the code chunk does that someone without a coding background could understand.
 
-You may want to use this for a subset of code chunks in this tutorial.
+You may want to use this framework to go through the larger code chunks in this tutorial.
 
 
 ## Data Management
 
 ### Vectors
 
-The `c()` function *concatenates* items (of homogenous type) into a vector; for example, `myvector = c(1, 3, 6, 9)` creates a vector that has four elements. To learn about how many elements in the vector there are, you can use the function `length`.
+The `c()` function *concatenates* items (of homogenous type) into a vector; for example, `myvector = c(1, 3, 6, 9)` creates a vector that has four elements. To learn about how many elements in the vector there are, you can use the function `length`. Read the help file for the function for more guidance.
 
 ```{r myvec, exercise = T}
 myvector <- c(1, 3, 6, 9)
@@ -76,7 +76,7 @@ gradethis::grade_code()
 
 ### Matrices
 
-What are the dimensions of the following matrix? Use `dim` to find out.
+What are the dimensions of the following matrix? Use `dim` to find out. Read the help file for the function for more guidance on what this function returns if it isn't clear from the following example.
 
 ```{r makeMatrix, exercise = T}
 mymatrix <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3)
@@ -105,7 +105,7 @@ mymatrix <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3)
 mymatrix[c(2,3),]
 ```
 
-Assign the first row of `mymatrix` to a variable named `row1`. Use the function `summary()` to  find the minimum and maximum of this row.
+Assign the first row of `mymatrix` to a variable named `row1`. Use the function `summary()` to  find the minimum and maximum of this row. Consult the help files for `summary` if necessary.
 
 ```{r matrixWork, exercise = T}
 mymatrix <- matrix(c(1, 2, 3, 4, 5, 6), nrow = 3)

@@ -11,8 +11,6 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Some logistics for Lab 2
 
-You should have a template in your project. Open it, copy and paste it into a new Rmd file and proceed (in the top left corner, there is a button with a white square and a green plus sign icon, then choose the RMarkdown option). Answer the following questions in that document. Make sure to label them and use formatting to make it straightforward to read. Code and text will be intermingled. 
-
 Submit your R Markdown document and knitted file to Moodle as:
 
 LastName-L-02.Rmd 
@@ -190,7 +188,7 @@ sd(finpop) / sqrt(n)  # theoretical standard error of sampling dist. of the mean
 ```
 
 
-**a.)** Simulate the sampling distribution of the sample mean for samples of size $n=5$. Make sure you are sampling from othe finite "population" as we defined above.
+**a.)** Simulate the sampling distribution of the sample mean for samples of size $n=5$. Make sure you are sampling from the finite "population" as we defined above.
 
 ```{r}
 num_sim <- 1000
@@ -211,14 +209,14 @@ for (i in 1:num_sim) {
 hist(my_means)
 ```
 
-**c.)** Compare the mean and standard error of your simulated sampling distribution to the theoretical ones.
+**c.)** Compare the mean and standard error of your simulated sampling distribution to the theoretical ones. What do you notice?
 
 ```{r}
 mean(my_means)
 sd(my_means)
 ```
 
-**d.)** Repeate parts (a)-(c) for $n=25$ and $n=100$. What do you observe?
+**d.)** Repeat parts (a)-(c) for $n=25$ and $n=100$. What do you observe?
 
 ```{r}
 num_sim <- 1000
@@ -288,9 +286,9 @@ Note: If you are not yet convinced, I encourage you to try with samples from oth
 
 ## Opportunity for Extra Credit
 
-Read Chapter 7 of Modern Dive (don't get bogged down in the code, it is a bit fancier than what we are used to, focus on conceptual) https://moderndive.com/7-sampling.html 
+Read Chapter 7 of Modern Dive (don't get bogged down in the code, it is a bit fancier than what we are used to, focus on conceptual content) https://moderndive.com/7-sampling.html 
 
-Turn in Rmd and html with the following:
+Turn in an Rmd and html file with the following:
 
 Consider a population that has a normal distribution with mean 36 and variance 64. 
 

@@ -27,7 +27,7 @@ Put your `simulate.power` here.
 
 ## Your Possible Scenarios
 
-Put the code for your `all_scenarios`, `sim_study_output`, and yourfor loop over all the scenarios here.
+Put the code for your `all_scenarios`, `sim_study_output`, and your for loop over all the scenarios here.
 
 ```{r}
 
@@ -37,7 +37,7 @@ Put the code for your `all_scenarios`, `sim_study_output`, and yourfor loop over
 
 ## Data Wrangling
 
-We ultimately want both tests' results on the same plot instead of two separate ones. To do this, you need to reformat your data. See `pivot_wider` and/or `pivot_longer` (see [here](https://github.com/rstudio/cheatsheets/raw/master/tidyr.pdf) for more details)
+We ultimately want both tests' results on the same plot instead of two separate ones. To do this, you need to reformat your data. See `pivot_wider` and/or `pivot_longer` [here](https://github.com/rstudio/cheatsheets/raw/master/tidyr.pdf) for more details.
 
 It may also be helpful to read [Chapter 3 through section 3.6](https://r4ds.had.co.nz/data-visualisation.html) and [Chapter 12 through Section 12.3](https://r4ds.had.co.nz/tidy-data.html).
 

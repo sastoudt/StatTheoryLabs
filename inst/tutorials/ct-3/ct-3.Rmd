@@ -151,6 +151,25 @@ for(i in 1:num_sim){ ## do something 5 times
 stored_data ## print results
 ```
 
+```{r quiz1}
+
+question("What does stored_data look like when it is first created?",
+    answer("A matrix of random numbers with 5 rows and 3 columns."),
+    answer("A matrix of random numbers with 3 rows and 5 columns."),
+    answer("A matrix of NAs with 5 rows and 3 columns.", correct = TRUE),
+    answer("A matrix of NAs with 3 rows and 5 columns."),allow_retry = TRUE,
+    random_answer_order = T
+  )
+
+question("What function should we use to determine the size of stored_data?",
+    answer("rep"),
+    answer("length"),
+    answer("dim", correct = TRUE),
+    answer("c()"),allow_retry = TRUE,
+    random_answer_order = T
+  )
+```
+
 ## Simulate and Store Results
 
 Go through the code annotation process for the following code chunk.
@@ -159,7 +178,8 @@ Go through the code annotation process for the following code chunk.
 num_sim <- 5
 sample_size <- 3
 
-stored_means <- rep(NA, length.out = num_sim)
+stored_means <- rep(NA, length.out = num_sim) ## we haven't seen this before, so be sure to check the help page
+
 
 for(i in 1:num_sim){
   x <- rnorm(n = sample_size, mean = 0, sd = 1)
@@ -167,6 +187,25 @@ for(i in 1:num_sim){
   }
 
 stored_means
+```
+
+```{r quiz2}
+
+question("What does stored_means look like when it is first created?",
+    answer("A matrix of NAs with 5 rows and 3 columns."),
+    answer("A vector of NAs that has 3 elements in it."),
+    answer("A vector of NAs that has 5 elements in it.", correct = TRUE),
+    answer("5 repeated 3 times."),allow_retry = TRUE,
+    random_answer_order = T
+  )
+
+question("What function should we use to determine how many elements are in stored_means?",
+    answer("rep"),
+    answer("dim"),
+    answer("length", correct = TRUE),
+    answer("c()"),allow_retry = TRUE,
+    random_answer_order = T
+  )
 ```
 
 ## Your Turn
@@ -208,7 +247,7 @@ var(store_max) ## to approximate the variance of the maximum of uniform r.v.
 gradethis::grade_code()
 ```
 
-
+If you had derived this expected value of the maximum by hand you could check your work empirically with the results of this simulation. 
 
 ## Submit progress
 

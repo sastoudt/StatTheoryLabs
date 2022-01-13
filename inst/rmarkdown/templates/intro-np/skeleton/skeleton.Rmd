@@ -83,13 +83,15 @@ Simulate rolling this *biased* die 20 times.
 
 Cox and Lewis (1966) reported 799 waiting times between successive pulses along a nerve fiber. We don't know anything about the true distribution of these. You can see the distribuiton of waiting times as well as the empirical CDF (an estimate of the true CDF) below.
 
+**Note: You will need to upload `nerve.csv` to the RStudio Cloud and put it in the folder where you have saved this template file.**
+
 
 ```{r}
 nerve <- read.csv("nerve.csv", header = F)
 head(nerve)
 length(nerve)
 
-## it is not important that you understand these two pre-processing steps
+## it is not important that you understand these three pre-processing steps
 nerve <- unname(unlist(nerve))
 nerve <- nerve[1:(length(nerve)-1)]
 nerve <- nerve[!is.na(nerve)]

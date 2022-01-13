@@ -41,14 +41,14 @@ simulated_data <- data.frame(
 )
 
 
-hist(simulated_data$x) ## x is a column in the dataframe simulated_data
+hist(simulated_data$x) ## x is a column in the data frame simulated_data
 
 plot(simulated_data$x, simulated_data$y, main = "title", xlab = "x", ylab = "y")
 ```
 
 ## Normal, t, chi-squared
 
-These distributions will be very useful to you in your final project. It is important to understand their properties to know how to use them. The best way to learn about them is to generate data from them with different values for the parameters and plot them to notice their differences. 
+These distributions will be very useful to you in your final project. It is important to understand their properties to know how to use them. The best way to learn about them is to generate data from them with different values for the parameters and plot their distributions to notice their similarities and differences. 
 
 ```{r dist, exercise = T}
 
@@ -157,7 +157,7 @@ With `ggplot()`:
 - Next, you provide the variables from the dataset to be assigned to `aes`thetic elements of the plot, e.g. the x and the y axes. 
 - Finally, you use another layer, separated by a `+` to specify the `geom`etric object for the plot. Since we want to scatterplot, we use `geom_point()`.
 
-For instance, if you wanted to visualize the scatterplot below using a line graph, you would replace `geom_point()` with `geom_line()`.
+For instance, if you wanted to visualize the scatterplot below using a line graph, you would replace `geom_point()` with `geom_line()`. What happens if you comment out the `theme_minimal` line and the plus sign in the line above it?
 
 
 ```{r plot, exercise = T}
@@ -165,7 +165,6 @@ library(tidyverse)
 
 ggplot(simulated_data, aes(x, y)) + 
   geom_point() +
-  geom_smooth(method = "lm", se = FALSE) +
   labs(x = "Informative X label here", y = "Informative Y label here") +
   ggtitle("Informative title here") +
   theme_minimal(base_size = 20)
@@ -185,7 +184,7 @@ ggplot(simulated_data, aes(y)) +
 
 ## Color and Line Type
 
-Changing the color (`col`) and/or the line type (`lty`) allow you to show a third variable in a 2D plot.These are specified within the `aes`.
+Changing the color (`col`) and/or the line type (`lty`) allow you to show a third variable in a 2D plot. These are specified within the `aes`.
 
 ```{r plot2, exercise = T}
 

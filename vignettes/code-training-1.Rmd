@@ -60,7 +60,7 @@ If you have a file on your personal computer (like a dataset) that you want to h
 
 ![](import.png)
 
-**Task**: Import the `debugging.jpeg` file made by Allison Horst (found on Moodle under the Code Training 1 Assignment. Take a screenshot showing that it successfully appears in the File pane, and upload this screenshot to Moodle under the Code Training 1 Assignment. 
+**Task**: Import the `debugging.jpeg` file made by Allison Horst (found on Moodle under the Code Training 1 Assignment). Take a screenshot showing that it successfully appears in the File pane, and upload this screenshot to Moodle under the Code Training 1 Assignment. 
 
 ## Packages
 
@@ -86,6 +86,8 @@ or you need to expand the tutorial window (upper right hand corner of RStudio wi
 
 ![](tutorial-window.png)
 
+
+Follow the instructions in this pop-up tutorial.
 
 ## Resources for learning R and working in RStudio
 

@@ -11,9 +11,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Part I: Exploring Confidence Levels
 
-Recall the level of confidence associated with an inteval estimator is defined as the probability of the interval estimates containing the true parameter in repeated sampling.
+Recall the level of confidence associated with an interval estimator is defined as the probability of the interval estimates containing the true parameter in repeated sampling.
 
-That is, if we draw thousands of random samples from a distribution and compute thousands of 100(1-$\alpha$)% confidence intervals, approximately 100(1-$\alpha$)% of those inervals will contain the true parameter.
+That is, if we draw thousands of random samples from a distribution and compute thousands of 100(1-$\alpha$)% confidence intervals, approximately 100(1-$\alpha$)% of those intervals will contain the true parameter.
 
 In this section, we are going to illustrate this idea via simulation. 
 
@@ -108,7 +108,7 @@ c. How do your intervals in this code chunk compare to those from the first code
 
 Recall that since the data we were generating were iid from a Normal distribution, the sample mean has an exact Normal distribution with mean $\mu$ and standard error $\sigma/\sqrt{n}$ (this is the sampling distribution of the mean). When the data are not Normal, we can use the CLT to obtain the approximate sampling distribution of $\bar{X}$ as long as the sample size is large enough and the variance is finite.
 
-a. Copy and paste the first code chunk here. Adapt it to run a simulation that computes 95% confidence intervals with data generated from a Poisson random variable with parameter $\lambda = 3$. Your sample size should be $n=5$.
+a. The first code chunk is copied and pasted here. Adapt it to run a simulation that computes 95% confidence intervals with data generated from a Poisson random variable with parameter $\lambda = 3$. Your sample size should be $n=5$. Note: we are using the CLT so there should not be any usage of `qpois`.
 
 
 ```{r}
@@ -149,7 +149,7 @@ b. What proportion of your intervals contained $\lambda$? Should you be confiden
 
 c. Copy and paste your code chunk from 3a and adapt it to run the same simulation, but now with a sample size of $n=50$. 
 
-d. What proportion of your intervals contain $\lambda$ now? How do your intervals change (between $n=5$ and $n=50$ for Poisson case)? Do you feel conident in your results now? Why or why not?
+d. What proportion of your intervals contain $\lambda$ now? How do your intervals change (between $n=5$ and $n=50$ for Poisson case)? Do you feel confident in your results now? Why or why not?
 
 ## Part II: Violating Assumptions
 
@@ -170,11 +170,13 @@ Relevant pseudo-code:
 
 - Calculate the lower and upper bound of the conidence interval
 
-- Now instead of seeing if $\mu$ is contained in the interval (like we did in Part I), break it into two steps. First see if the interal is abouve $\mu$ and increase a counter `tooLow` if yes. Then see if the entire interval is above $\mu$ and increase a counter `tooHigh` if yes.
+- Now instead of seeing if $\mu$ is contained in the interval (like we did in Part I), break it into two steps. First see if the interval is above $\mu$ and increase a counter `tooLow` if yes. Then see if the entire interval is above $\mu$ and increase a counter `tooHigh` if yes.
 
 - Calculate the proportion of confidence intervals that were too low and too high.
 
 b. Repeat this simulation by changing the sample size to $n=250$. How does the sample size affect the frequency of missing $\mu$? 
+
+Note: you should be using the distribution discussed under Part II.
 
 
 ## Part III: Bootstrap t-Confidence Interval for $\mu$
@@ -201,13 +203,15 @@ a. Create a histogram of the arsenic levels.
 
 ```{r}
 bangladesh <- read.csv("Bangladesh.csv", header = TRUE)
+## load this data in from Moodle and make sure it is stored in the same place as this Rmd file
+
 arsenic <- bangladesh$Arsenic
 xbar <- mean(arsenic)
 n <- length(arsenic)
 ```
 
 
-b. Find a 95% t-confidence interval for the mean $\mu$ of arsenic levels in Bangladesh.
+b. Find a 95% t-confidence interval for the mean $\mu$ of arsenic levels in Bangladesh. Make sure you have read the information in Part III.
 
 c. Find the 95% bootstrap percentile and 95% bootstrap t-confidence intervals fo the mean arsenic levels in Bangladesh and compare the results of these two to the interval you found in part b. Which interval would you report to a policy official and why?
 
