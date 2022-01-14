@@ -31,7 +31,7 @@ When working on a big simulation study, it can be helpful to first sketch out wh
 You will be making plots similar to the simple sketches below.
 
 
-![](power-sketches.jpg)
+![](images/power-sketches.jpg)
 
 
 ```{r quiz2}
@@ -105,6 +105,7 @@ It will be helpful to first think of your answers to the following prompts.
 Once you have made two sketches, add one more facet to each of them. What do you expect to change (if anything) at a different value of whatever parameter you are displaying via the `facet_wrap`. 
 
 **Task**: Take a picture of your two sketches (two panes each) and post them to Slack on the #random channel. Briefly justify the sketching decisions you made.  
+
 ## Submit progress
 
 As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 

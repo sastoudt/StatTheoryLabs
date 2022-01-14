@@ -148,7 +148,7 @@ sum(obs == guess)/50
 
 We have a random variable that represents whether or not we get the next guess correct. What is the variance of that random variable in both scenarios?
 
-```{r}
+```{r, var, exercise = T}
 obs <- generateColor(1000)
 
 guess1 <- rep("green", 1000)
