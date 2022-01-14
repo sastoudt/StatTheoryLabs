@@ -68,94 +68,99 @@ So we've learned that `generateColor` produces "green" about 75% of the time and
 What if we just stuck with the most likely outcome each time and always picked "green"?
 
 ```{r, strat1, exercise = T}
-obs = generateColor(1000)
-guess = rep("green", 1000)
+obs <- generateColor(1000)
+guess <- rep("green", 1000)
 ```
 
-**What's the probability we correct right on the next guess?**
+**What is the probability that we correctly guess the next color using this approach?**
 
-**What's the expected value of our estimator?**
-
-**What's the variance of our estimator**
+**What is the expected number of correct guesses out of 50 using this approach?**
 
 ## Strategy 1 Performance - Simulation
 
 We can double check our calculations by using simulation. 
 
 ```{r, strat1-perf, exercise = T}
-obs = generateColor(1000)
-guess = rep("green", 1000)
+obs <- generateColor(50)
+guess <- rep("green", 50)
 
-## What's the probability we correct right on the next guess?
-mean(obs == guess)
+## number of correct guesses
+sum(obs == guess)
 
-##What's the expected value of our estimator?
-guess <- ifelse(guess == "green", 1, 0)
-mean(guess)
+## proportion of correct guesses
+sum(obs == guess)/50
+```
 
+**What's the relationship between this proportion and the probability we are investigating?**
 
-## What's the variance of our estimator?
-var(guess)
+**How could I make this empirical estimate more accurate?**
+
+```{r, strat1-perf2, exercise = T}
 
 ```
 
 ## Strategy 2
 
 ```{r, strat2, exercise = T}
-obs = generateColor(1000)
+obs <- generateColor(1000)
 
-guess = rbinom(1000, 1, prob = 0.75)
-guess = ifelse(guess == 1, "green", "red")
+guess <- rbinom(1000, 1, prob = 0.75)
+guess <- ifelse(guess == 1, "green", "red")
 ```
 
 
-**What's the probability we correct right on the next guess?**
+**What is the probability that we correctly guess the next color using this approach?**
 
-**What's the expected value of our estimator?**
-
-**What's the variance of our estimator?**
+**What is the expected number of correct guesses out of 50 using this approach?**
 
 
 ## Strategy 2 Performance - Simulation
 
 We can double check our calculations by using simulation. 
 
-
 ```{r, strat2-perf, exercise = T}
-obs = generateColor(1000)
+obs <- generateColor(50)
 
-guess = rbinom(1000, 1, prob = 0.75)
-guess = ifelse(guess == 1, "green", "red")
+guess <- rbinom(50, 1, prob = 0.75)
+guess <- ifelse(guess == 1, "green", "red")
 
-## What's the probability we correct right on the next guess?
-mean(obs == guess)
+## number of correct guesses
+sum(obs == guess)
 
-##What's the expected value of our estimator?
-guess <- ifelse(guess == "green", 1, 0)
-mean(guess)
-
-
-## What's the variance of our estimator?
-var(guess)
+## proportion of correct guesses
+sum(obs == guess)/50
 ```
 
-## Your Strategy Performance - Simulation
+## Does anyone have a different strategy?
 
 ```{r, your-strat, exercise = T}
-obs = generateColor(1000)
-guess = 
+obs <- generateColor(1000)
+guess <-
 
-## What's the probability we correct right on the next guess?
-mean(obs == guess)
+## number of correct guesses
+sum(obs == guess)
 
-##What's the expected value of our estimator?
-guess <- ifelse(guess == "green", 1, 0)
-mean(guess)
-
-
-## What's the variance of our estimator?
-var(guess)
+## proportion of correct guesses
+sum(obs == guess)/50
 ```
+
+## Variance
+
+We have a random variable that represents whether or not we get the next guess correct. What is the variance of that random variable in both scenarios?
+
+```{r}
+obs <- generateColor(1000)
+
+guess1 <- rep("green", 1000)
+
+guess2 <- rbinom(1000, 1, prob = 0.75)
+guess2 <- ifelse(guess2 == 1, "green", "red")
+
+var(obs == guess1)
+var(obs == guess2)
+```
+
+
 
 * * *
 
