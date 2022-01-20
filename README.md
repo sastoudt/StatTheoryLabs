@@ -83,6 +83,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "code-training-8": Tidy Data and Better Plots
 - "intro-np": introduction to nonparametrics
 - "intro-project": introduction to final project
+- "hw7": optimization for bivariate MLE
 
 (under development and updating for Spring 2022)
 
