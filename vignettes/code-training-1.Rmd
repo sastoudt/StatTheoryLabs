@@ -76,7 +76,7 @@ To use the functionality in a given session, we need to load the package by usin
 
 The coding trainings will often take the form of an interactive tutorial that will step you through new code and ask you to fill in exercises. These tutorials can give you automated feedback and are meant to help you as you independently build up your coding skills.
 
-**Task**: To learn about how these work, access (and complete) the first tutorial by typing `run_tutorial("ct-1", "StatTheoryLabs")`into the console and then pressing the "enter" or "return" key. 
+**Task**: To learn about how these work, access (and complete) the first tutorial by typing `learnr::run_tutorial("ct-1", "StatTheoryLabs")`into the console and then pressing the "enter" or "return" key. 
 
 A pop-up window should appear. If it does not, you may have a pop-up blocker issue:
 
