@@ -74,6 +74,8 @@ One advantage of RStudio is that it comes with a built-in data viewer.
 Click on the name `arbuthnot` in the *Environment* pane (upper right window) that lists the objects in your environment. This will bring up an alternative display of the data set in the *Data Viewer* (upper left window). 
 You can close the data viewer by clicking on the `x` in the upper lefthand corner.
 
+*Note*: If you do not see the `arbuthnot` dataset appear in the Environment window, run `data("arbuthnot")` in the console. Then it shoudl appear.
+
 What you should see are columns of numbers, each row representing a different year: the first entry in each row is simply the row number (an index we can use to access the data from individual years if we want), the second is the year, and the third and fourth are the numbers of boys and girls baptized that year, respectively. 
 
 Use the scrollbar on the right side of the console window to examine the complete data set. Note that the row numbers in the first column are not part of Arbuthnot's data. R adds them as part of its printout to help you make visual comparisons. You can think of them as the index that you see on the left side of a spreadsheet. In fact, the comparison to a spreadsheet will generally be helpful. R has stored Arbuthnot's data in a kind of spreadsheet or table called a *data frame*.
