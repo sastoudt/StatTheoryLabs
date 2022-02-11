@@ -40,7 +40,7 @@ Loops will be an important part of many future labs and the final project. Take 
 
 A simple for loop has the following structure:
 
-```{r loopEx}
+```{r loopEx, exercise = T}
 n <- 5
 
 for(i in 1:n){
@@ -51,6 +51,8 @@ for(i in 1:n){
 This is read "for index $i$ in the sequence 1 to $n$, do the following" (whatever is in the curly braces). 
 
 ```{r loop1}
+
+quiz(
 question("What would the for loop above do",
     answer("Print 5 one time."),
     answer("Print 5 five times"),
@@ -59,6 +61,7 @@ question("What would the for loop above do",
     allow_retry = TRUE,
     random_answer_order = F
   )
+)
 ```
 
 ## Getting started - Loops cont.
@@ -75,6 +78,8 @@ for(i in 1:n){
 ```
 
 ```{r loop2}
+
+quiz(
 question("What is in x at the end of the above for loop",
     answer("3 numbers drawn from the specified normal distribution.", correct = T),
     answer("15 numbers drawn from the specified normal distribution."),
@@ -83,6 +88,7 @@ question("What is in x at the end of the above for loop",
     allow_retry = TRUE,
     random_answer_order = F
   )
+)
 ```
 
 
@@ -152,14 +158,14 @@ stored_data ## print results
 ```
 
 ```{r quiz1}
-
+quiz(
 question("What does stored_data look like when it is first created?",
     answer("A matrix of random numbers with 5 rows and 3 columns."),
     answer("A matrix of random numbers with 3 rows and 5 columns."),
     answer("A matrix of NAs with 5 rows and 3 columns.", correct = TRUE),
     answer("A matrix of NAs with 3 rows and 5 columns."),allow_retry = TRUE,
     random_answer_order = T
-  )
+  ),
 
 question("What function should we use to determine the size of stored_data?",
     answer("rep"),
@@ -168,6 +174,7 @@ question("What function should we use to determine the size of stored_data?",
     answer("c()"),allow_retry = TRUE,
     random_answer_order = T
   )
+)
 ```
 
 ## Simulate and Store Results
@@ -190,14 +197,14 @@ stored_means
 ```
 
 ```{r quiz2}
-
+quiz(
 question("What does stored_means look like when it is first created?",
     answer("A matrix of NAs with 5 rows and 3 columns."),
     answer("A vector of NAs that has 3 elements in it."),
     answer("A vector of NAs that has 5 elements in it.", correct = TRUE),
     answer("5 repeated 3 times."),allow_retry = TRUE,
     random_answer_order = T
-  )
+  ),
 
 question("What function should we use to determine how many elements are in stored_means?",
     answer("rep"),
@@ -206,6 +213,7 @@ question("What function should we use to determine how many elements are in stor
     answer("c()"),allow_retry = TRUE,
     random_answer_order = T
   )
+)
 ```
 
 ## Your Turn
