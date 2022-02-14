@@ -294,7 +294,7 @@ Consider a population that has a normal distribution with mean 36 and variance 6
 
 a.) The sampling distribution of X-bar for samples of size 200 will have what distribution, mean, and standard error? (not a coding question)
 
-b.) Compute the bootstrap distribution for the maximum of a sample of size 200 from the population described above. Make a histogram of this distribution. Describe the shape, center, and spread of this distribution.
+b.) Compute the sampling distribution for the maximum of a sample of size 200 from the population described above. Make a histogram of this distribution. Describe the shape, center, and spread of this distribution.
 
 c.) Repeat part b for samples of size 50. Make a histogram of this distribution. Describe the shape, center, and spread of this distribution and compare it to what you found in part b.
 
