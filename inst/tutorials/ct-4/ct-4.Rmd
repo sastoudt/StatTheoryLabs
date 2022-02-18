@@ -63,19 +63,20 @@ hist(z, main = "chi-squared")
 ```
 
 ```{r dist2 }
+quiz(
 question("Is the normal distribution symmetric?",
     answer("Yes", correct = T),
     answer("No"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("Is the t distribution symmetric?",
     answer("Yes", correct = T),
     answer("No"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("Is the chi-squared distribution symmetric?",
     answer("Yes"),
@@ -83,6 +84,7 @@ question("Is the chi-squared distribution symmetric?",
     allow_retry = TRUE,
     random_answer_order = F
   )
+)
 ```
 
 
@@ -105,13 +107,14 @@ hist(z2, main = "chi-squared, df = 100")
 ```
 
 ```{r dist5}
+quiz(
 question("As you increase the degrees of freedom:",
     answer("The t distribution becomes more normal", correct = T),
     answer("The t distribution gets heavier tails"),
     answer("The t distribution gets more symmetric"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("As you decrease the degrees of freedom:",
     answer("The chi-squared distribution becomes less normal", correct = T),
@@ -119,7 +122,7 @@ question("As you decrease the degrees of freedom:",
     answer("The chi-squared distribution gets less heavy tails"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("As you decrease the degrees of freedom:",
     answer("The mean of the chi-squared distribution gets smaller", correct = T),
@@ -128,14 +131,14 @@ question("As you decrease the degrees of freedom:",
     answer("The mean of the t distribution gets smaller"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("If two t distributions have the same degrees of freedom:",
     answer("they have the same expected value", correct = T),
     answer("they have different expected values"),
     allow_retry = TRUE,
     random_answer_order = F
-  )
+  ),
 
 question("If two chi-squared distributions have the same degrees of freedom:",
     answer("they have the same expected value", correct = T),
@@ -143,6 +146,7 @@ question("If two chi-squared distributions have the same degrees of freedom:",
     allow_retry = TRUE,
     random_answer_order = F
   )
+)
 ```
 
 
