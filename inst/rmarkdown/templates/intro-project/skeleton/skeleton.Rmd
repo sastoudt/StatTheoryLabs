@@ -9,17 +9,17 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-You have been assigned to one of the following non-parametric test (see Moodle). At the top of each section is the parametric version of the test that you will be comparing against.
+You have been assigned to one of the following non-parametric test (see Moodle). **At the top of each section is the parametric version of the test that you will be comparing against.**
 
 ## Location tests - alternatives to the t-test
 
-```{r}
+```{r, eval = F}
 t.test(..., var.equal = T) ## traditional t test
 ```
 
 Fisher-Pitman Permutation Test - 
 
-```{r}
+```{r, eval = F}
 library(coin)
 
 oneway_test()
@@ -27,13 +27,13 @@ oneway_test()
 
 Wilcoxon Rank Sum Test aka Mann-Whitney U Test - 
 
-```{r}
+```{r, eval = F}
 wilcox.test()
 ```
 
 Baumgartner, Weiss, Schindler test - 
 
-```{r}
+```{r, eval = F}
 library(BWStest)
 
 bws_test()
@@ -41,13 +41,13 @@ bws_test()
 
 ## Location tests - alternatives to Welch's t-test
 
-```{r}
+```{r, eval = F}
 t.test(..., var.equal = F) ## Welch's t-test
 ```
 
 Lepage test - 
 
-```{r}
+```{r, eval = F}
 library(nonpar)
 
 lepage.test()
@@ -55,7 +55,7 @@ lepage.test()
 
 Cucconi test - 
 
-```{r}
+```{r, eval = F}
 library(nonpar)
 
 cucconi.test()
@@ -63,7 +63,7 @@ cucconi.test()
 
 Brunner Munzel Test
 
-```{r}
+```{r, eval =  F}
 library(lawstat)
 
 brunner.munzel.test()
@@ -80,6 +80,8 @@ brunner.munzel.test()
 **Task**: Understand how to use your two functions (a parametric and nonparametric test). This means understanding inputs (what form of data do they expect), outputs (how do you get what you need out of them), and other tuning parameters (which should you use for your study). Use the help function. Run them on the simulated data provided below.
 
 ```{r}
+## note this code chunk will not run until you complete the last two lines
+
 set.seed(17126)
 
 simulated_data <- data.frame(
