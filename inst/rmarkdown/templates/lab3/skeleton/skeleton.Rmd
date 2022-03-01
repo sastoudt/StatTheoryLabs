@@ -21,14 +21,14 @@ In this question we will focus on understanding the bootstrap at a high level an
 
 Consider a population that has a gamma distribution with parameters $\alpha = 5$ and $\beta =4$. Recall that the gamma function in R requires the parameterization $1/\beta$ (see the "Help" if you do not know what I mean by this).
 
-**a.)** Describe the approximate sampling distribution for the mean shown below.
+**a.)** Describe the approximate sampling distribution for the mean shown below. A description of a distribution should include a discussion of its center, spread, and shape.
 
 ```{r}
 n <- 200
 xbars <- rep(NA, n)
 
 for (i in 1:n) {
-  dat <- rgamma(n, 5, 1 / 4)
+  data <- rgamma(n, 5, 1 / 4)
   xbars[i] <- mean(data)
 }
 
@@ -45,7 +45,7 @@ ggplot(xbars, aes(x = x)) +
 **b.)** Take a sample from the population described above. Find the mean and standard deviation of this sample.
 
 ```{r}
-n <- 
+n <- 200
 samp <- rgamma(n =  ___, ___, ___)
 
 mean(___)
@@ -79,7 +79,6 @@ sd(___$stat)
 - What is the mean and standard deviation of the sampling distribution of $\bar{X}$? (no code)
 
 - What is the mean and standard deviation of the bootstrap distribution of $\bar{X}$? (recall from above)
-
 
 **d.)** Adjust the sample size to $n=10$ and compare the bootstrap distribution to the approximate sampling distribution by answering the following questions.
 
@@ -142,7 +141,7 @@ Hint: Check out the help for the function `exp`.
 ```{r}
 B <- ___
 
-theta_hat_n_boot <- ___ ## create a place to store the value of theta_hat_n (you may want to refer to the loops examples, reposted on Moodle)
+theta_hat_n_boot <- ___ ## create a place to store the value of theta_hat_n (you may want to refer to the loops examples in code training 3)
 
 for(i in 1:___){
   ## draw a random resample of size n with replacement from our original sample xs 
@@ -161,12 +160,16 @@ hist(___) ## plot the bootstrap distribution
 
 ```{r}
 se_boot <- ___
+se_boot
 
-normal_interval <- ___
+normal_interval <- c(___, ___)
+normal_interval
 
-bootstrap_percentile_interval <- ___
+bootstrap_percentile_interval <- c(___, ___)
+bootstrap_percentile_interval
 
-bootstrap_pivotal_interval <- ___
+bootstrap_pivotal_interval <- c(___, ___)
+bootstrap_pivotal_interval
 
 ```
 
@@ -174,12 +177,15 @@ bootstrap_pivotal_interval <- ___
 **e.)** Plot a histogram of the bootstrap replications and describe the distribution. This is the bootstrap distribution of $\hat{\theta}_n$. Try using `ggplot` this time.
 
 ```{r}
+## ggplot needs a dataframe with column names
+## there is an example in this document about how to take a vector and make it into a dataframe with one column
 
 ```
 
 **f.)** Plot a histogram of the 'true' sampling distribution and describe the distribution. Hint: The sampling distribution is defined as the distribution of $\hat{\theta}_n$ calculated from every possible sample of the same size from the population. For simplicity, build the sampling distribution using 10000 random samples from the population (not from the original sample). 
 
 ```{r}
+## you may want to refer to lab 2
 
 
 ```
@@ -203,18 +209,19 @@ n <- ## sample size
   
 std_err_ests <- ____ ## create space to store results 
 
-xs <- ## generate original sample from the population
 
 for(j in 1:___){
   
+  xs <- ## generate original sample from the population
   theta_hat_n_boot <- ## create space to store bootstrap results
-  for(i in 1:___){
+  
+    for(i in 1:___){
      ## draw a random resample of size n with replacement from our original sample xs 
   
-  ## compute your statistic theta_hat_n from the resample
+    ## compute your statistic theta_hat_n from the resample
   
-  ## store your statistic in the ith spot in theta_hat_n_boot
-  }
+    ## store your statistic in the ith spot in theta_hat_n_boot
+    }
   ## compute standard error of bootstrap distribution
   ## store result in jth place in std_err_ests
 }
@@ -226,6 +233,7 @@ hist() ## plot the distribution of standard error estimates
 
 ```{r}
 true_se <- ## put the value you determined in a here
+true_se
 
 mean(abs(std_err_ests - true_se))
 ```
@@ -240,14 +248,16 @@ std_err_ests <- ____ ## create space to store results
 ## this loop code shouldn't change from what you did in b
 for(j in 1:___){
   
+  xs <- ## generate original sample from the population
   theta_hat_n_boot <- ## create space to store bootstrap results
-  for(i in 1:___){
+  
+    for(i in 1:___){
      ## draw a random resample of size n with replacement from our original sample xs 
   
-  ## compute your statistic theta_hat_n from the resample
+    ## compute your statistic theta_hat_n from the resample
   
-  ## store your statistic in the ith spot in theta_hat_n_boot
-  }
+    ## store your statistic in the ith spot in theta_hat_n_boot
+    }
   ## compute standard error of bootstrap distribution
   ## store result in jth place in std_err_ests
 }
@@ -257,6 +267,7 @@ hist() ## plot the distribution of standard error estimates
 
 ```{r}
 true_se <- ## put the value you determined in a here
+true_se
 
 mean(abs(std_err_ests - true_se)) ## mean absolute difference between truth and your estimates
 ```
@@ -290,7 +301,7 @@ Hint: This all happens in a single loop.
 B <- ___
 n <- nrow(___) ## how many samples do you have in your data
 
-theta_hat_n_boot <- ___ ## create a place to store the value of theta_hat_n (you may want to refer to the loops examples, reposted on Moodle)
+theta_hat_n_boot <- ___ ## create a place to store the value of theta_hat_n (you may want to refer to the loops examples in code training 3)
 
 for(i in 1:___){
   ## now we want to resample both the vanilla calories and the chocolate calories
@@ -322,8 +333,10 @@ To get these files onto your own computer, look in the "Files" pane in the botto
 
 *Due*: Friday, April 8th at 5 PM
 
-**Opportunity for Extra Credit:** Complete the Dolphin Activity from 216. If you are interested in this, see me for the printout and props on Wednesday. I need the yellow/white cards back when you turn this in, so don't write on them or lose them. You can either turn in the worksheet (and props) in class on Friday or scan in the worksheet to Moodle by 5 PM on Friday and bring the props to class on Monday. 
+**Opportunity for Extra Credit:** Complete the Dolphin Activity from 216. If you are interested in this, see me for props on Wednesday. The instructions and the histogram generated by my 216 class are on Moodle. Where would your post-it note fall? Answer this question as part of your worksheet too: How likely is your observed statistic (or something more extreme) assuming there is no effect of dolphin therapy on depression? [how would you use this histogram to find out?]
 
+
+I need the yellow/white cards back when you turn this in, so don't write on them or lose them. You can either turn in the worksheet (and props) in class on Friday or scan in the worksheet to Moodle by 5 PM on Friday and bring the props to class on Monday. 
 
 
 * * *

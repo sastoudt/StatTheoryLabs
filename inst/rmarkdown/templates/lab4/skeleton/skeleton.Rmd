@@ -108,7 +108,8 @@ c. How do your intervals in this code chunk compare to those from the first code
 
 Recall that since the data we were generating were iid from a Normal distribution, the sample mean has an exact Normal distribution with mean $\mu$ and standard error $\sigma/\sqrt{n}$ (this is the sampling distribution of the mean). When the data are not Normal, we can use the CLT to obtain the approximate sampling distribution of $\bar{X}$ as long as the sample size is large enough and the variance is finite.
 
-a. The first code chunk is copied and pasted here. Adapt it to run a simulation that computes 95% confidence intervals with data generated from a Poisson random variable with parameter $\lambda = 3$. Your sample size should be $n=5$. Note: we are using the CLT so there should not be any usage of `qpois`.
+a. The first code chunk is copied and pasted here. Adapt it to run a simulation that computes 95% confidence intervals with data generated from a Poisson random variable with parameter $\lambda = 3$. Your sample size should be $n=5$. Note: we are using the CLT so there should not be any usage of `qpois`. Update the code comments to reflect what is now going on.
+
 
 
 ```{r}
@@ -168,7 +169,7 @@ Relevant pseudo-code:
 
 - Generate a sample of size $n=20$ from a gamma distribution. Remember that the gamma functions in R have the reciprocal parameterization.
 
-- Calculate the lower and upper bound of the conidence interval
+- Calculate the lower and upper bound of the confidence interval
 
 - Now instead of seeing if $\mu$ is contained in the interval (like we did in Part I), break it into two steps. First see if the interval is above $\mu$ and increase a counter `tooLow` if yes. Then see if the entire interval is above $\mu$ and increase a counter `tooHigh` if yes.
 
