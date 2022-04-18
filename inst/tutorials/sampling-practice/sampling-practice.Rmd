@@ -40,7 +40,7 @@ hist(theta_hat_n_boot2)
 
 ## Sampling Distribution
 
-```{r, quizsd}
+```{r quizsd}
 quiz(
   question("If the distribution of cars' miles per gallon followed a normal distribution what would the sampling distribution for the mean miles per gallon look like?",
     answer("Normal with mean centered at the true average miles per gallon and variance equal to the variance of the data."),
@@ -67,18 +67,18 @@ This question is adapted from data from Fueleconomy.gov, the official US governm
 
 What is the sample mean of the average miles per gallon?
 
-```{r, look-data, exercise = T}
+```{r look-data, exercise = T}
 head(car_data)
 
 ```
 
-```{r, look-data-solution}
+```{r look-data-solution}
 # solution code
 head(car_data)
 mean(car_data$average_mpg)
 ```
 
-```{r, look-data-check}
+```{r look-data-check}
 # check code
 gradethis::grade_code()
 ```   
@@ -88,7 +88,7 @@ gradethis::grade_code()
 
 Create a bootstrap distribution for the sample mean.
 
-```{r, boot-car, exercise = T}
+```{r boot-car, exercise = T}
 B <- 10000
 
 theta_hat_n_boot <- rep(___, ___) ## create a place to store the value of theta_hat_n 
@@ -105,7 +105,7 @@ for(i in 1:___){
 hist(___) ## plot the bootstrap distribution
 ```
 
-```{r, boot-car-solution}
+```{r boot-car-solution}
 B <- 10000
 
 theta_hat_n_boot <- rep(NA, B) ## create a place to store the value of theta_hat_n 
@@ -122,12 +122,12 @@ for(i in 1:B){
 hist(theta_hat_n_boot) ## plot the bootstrap distribution
 ```
 
-```{r, boot-car-check}
+```{r boot-car-check}
 # check code
 gradethis::grade_code()
 ```   
 
-```{r, quizboot}
+```{r quizboot}
 quiz(
   question("Why do we use the function sample in the bootstrap?",
     answer("We use it to shuffle our sample, breaking the relationship between groups."),
@@ -170,7 +170,7 @@ quiz(
 
 I have done my own bootstrap distribution and stored the values in `theta_hat_n_boot2`.
 
-```{r, diff-int, exercise = T}
+```{r diff-int, exercise = T}
 quantile(theta_hat_n_boot2, c(0.025, 0.975)) ## 1
 
 c(mean(car_data$average_mpg) - qnorm(0.95, 0, 1)*sd(theta_hat_n_boot2), mean(car_data$average_mpg) + qnorm(0.95, 0, 1)*sd(theta_hat_n_boot2)) ## 2
@@ -178,7 +178,7 @@ c(mean(car_data$average_mpg) - qnorm(0.95, 0, 1)*sd(theta_hat_n_boot2), mean(car
 quantile(theta_hat_n_boot2, c(0.05, 0.95)) ## 3
 ```
 
-```{r, quizint}
+```{r quizint}
 quiz(
   question("What is alpha for interval 1?",
     answer("0.025"),
@@ -217,7 +217,7 @@ quiz(
 
 The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Suppose we want to estimate the average difference between the number of hours worked per week (`hrs1`) by all Americans with a college degree and those without a college degree (degree - no degree).
 
-```{r, look-gss, exercise = T}
+```{r look-gss, exercise = T}
 degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
 nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
 
@@ -226,7 +226,7 @@ num_nodegree <- nrow(nodegree)
 ```
 
 
-```{r, quizgss}
+```{r quizgss}
 quiz(
   question("What does the object degree contain?",
     answer("A bunch of degree labels."),
@@ -261,7 +261,7 @@ quiz(
 
 ## Create a permutation distribution
 
-```{r, create-perm, exercise = T}
+```{r create-perm, exercise = T}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  
@@ -291,7 +291,7 @@ abline(v = t_obs, col="red")
 
 ```
 
-```{r, create-perm-solution}
+```{r create-perm-solution}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  
@@ -320,12 +320,12 @@ hist(t_star) ## permutation (randomization) distribution
 abline(v = t_obs, col="red")
 ```
 
-```{r, create-perm-check}
+```{r create-perm-check}
 # check code
 gradethis::grade_code()
 ``` 
 
-```{r, quizperm}
+```{r quizperm}
 quiz(
   question("What does the permutation distribution represent?",
     answer("The distribution of difference in mean hours worked under the null hypothesis.", correct = TRUE),
@@ -361,7 +361,7 @@ quiz(
 ## How to sample
 
 
-```{r, quizshuffle}
+```{r quizshuffle}
 quiz(
   question("Suppose I am interested in testing the null hypothesis that there is no relationship between a covariate X and a response Y. This means that the slope of a regression line would be zero. How would I shuffle my sample data to create a permutation distribution?",
     answer("Shuffle X and Y seperately.", correct = TRUE),
