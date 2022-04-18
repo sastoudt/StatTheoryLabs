@@ -291,7 +291,7 @@ abline(v = t_obs, col="red")
 
 ```
 
-```{r create-perm-solution}
+```{r create-perm-solution, exercise = T}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  

@@ -20,7 +20,8 @@ Imports:
     learnrhash (>= 0.1.0.9000),
     plotly,
     broom,
-    infer
+    infer,
+    here
 Remotes: 
     rstudio-education/gradethis,
     rstudio/learnr,
