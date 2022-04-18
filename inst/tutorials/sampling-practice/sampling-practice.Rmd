@@ -1,0 +1,400 @@
+---
+title: "Sampling, Bootstrap, and Permutation Distributions"
+output: 
+  learnr::tutorial:
+    progressive: true
+    allow_skip: true
+runtime: shiny_prerendered
+---
+
+```{r setup, include=FALSE}
+library(learnr)
+library(learnrhash)
+library(tidyverse)
+library(gradethis)
+library(here)
+tutorial_options(
+  # use gradethis for checking
+  exercise.checker = gradethis::grade_learnr
+  )
+knitr::opts_chunk$set(echo = FALSE)
+car_data <- read_csv(here("extdata/prius_mpg.csv"))
+gss_data <- read_csv(here("extdata/gss2010.csv"))
+set.seed(41812223)
+B <- 10000
+
+theta_hat_n_boot2 <- rep(NA, B) ## create a place to store the value of theta_hat_n 
+
+for(i in 1:B){
+  ## draw a random resample of size n with replacement from our original sample  
+  resamp <- sample(car_data$average_mpg, nrow(car_data), replace = T)
+  ## compute your statistic theta_hat_n from the resample
+  stat <- mean(resamp)
+  ## store your statistic in the ith spot in theta_hat_n_boot
+  theta_hat_n_boot2[i] <- stat
+}
+
+hist(theta_hat_n_boot2) 
+```
+
+
+## Sampling Distribution
+
+```{r quizsd}
+quiz(
+  question("If the distribution of cars' miles per gallon followed a normal distribution what would the sampling distribution for the mean miles per gallon look like?",
+    answer("Normal with mean centered at the true average miles per gallon and variance equal to the variance of the data."),
+    answer("Normal with mean centered at the true average miles per gallon and variance equal to the variance of the cars' gas mileage."),
+    answer("Normal with mean centered at the true average miles per gallon and variance equal to the variance of the cars' gas mileage scaled by the sample size", correct = TRUE),
+    answer("Normal with mean centered at the true average miles per gallon and variance equal to the variance of the cars' gas mileage scaled by the squareroot of the sample size"),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+   question("If we had information on 100 cars and we knew nothing about the distribution of their miles per gallon, what would the sampling distribution for the mean look like?",
+    answer("Exactly normal."),
+    answer("Approximately normal thanks to the Law of Large Numbers."),
+    answer("Approximately normal thanks to the Central Limit Theorem", correct = TRUE),
+    answer("We would not have enough information."),allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+## Bootstrap Distribution 
+
+This question is adapted from data from Fueleconomy.gov, the official US government source for fuel economy information. This site allows users to share gas mileage information on their vehicles. We look at 19 data points on the 2012 Toyota Prius. 
+
+### Looking at Sample
+
+What is the sample mean of the average miles per gallon?
+
+```{r look-data, exercise = T}
+head(car_data)
+
+```
+
+```{r look-data-solution}
+# solution code
+head(car_data)
+mean(car_data$average_mpg)
+```
+
+```{r look-data-check}
+# check code
+gradethis::grade_code()
+```   
+
+
+### Create a bootstrap distribution
+
+Create a bootstrap distribution for the sample mean.
+
+```{r boot-car, exercise = T}
+B <- 10000
+
+theta_hat_n_boot <- rep(___, ___) ## create a place to store the value of theta_hat_n 
+
+for(i in 1:___){
+  ## draw a random resample of size n with replacement from our original sample  
+  resamp <- sample(___, ___, replace = ___)
+  ## compute your statistic theta_hat_n from the resample
+  stat <- 
+  ## store your statistic in the ith spot in theta_hat_n_boot
+  
+}
+
+hist(___) ## plot the bootstrap distribution
+```
+
+```{r boot-car-solution}
+B <- 10000
+
+theta_hat_n_boot <- rep(NA, B) ## create a place to store the value of theta_hat_n 
+
+for(i in 1:B){
+  ## draw a random resample of size n with replacement from our original sample  
+  resamp <- sample(car_data$average_mpg, nrow(car_data), replace = T)
+  ## compute your statistic theta_hat_n from the resample
+  stat <- mean(resamp)
+  ## store your statistic in the ith spot in theta_hat_n_boot
+  theta_hat_n_boot[i] <- stat
+}
+
+hist(theta_hat_n_boot) ## plot the bootstrap distribution
+```
+
+```{r boot-car-check}
+# check code
+gradethis::grade_code()
+```   
+
+```{r quizboot}
+quiz(
+  question("Why do we use the function sample in the bootstrap?",
+    answer("We use it to shuffle our sample, breaking the relationship between groups."),
+    answer("We use it to resample from the population."),
+    answer("We cannot go back to the population to take a new sample, so we use our current sample as a plug-in estimate of the population.", correct = TRUE),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+    question("What is the importance of the replace input to sample?",
+    answer("Without our choice of this input, we would double count some of our observations."),
+    answer("Without our choice of this input, the sample size may not match our original scenario."),
+    answer("Without our choice of this input, we would get the same sample over and over again.", correct = TRUE),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("What is a bootstrap distribution approximating?",
+    answer("A sample distribution."),
+    answer("A population distribution."),
+    answer("A sampling distribution.", correct = TRUE),
+    answer("A normal distribution."),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  
+  question("What would change if we wanted the bootstrap distribution for the median of the miles per gallon?",
+    answer("base"),
+    answer("tools"),
+    answer("The value stored into stat would be the output of the function median rather than mean.", correct = TRUE),
+    answer("codetools"),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+   question("What would change if we wanted sampling distribution for the mean of the miles per gallon?",
+    answer("resamp would be the "),
+    answer("resamp would be the output of the sample function with replace set equal to FALSE"),
+    answer("resamp would be the output of a function that started with r.", correct = TRUE),
+    answer("codetools"),allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+### Interval comparison
+
+I have done my own bootstrap distribution and stored the values in `theta_hat_n_boot2`.
+
+```{r diff-int, exercise = T}
+quantile(theta_hat_n_boot2, c(0.025, 0.975)) ## 1
+
+c(mean(car_data$average_mpg) - qnorm(0.95, 0, 1)*sd(theta_hat_n_boot2), mean(car_data$average_mpg) + qnorm(0.95, 0, 1)*sd(theta_hat_n_boot2)) ## 2
+
+quantile(theta_hat_n_boot2, c(0.05, 0.95)) ## 3
+```
+
+```{r quizint}
+quiz(
+  question("What is alpha for interval 1?",
+    answer("0.025"),
+    answer("0.1"),
+    answer("0.05", correct = TRUE),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+    question("What is the alpha for interval 2?",
+    answer("0.025"),
+    answer("0.05"),
+    answer("0.1", correct = TRUE),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("What do we have to check to make sure interval 2 is appropriate?",
+    answer("That the distribution of the sample is normal."),
+    answer("That the distribution of the population is normal."),
+    answer("That the bootstrap distribution is normal.", correct = TRUE),
+    answer("We do not need to check anything."),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("Assuming we have checked what we need to check (if anything) for interval 2, between interval 2 and 3, which would you prefer?",
+    answer("2, it's narrower"),
+    answer("2, it's wider"),
+    answer("3 it's narrower", correct = TRUE),
+    answer("3 it's wider"),allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+
+
+### Permutation Distribution
+
+## Setup
+
+The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Suppose we want to estimate the average difference between the number of hours worked per week (`hrs1`) by all Americans with a college degree and those without a college degree (degree - no degree).
+
+```{r look-gss, exercise = T}
+degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
+nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
+
+num_degree <- nrow(degree)
+num_nodegree <- nrow(nodegree)
+```
+
+
+```{r quizgss}
+quiz(
+  question("What does the object degree contain?",
+    answer("A bunch of degree labels."),
+    answer("Number of hours worked for those with certain degrees."),
+    answer("Average hours worked  for those with certain degrees."),
+    answer("A subset of the data where individuals have certain degrees", correct = T),allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("What type of object is nodegree?",
+    answer("A vector"),
+    answer("A matrix"),
+    answer("A dataframe", correct = TRUE),
+    answer("A list"), allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("What is the parameter of interest?",
+    answer("Two means."),
+    answer("Two proportions"),
+    answer("A difference in means", correct = TRUE),
+    answer("A difference in proportions"), allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("What is the corresponding statistic?",
+    answer("Two sample means."),
+    answer("Two sample proportions."),
+    answer("A difference in sample means.", correct = T),
+    answer("A difference in sample proportions"), allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+## Create a permutation distribution
+
+```{r create-perm, exercise = T}
+## Step 1: compute the observed value of the test statistic.
+t_obs <-  
+t_obs  
+
+hours_worked <- c(___,___) ## combine hours worked into one vector (degrees first)
+
+B <- 10000
+
+t_star <-  rep(___, ___) ## create storage for your t_star values
+
+for(i in 1:B){
+  ## Step 2: Randomly permute the data into two groups and calculate the test statistic on the permuted data
+  
+  all_shuffled <- sample(___, ___, replace = ___)
+
+  ## calculate the statistic based on these new groupings
+  ## Hint: how many observations are in each group?
+  t_stat <- 
+    
+  ## store the statstic in the ith spot of t_star
+  t_star[i] <- t_stat
+  
+}
+
+hist(t_star) ## permutation (randomization) distribution
+abline(v = t_obs, col="red")
+
+```
+
+```{r create-perm-solution}
+## Step 1: compute the observed value of the test statistic.
+t_obs <-  
+t_obs  
+ 
+hours_worked <- c(degree$hrs1, nodegree$hrs1) ## combine hours worked into one vector (degrees first)
+
+B <- 10000
+
+t_star <-  rep(NA, B) ## create storage for your t_star values
+
+for(i in 1:B){
+  ## Step 2: Randomly permute the data into two groups and calculate the test statistic on the permuted data
+  
+  all_shuffled <- sample(hours_worked, length(hours_worked), replace = F)
+
+  ## calculate the statistic based on these new groupings
+  ## Hint: how many observations are in each group?
+  t_stat <- mean(all_shuffled[1:num_degree]) - mean(all_shuffled[(num_degree+1):length(all_shuffled)])
+    
+  ## store the statstic in the ith spot of t_star
+  t_star[i] <- t_stat
+  
+}
+
+hist(t_star) ## permutation (randomization) distribution
+abline(v = t_obs, col="red")
+```
+
+```{r create-perm-check}
+# check code
+gradethis::grade_code()
+``` 
+
+```{r quizperm}
+quiz(
+  question("What does the permutation distribution represent?",
+    answer("The distribution of difference in mean hours worked under the null hypothesis.", correct = TRUE),
+    answer("The distribution of difference in mean hours worked under the alternative hypothesis."),
+    answer("The distribution of the mean hours worked for each group."),
+    answer("The standard normal distribution."), allow_retry = TRUE,
+    random_answer_order = T
+  ),
+  question("How do we estimate a p-value from this distribution?",
+    answer("We count what proportion of shuffles led to an observed difference in means more extreme than what we observed.", correct = TRUE),
+    answer("We count what proportion of shuffles led to an observed difference in means less extreme than what we observed."),
+    answer("We count the number of shuffles that led to an observed difference in means more extreme than what we observed."),
+    answer("We count the number of shuffles that led to an observed difference in means less extreme than what we observed."), allow_retry = TRUE,
+    random_answer_order = T
+  ),
+   question("If the p-value is small...",
+    answer("we reject the alternative"),
+    answer("we accept the null"),
+    answer("we reject the null", correct = TRUE),
+    answer("we accept the alternative"), allow_retry = TRUE,
+    random_answer_order = T
+  ),
+    question("If the p-value is small...",
+    answer("we expect to see 0 in the corresponding confidence interval for the true difference in means"),
+    answer("we do not expect to see 0 in the corresponding confidence interval for the true difference in means", correct = TRUE),
+    answer("we do not have enough information to conclude anything about the corresponding confidence interval for the true difference in means"),
+ allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+## How to sample
+
+
+```{r quizshuffle}
+quiz(
+  question("Suppose I am interested in testing the null hypothesis that there is no relationship between a covariate X and a response Y. This means that the slope of a regression line would be zero. How would I shuffle my sample data to create a permutation distribution?",
+    answer("Shuffle X and Y seperately.", correct = TRUE),
+    answer("Shuffle X and Y jointly."),
+     allow_retry = TRUE,
+    random_answer_order = T
+  ), 
+ question("Suppose I am interested in creating a confidence interval for the true slope coefficient between X and Y in a regression model. How would I resample sample data to create a bootstrap distribution?",
+    answer("Sample the rows of the dataset.", correct = TRUE),
+    answer("Sample each column of the dataset."), allow_retry = TRUE,
+    random_answer_order = T
+  )
+)
+```
+
+## Submit progress
+
+As you have gone through this tutorial, your progress has been kept track of in something called a "hash". I can use this to make sure you have executed all of the code chunks and answered all of the questions. I will use this to give you a completion grade for this assignment. 
+
+If a Google Form window does not appear, you can access it [here](https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform). Label it as Coding Training Number 10.
+
+```{r context="server"}
+learnrhash::encoder_logic(strip_output = T)
+```
+
+```{r encode, echo=FALSE}
+learnrhash::encoder_ui(
+  ui_before = div(strong("Submit your hash in the form below."), br(), br()),
+  ui_after  = learnrhash::iframe_ui(
+    src = "https://docs.google.com/forms/d/e/1FAIpQLScVRKB7vRsjD-Swc3RzSc01G-eCDZF4cYI3TI89dYOhTMdW2Q/viewform", 
+    width="900px", height= "1000px"
+  )
+)
+```
+
+
