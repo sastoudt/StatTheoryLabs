@@ -293,7 +293,7 @@ abline(v = t_obs, col="red")
 
 ```{r create-perm-solution}
 ## Step 1: compute the observed value of the test statistic.
-t_obs <-  
+t_obs <-  mean(degree$hrs1) - mean(nodegree$hrs1)
 t_obs  
  
 hours_worked <- c(degree$hrs1, nodegree$hrs1) ## combine hours worked into one vector (degrees first)
