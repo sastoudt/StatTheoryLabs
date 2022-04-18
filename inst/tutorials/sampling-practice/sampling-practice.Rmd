@@ -19,7 +19,7 @@ tutorial_options(
   )
 knitr::opts_chunk$set(echo = FALSE)
 car_data <- read_csv(here("extdata/prius_mpg.csv"))
-gss_data <- read_csv(here("extdata/gss2010.csv"))
+gss <- read_csv(here("extdata/gss2010.csv"))
 set.seed(41812223)
 B <- 10000
 
@@ -88,7 +88,7 @@ gradethis::grade_code()
 
 Create a bootstrap distribution for the sample mean.
 
-```{r boot-car, exercise = T}
+```{r, boot-car, exercise = T}
 B <- 10000
 
 theta_hat_n_boot <- rep(___, ___) ## create a place to store the value of theta_hat_n 
@@ -105,7 +105,7 @@ for(i in 1:___){
 hist(___) ## plot the bootstrap distribution
 ```
 
-```{r boot-car-solution}
+```{r, boot-car-solution}
 B <- 10000
 
 theta_hat_n_boot <- rep(NA, B) ## create a place to store the value of theta_hat_n 
@@ -122,7 +122,7 @@ for(i in 1:B){
 hist(theta_hat_n_boot) ## plot the bootstrap distribution
 ```
 
-```{r boot-car-check}
+```{r, boot-car-check}
 # check code
 gradethis::grade_code()
 ```   
@@ -217,7 +217,7 @@ quiz(
 
 The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Suppose we want to estimate the average difference between the number of hours worked per week (`hrs1`) by all Americans with a college degree and those without a college degree (degree - no degree).
 
-```{r look-gss, exercise = T}
+```{r, look-gss, exercise = T}
 degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
 nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
 
@@ -261,7 +261,7 @@ quiz(
 
 ## Create a permutation distribution
 
-```{r create-perm, exercise = T}
+```{r, create-perm, exercise = T}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  
@@ -291,7 +291,7 @@ abline(v = t_obs, col="red")
 
 ```
 
-```{r create-perm-solution, exercise = T}
+```{r, create-perm-solution}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  
@@ -320,7 +320,7 @@ hist(t_star) ## permutation (randomization) distribution
 abline(v = t_obs, col="red")
 ```
 
-```{r create-perm-check}
+```{r, create-perm-check}
 # check code
 gradethis::grade_code()
 ``` 

@@ -68,6 +68,7 @@ Click "Session" --> "Restart R" and try to run the tutorial again.
 - "ct-4": code training 4 - plots and probability distributions
 - "ct-9": code training 9 - plot expectation sketching
 - "lab1": Estimation (capture-recapture)
+- "sampling-practice": extra sampling, bootstrap, and permutation distribution practice
 
 ## Available Templates
 
