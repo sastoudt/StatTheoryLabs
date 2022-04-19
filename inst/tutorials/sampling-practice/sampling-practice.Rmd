@@ -47,6 +47,8 @@ hist(theta_hat_n_boot2)
 ```
 
 
+Note: There are going to be weird outputs under some of the more complicated code checks. Just ignore them, they won't affect your other stuff.
+
 ## Sampling Distribution
 
 ```{r quizsd}
@@ -290,7 +292,7 @@ for(i in 1:B){
   ## Hint: how many observations are in each group?
   t_stat <- 
     
-  ## store the statstic in the ith spot of t_star
+  ## store the statistic in the ith spot of t_star
   t_star[i] <- t_stat
   
 }
@@ -320,7 +322,7 @@ for(i in 1:B){
   ## Hint: how many observations are in each group?
   t_stat <- mean(all_shuffled[1:num_degree]) - mean(all_shuffled[(num_degree+1):length(all_shuffled)])
     
-  ## store the statstic in the ith spot of t_star
+  ## store the statistic in the ith spot of t_star
   t_star[i] <- t_stat
   
 }
