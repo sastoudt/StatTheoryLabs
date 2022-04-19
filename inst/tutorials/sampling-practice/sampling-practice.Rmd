@@ -20,6 +20,7 @@ tutorial_options(
 knitr::opts_chunk$set(echo = FALSE)
 car_data <- read_csv(here("extdata/prius_mpg.csv"))
 gss <- read_csv(here("extdata/gss2010.csv"))
+gss <- gss[which(!is.na(gss$hrs1)),]
 
 degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
 nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
