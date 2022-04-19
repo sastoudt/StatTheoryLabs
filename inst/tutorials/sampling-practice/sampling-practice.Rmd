@@ -20,6 +20,14 @@ tutorial_options(
 knitr::opts_chunk$set(echo = FALSE)
 car_data <- read_csv(here("extdata/prius_mpg.csv"))
 gss <- read_csv(here("extdata/gss2010.csv"))
+
+degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
+nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
+
+num_degree <- nrow(degree)
+num_nodegree <- nrow(nodegree)
+
+
 set.seed(41812223)
 B <- 10000
 
