@@ -76,18 +76,18 @@ This question is adapted from data from Fueleconomy.gov, the official US governm
 
 What is the sample mean of the average miles per gallon?
 
-```{r look-data, exercise = T}
+```{r lookdata, exercise = T}
 head(car_data)
 
 ```
 
-```{r look-data-solution}
+```{r lookdata-solution}
 # solution code
 head(car_data)
 mean(car_data$average_mpg)
 ```
 
-```{r look-data-check}
+```{r lookdata-check}
 # check code
 gradethis::grade_code()
 ```   
@@ -97,7 +97,7 @@ gradethis::grade_code()
 
 Create a bootstrap distribution for the sample mean.
 
-```{r boot-car, exercise = T}
+```{r bootcar, exercise = T}
 B <- 10000
 
 theta_hat_n_boot <- rep(___, ___) ## create a place to store the value of theta_hat_n 
@@ -114,7 +114,7 @@ for(i in 1:___){
 hist(___) ## plot the bootstrap distribution
 ```
 
-```{r boot-car-solution}
+```{r bootcar-solution}
 B <- 10000
 
 theta_hat_n_boot <- rep(NA, B) ## create a place to store the value of theta_hat_n 
@@ -131,7 +131,7 @@ for(i in 1:B){
 hist(theta_hat_n_boot) ## plot the bootstrap distribution
 ```
 
-```{r boot-car-check}
+```{r bootcar-check}
 # check code
 gradethis::grade_code()
 ```   
@@ -220,13 +220,13 @@ quiz(
 
 
 
-### Permutation Distribution
+## Permutation Distribution
 
-## Setup
+### Setup
 
 The General Social Survey collects data on demographics, education, and work, among many other characteristics of US residents. Suppose we want to estimate the average difference between the number of hours worked per week (`hrs1`) by all Americans with a college degree and those without a college degree (degree - no degree).
 
-```{r look-gss, exercise = T}
+```{r lookgss, exercise = T}
 degree <- gss[which(gss$degree %in% c("BACHELOR", "JUNIOR COLLEGE", "GRADUATE")),]
 nodegree <- gss[which(gss$degree %in% c("LT HIGH SCHOOL", "HIGH SCHOOL")),]
 
@@ -268,9 +268,9 @@ quiz(
 )
 ```
 
-## Create a permutation distribution
+### Create a permutation distribution
 
-```{r create-perm, exercise = T}
+```{r createperm, exercise = T}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  
 t_obs  
@@ -300,7 +300,7 @@ abline(v = t_obs, col="red")
 
 ```
 
-```{r create-perm-solution}
+```{r createperm-solution}
 ## Step 1: compute the observed value of the test statistic.
 t_obs <-  mean(degree$hrs1) - mean(nodegree$hrs1)
 t_obs  
@@ -329,7 +329,7 @@ hist(t_star) ## permutation (randomization) distribution
 abline(v = t_obs, col="red")
 ```
 
-```{r create-perm-check}
+```{r createperm-check}
 # check code
 gradethis::grade_code()
 ``` 
